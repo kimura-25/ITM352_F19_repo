@@ -3,7 +3,7 @@ h1,h1{
 }
 body{
     font-family:'Open Sans',sans-serif;
-    color:red;
+    color:darkblue;
     margin: 10px 50px 10px 50px;
     width:950px;
     background-color: ivory
@@ -12,16 +12,4 @@ body{
 img{
     float: left;
     margin-right:10px
-}
-.left{
-    float:left;
-    width:300px;
-}
-.right{
-    float:right;
-    width:300px;
-}
-.center{
-    margin-left:300px;
-    margin-right:300px;
 }

@@ -10,8 +10,8 @@ main{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    background: url(./images/phone_globe.jpg) no-repeat center fixed;
-    color:red;
+    background: url(./images/phone_globe.jpg) no-repeat center;
+    color:orangered;
 }
 
 div{
