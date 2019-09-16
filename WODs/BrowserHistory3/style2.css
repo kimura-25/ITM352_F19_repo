@@ -9,19 +9,19 @@ body{
     background-color: ivory
 }
 
+li a{
+    float:left;
+    display: inline;
+}
+
 ul{
     list-style-type: none;
     margin:0px;
     padding:0px;
 }
 
-li a{
-    float:left;
-    display:inline;
-}
-
 #navbar a{
-    margin-left: 75px;
+    margin-left:75px;
     margin-right:75px;
 }
 
@@ -43,6 +43,6 @@ img{
 }
 
 .center{
-    margin-left: 300px;
-    margin-right: 300px;
+    margin-left:300px;
+    margin-right:300px;
 }
