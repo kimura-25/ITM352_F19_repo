@@ -15,15 +15,18 @@ ul{
     padding:0px;
 }
 
-li a{
+li {
     float:left;
-    display:inline;
+    display:inline-block;
 }
 
 #navbar a{
     margin-left: 75px;
     margin-right:75px;
 }
+
+
+
 
 img{
     float: left;

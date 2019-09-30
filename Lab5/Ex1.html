@@ -15,10 +15,21 @@ var myCoolLastName = "Kimura";
 
 var fullName = myCoolFirstName + '<br>' 
 + myCoolMiddleName + '<br>' 
-+ myCoolLastName
++ myCoolLastName + '<br>'
 + myCoolFirstName[0] + '.'
 +myCoolLastName[0] + '.';
 
-document.write(fullName);
+/*
 
+var fancyFullName = '<b>' + myCoolFirstName + '</b><br>' 
++ '<em>' + myCoolMiddleName + '</em><br>' 
++ '<font size="150%">' + myCoolLastName + '</font>';
+
+document.write(fancyFullName);
+
+*/
+amount = 1.23;
+tax = .0413 * amount;
+
+document.write('The tax on ' + myCoolFirstName + '’s bill is $' + tax.toFixed(2) );
 </script>
