@@ -25,13 +25,13 @@ document.write('like beer!');
 // -- Price depends on quantity
 quantity = 45;
 
-if ( quantity > 0 ) {
+if ( quantity >= 25  ) {
     price = 100;
 } 
-//else if ( quantity >= 10 ) {
-//        price = 50 ;
-//} 
-else if ( quantity >= 25 ) {
+else if ( quantity >= 10 ) {
+        price = 50 ;
+} 
+else if (quantity > 0 ) {
             price = 35;
 } 
 else {
