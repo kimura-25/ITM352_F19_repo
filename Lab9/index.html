@@ -1,8 +1,10 @@
-<span id="firstname">XXX</span>, <span id="YYY">Port</span>
+<span id="firstname">Kelsey</span>, <span id="lastname">Kimura</span>
 <br>
+
 <input type="button" value="Swap" 
     onclick="
-    
-    firstname.innerHTML = lastname.innerHTML;
+    var x = lastname.innerHTML;
     lastname.innerHTML = firstname.innerHTML;
+    firstname.innerHTML = x;
+    
     ">
