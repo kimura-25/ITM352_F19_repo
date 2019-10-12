@@ -1,0 +1,52 @@
+/* General */ 
+img{
+    height:200px;
+    width:200px;
+}
+
+/* Typography */
+h1,h2{
+    text-align: center;
+    font-family: 'Gayathri', sans-serif;
+}
+
+body{
+    text-align: center;
+    font-family: 'Gayathri', sans-serif;
+}
+
+/* Form styling */ 
+body{
+    width: 800px; margin: 0 auto;
+    font-family: 'Gayathri', sans-serif;
+}
+
+/* Styling the products display */
+header{
+    background:aqua;
+}
+left{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    background: url(./images/phone_globe.jpg) no-repeat center;
+    background-size: 100% 100%;
+    color:ivory;
+}
+main{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    background: url(./images/phone_globe.jpg) no-repeat center;
+    color:ivory;
+}
+body > div{
+border: 5px solid black;
+display: flex;
+}
+
+/* block styling */ 
+footer {
+    display: block;
+    background:aqua;
+}
