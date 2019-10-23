@@ -3,20 +3,17 @@ theSeparator = ';';
 parts = attributes.split(theSeparator);
 
 // parts = ['Kelsey',20,20.5,-19.5];
+//the function CheckNonNegativeInteger checks to see if the value is a nonnegative integer. If not, value says it is not an integer.
 
 for(i=0; i < parts.length; i++) {
-    parts.forEach(printIt)
-
-// }
-
-function printIt(item, index) {
-console.log(`${item} isNonNegInt ${isNonNegInt(item,true)}` );
+    console.log(`${parts[i]} CheckNonNegativeInteger ${CheckNonNegativeInteger(parts[i],true)}` );
 }
+
 console.log(parts.join(theSeparator));
 
 
 
-function isNonNegInt(q, returnErrors = false) {
+function CheckNonNegativeInteger(q, returnErrors = false) {
     errors = []; // assume no errors at first
     if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
     if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
