@@ -1,0 +1,31 @@
+<script>
+    num_items = 5;
+    
+products_array = [
+    var product1 = {
+        type: "Bowl",
+        price:  30.00,
+        image:  "./images/bowl.jpg"};
+    
+    var product2 = {
+        type: "Earrings",
+        price:  40.00,
+        image:   "./images/earrings.jpg"};
+    
+    var product3 = {
+        type: "Necklace",
+        price:  60.00,
+        image: "./images/necklace.jpg"};
+    
+    var product4 = {
+        type: "T-Shirt",
+        price:  20.00,
+        image: "./images/shirt.jpg"};
+    
+    var product5 = {
+        type: "Teether",
+        price:  25.00,
+        image: "./images/teether.jpg"}];    
+var products = [product1, product2, product3, product4, product5];
+
+</script>

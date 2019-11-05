@@ -1,0 +1,4 @@
+1) Data source: embed in HTML file
+2) Functionality: display products, ability to take quantities for each item and calculate final price
+3) How do form processing: online??
+4) Validation needed: if quantity is an integer, are you a human, 

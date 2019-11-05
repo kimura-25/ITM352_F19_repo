@@ -4,6 +4,8 @@ parts = attributes.split(theSeparator);
 
 // parts = ['Kelsey',20,20.5,-19.5];
 
+//parts = ['Kelsey', 20, 20.5, -19.5];
+
 for(i=0; i < parts.length; i++) {
     parts.forEach(printIt)
 
@@ -13,8 +15,6 @@ function printIt(item, index) {
 console.log(`${item} isNonNegInt ${isNonNegInt(item,true)}` );
 }
 console.log(parts.join(theSeparator));
-
-
 
 function isNonNegInt(q, returnErrors = false) {
     errors = []; // assume no errors at first

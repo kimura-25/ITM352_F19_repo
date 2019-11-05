@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        function checkQuantityTextbox(){
+            errs_array = isNonNegInt(quantity_textbox.value, true);
+            qty_textbox_message.innerHTML = errs_array.join(',');
+        }
+        function isNonNegInt(q, returnErrors = false) {
+        errors = []; // assume no errors at first
+        if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
+        if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
+        if(parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+        return returnErrors ? errors : (errors.length == 0);
+        }
+        function displayPurchase() {
+            if(isNonNegInt(quantity_form.quantity_textbox.value)){
+            document.write(`Thank you for ordering ${quantity_form.quantity_textbox.value} things!`);
+        } else {
+            alert('Please enter a valid quantity')
+        }
+    
+    }
+    
+        </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <p id = "testing_here">Insert something here</p>
+<form name="quantity_form" action="/Assignment1/invoice.html" method="GET">
+    <label for= "quantity_textbox1"> Bowl quantity:</label>
+    <input type="text" id = "htmlform" name="quantity_textbox1" onkeyup="checkQuantityTextbox();">
+    <span id='qty_textbox_message'>Enter a quantity</span>
+    <br>
+    <label for= "quantity_textbox2"> Earrings quantity:</label>
+    <input type="text" name="quantity_textbox2" onkeyup="checkQuantityTextbox();">
+    <span id='qty_textbox_message'>Enter a quantity</span>
+    <br>
+    <label for= "quantity_textbox3"> Necklace quantity:</label>
+    <input type="text" name="quantity_textbox3" onkeyup="checkQuantityTextbox();">
+    <span id='qty_textbox_message'>Enter a quantity</span>
+    <br>
+    <label for= "quantity_textbox4"> T-Shirt quantity:</label>
+    <input type="text" name="quantity_textbox4" onkeyup="checkQuantityTextbox();">
+    <span id='qty_textbox_message'>Enter a quantity</span>
+    <br>
+    <label for= "quantity_textbox5"> Teether quantity:</label>
+    <input type="text" name="quantity_textbox5" onkeyup="checkQuantityTextbox();">
+    <span id='qty_textbox_message'>Enter a quantity</span>
+    <br>
+    <input type="submit" value="Purchase">
+</form>
+</body>
+</html>

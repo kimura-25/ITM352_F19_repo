@@ -5,7 +5,7 @@ parts = attributes.split(theSeparator);
 // parts = ['Kelsey',20,20.5,-19.5];
 //the function CheckNonNegativeInteger checks to see if the value is a nonnegative integer. If not, value says it is not an integer.
 
-for(i=0; i < parts.length; i++) {
+for(i=0; i< parts.length; i++) {
     console.log(`${parts[i]} CheckNonNegativeInteger ${CheckNonNegativeInteger(parts[i],true)}` );
 }
 
