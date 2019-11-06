@@ -36,12 +36,12 @@ displayPurchase();
     <title>Document</title>
 </head>
 <body>
-    <form name="quantity_form" action="localhost:8080/process_form" method="POST">
+    <form name="quantity_form" action="http://localhost:8080/process_form" method="POST">
     <label for= "quantity_textbox"> quantity desired:</label> 
     <input type="text" name="quantity_textbox" onkeyup="checkQuantityTextbox();">
     <span id='qty_textbox_message'>Enter a quantity</span>
     <br>
-    <input type="submit" value="Purchase">
+    <input type="submit" name = "purchaseSubmit" value="Purchase">
 </form>
 </body>
 </html>
