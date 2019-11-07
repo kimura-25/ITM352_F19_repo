@@ -29,30 +29,59 @@
     <title>Document</title>
 </head>
 <body>
-
-    <p id = "testing_here">Insert something here</p>
 <form name="quantity_form" action="/Assignment1/invoice.html" method="GET">
-    <label for= "quantity_textbox1"> Bowl quantity:</label>
-    <input type="text" id = "htmlform" name="quantity_textbox1" onkeyup="checkQuantityTextbox();">
-    <span id='qty_textbox_message'>Enter a quantity</span>
-    <br>
-    <label for= "quantity_textbox2"> Earrings quantity:</label>
-    <input type="text" name="quantity_textbox2" onkeyup="checkQuantityTextbox();">
-    <span id='qty_textbox_message'>Enter a quantity</span>
-    <br>
-    <label for= "quantity_textbox3"> Necklace quantity:</label>
-    <input type="text" name="quantity_textbox3" onkeyup="checkQuantityTextbox();">
-    <span id='qty_textbox_message'>Enter a quantity</span>
-    <br>
-    <label for= "quantity_textbox4"> T-Shirt quantity:</label>
-    <input type="text" name="quantity_textbox4" onkeyup="checkQuantityTextbox();">
-    <span id='qty_textbox_message'>Enter a quantity</span>
-    <br>
-    <label for= "quantity_textbox5"> Teether quantity:</label>
-    <input type="text" name="quantity_textbox5" onkeyup="checkQuantityTextbox();">
-    <span id='qty_textbox_message'>Enter a quantity</span>
-    <br>
-    <input type="submit" value="Purchase">
+
+    
+
+<table cellpadding="10" border="1">
+    <tr>
+        <th>Item #</th>
+        <th>Product name</th>
+        <th>Price</th>
+        <th>quantity</th>
+    </tr>
+    <tr>
+            <td>Item #</td>
+            <td>Product name</td>
+            <td>Price</td>
+            <td>
+                <input type="text" id = "htmlform" name="quantity_textbox1" size="1" onkeyup="checkQuantityTextbox();">
+            </td>
+    </tr>
+    <tr>
+            <td>Item #</td>
+            <td>Product name</td>
+            <td>Price</td>
+            <td>
+                    <input type="text" id = "htmlform" name="quantity_textbox2" size="1" onkeyup="checkQuantityTextbox();">
+            </td>
+    </tr><tr>
+            <td>Item #</td>
+            <td>Product name</td>
+            <td>Price</td>
+            <td>
+                    <input type="text" id = "htmlform" name="quantity_textbox3" size="1" onkeyup="checkQuantityTextbox();">
+            </td>
+    </tr>
+    <tr>
+            <td>Item #</td>
+            <td>Product name</td>
+            <td>Price</td>
+            <td>
+                    <input type="text" id = "htmlform" name="quantity_textbox4" size="1" onkeyup="checkQuantityTextbox();">
+            </td>
+    </tr>
+    <tr>
+            <td>Item #</td>
+            <td>Product name</td>
+            <td>Price</td>
+            <td>
+                    <input type="text" id = "htmlform" name="quantity_textbox5" size="1" onkeyup="checkQuantityTextbox();">
+            </td>
+    </tr>
+</table>
+<input type="submit" value="Purchase">
+
 </form>
 </body>
 </html>

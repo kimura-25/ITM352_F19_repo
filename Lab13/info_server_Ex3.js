@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
+var fs = require('fs');
 
 app.all('*', function (request, response, next) {
     console.log(request.method + ' to ' + request.path); // browser make request
@@ -29,9 +30,13 @@ function isNonNegInt(q, returnErrors = false) {
 
     function displayPurchase(POST, response) {
         q = POST['quantity_textbox']; //define q to POST the quantity written in the textbox
-        if(isNonNegInt(q)){ //if quantity written is a non-negative integer
-            response.send(`Thank you for purchasing ${q} things!`); // would respond with full invoice if correct for Assignment 1
-    } else {
-        response.send(`${q} is not a quantity! Press the back button and try again.`);
+        if (typeof POST['quantity_textbox'] != 'undefined') {
+            let q = POST['quantity_textbox'];
+            if (isNonNegInt(q)) {
+                var contents = fs.readFileSync('./views/display_quantity_template.view', 'utf8');
+                response.send(eval('`' + contents + '`')); // render template string
+            } else {
+                response.send(`${q} is not a quantity!`);
+            }
+        }
     }
-}
