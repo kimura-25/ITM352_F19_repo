@@ -1,3 +1,5 @@
+var data = require('./public/product_data.js');
+var products = data.products;
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
@@ -9,13 +11,13 @@ app.all('*', function (request, response, next) {
 });
 
 //server-side code only, do not do inside html file
-app.use(myParser.urlencoded({ extended: true })); //need to install Parser, becomes an object, urlencoded is a method of myParser; when get HTML body, will turn it into a clean body to use
-app.post("/process_form", function (request, response) { //if I get a post, if has process_form in the path, do this
-   let POST = request.body; //data sent with the request, define post
-   if (typeof POST['quantity_textbox'] != 'undefined') { // if whatever is written in textbox is not undefined, run displayPurchase() function
-    displayPurchase(POST, response);
-    }
-});
+app.use(myParser.urlencoded({ extended: true }));
+app.post("/process_form", function (request, response) {
+    let POST = request.body; 
+    if (typeof POST['quantity_textbox'] != 'undefined') { 
+     displayPurchase(POST, response);
+     }
+ });
 
 app.use(express.static('./public')); // another method of express. express.static creates static webserver. Create middleware. have method called static and has directory that will respond to GET request, get file from wherever and send it back, set up static webserver; can still serve static files
 app.listen(8080, () => console.log(`listening on port 8080`));
@@ -40,3 +42,12 @@ function isNonNegInt(q, returnErrors = false) {
             }
         }
     }
+
+function process_quantity_form (POST, response) {
+    if (typeof POST['quantity_textbox'] != 'undefined') { 
+        let model = products[0]['model'];
+        let model_price = products[0]['price'];
+        displayPurchase(POST, response);
+        }
+        
+}
