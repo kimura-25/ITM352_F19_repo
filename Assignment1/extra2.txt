@@ -1,24 +1,12 @@
+<script src="./product_data.js"> //uses get request
+</script>
+
 <script>
+// get the query string values from form post
+let params = (new URL(document.location)).searchParams;
+GET = {};
+params.forEach(function (value, key) { GET[key] = value });
 
-var item1 = 'Bowl';
-var quantity1 = 2;
-var price1 = 30;
-
-var item2 = 'Earrings';
-var quantity2 = 1;
-var price2 = 40;
-
-var item3 = 'Necklace';
-var quantity3 = 1;
-var price3 = 60;
-
-var item4 = 'T-Shirt	';
-var quantity4 = 3;
-var price4 = 20;
-
-var item5 = 'Teether';
-var quantity5 = 12;
-var price5 = 1.89;
 
 var extended_price1 = quantity1 * price1;
 var extended_price2 = quantity2 * price2;
@@ -63,46 +51,16 @@ var total = tax + subtotal + shipping;
                     <th style="text-align: center;" width="54%">extended price</th>
                   </tr>
             <script>
+              for(i=0; i<product_data.length, i++){
+                qty = GET[`quantity_textbox${i}`];
                   document.write(`
                   <tr>
-                    <td width="43%">${item1}</td>
-                    <td align="center" width="11%">${quantity1}</td>
-                    <td width="13%">\$${price1}</td>
-                    <td width="54%">\$${extended_price1}</td>
+                    <td width="43%">${product_data[i].type}</td>
+                    <td align="center" width="11%">${qty}</td>
+                    <td width="13%">\$${product_data[i].price}</td>
+                    <td width="54%">\$${0}</td>
                   </tr>
-            `);
-            document.write(`
-                  <tr>
-                    <td width="43%">${item2}</td>
-                    <td align="center" width="11%">${quantity2}</td>
-                    <td width="13%">\$${price2}</td>
-                    <td width="54%">\$${extended_price2}</td>
-                  </tr>
-            `);
-            document.write(`
-                  <tr>
-                    <td width="43%">${item3}</td>
-                    <td align="center" width="11%">${quantity3}</td>
-                    <td width="13%">\$${price3}</td>
-                    <td width="54%">\$${extended_price3}</td>
-                  </tr>
-            `);
-            document.write(`
-                  <tr>
-                    <td width="43%">${item4}</td>
-                    <td align="center" width="11%">${quantity4}</td>
-                    <td width="13%">\$${price4}</td>
-                    <td width="54%">\$${extended_price4}</td>
-                  </tr>
-            `);
-            document.write(`
-                  <tr>
-                    <td width="43%">${item5}</td>
-                    <td align="center" width="11%">${quantity5}</td>
-                    <td width="13%">\$${price5}</td>
-                    <td width="54%">\$${extended_price5}</td>
-                  </tr>
-            `);
+            `);}
          </script>
              <tr>
                     <td colspan="4" width="100%">&nbsp;</td>

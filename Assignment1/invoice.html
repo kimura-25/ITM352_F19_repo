@@ -1,47 +1,13 @@
+<script src="./product_data.js"> //uses get request from ./product_data.js
+</script>
+
 <script>
+// get the query string values from form post
+let params = (new URL(document.location)).searchParams;
+GET = {};
+params.forEach(function (value, key) { GET[key] = value });
 
-
-var item1 = 'Bowl';
-var quantity1 = 2;
-var price1 = 30;
-
-var item2 = 'Earrings';
-var quantity2 = 1;
-var price2 = 40;
-
-var item3 = 'Necklace';
-var quantity3 = 1;
-var price3 = 60;
-
-var item4 = 'T-Shirt	';
-var quantity4 = 3;
-var price4 = 20;
-
-var item5 = 'Teether';
-var quantity5 = 12;
-var price5 = 1.89;
-
-var extended_price1 = quantity1 * price1;
-var extended_price2 = quantity2 * price2;
-var extended_price3 = quantity3 * price3;
-var extended_price4 = quantity4 * price4;
-var extended_price5 = quantity5 * price5;
-
-var subtotal = extended_price1 + extended_price2 + extended_price3 + extended_price4 + extended_price5;
-var tax_rate = 0.0575;
-var tax = tax_rate * subtotal;
-
-if(subtotal <= 50){
-  shipping = 2;
-}
-else if(subtotal <= 100){
-  shipping = 5;
-}
-else{
-  shipping = 0.05*subtotal
-}
-
-var total = tax + subtotal + shipping;
+subtotal = 0; //subtotal variable is equal to 0
 
 </script>
 
@@ -64,47 +30,34 @@ var total = tax + subtotal + shipping;
                     <th style="text-align: center;" width="54%">extended price</th>
                   </tr>
             <script>
+              for (i = 0; i < product_data.length; i++) { // when variable i is equal to 0, is less than the product data length, and i increases by 1
+                qty = GET[`quantity_textbox${i}`]; // variable qty is equal to what node.js GETs from the quantity value entered in the form
+                var extended_price = product_data[i].price * qty // extended price is equal to the price of given product "i" in the array times quantity requested
+                var subtotal = extended_price + subtotal // makes a running subtotal, is equal to the extended_price plus whatever running subtotal is at that point
+
                   document.write(`
                   <tr>
-                    <td width="43%">${item1}</td>
-                    <td align="center" width="11%">${quantity1}</td>
-                    <td width="13%">\$${price1}</td>
-                    <td width="54%">\$${extended_price1}</td>
+                    <td width="43%">${product_data[i].type}</td>
+                    <td align="center" width="11%">${qty}</td>
+                    <td width="13%">\$${product_data[i].price}</td>
+                    <td width="54%">\$${extended_price}</td>
                   </tr>
-            `);
-            document.write(`
-                  <tr>
-                    <td width="43%">${item2}</td>
-                    <td align="center" width="11%">${quantity2}</td>
-                    <td width="13%">\$${price2}</td>
-                    <td width="54%">\$${extended_price2}</td>
-                  </tr>
-            `);
-            document.write(`
-                  <tr>
-                    <td width="43%">${item3}</td>
-                    <td align="center" width="11%">${quantity3}</td>
-                    <td width="13%">\$${price3}</td>
-                    <td width="54%">\$${extended_price3}</td>
-                  </tr>
-            `);
-            document.write(`
-                  <tr>
-                    <td width="43%">${item4}</td>
-                    <td align="center" width="11%">${quantity4}</td>
-                    <td width="13%">\$${price4}</td>
-                    <td width="54%">\$${extended_price4}</td>
-                  </tr>
-            `);
-            document.write(`
-                  <tr>
-                    <td width="43%">${item5}</td>
-                    <td align="center" width="11%">${quantity5}</td>
-                    <td width="13%">\$${price5}</td>
-                    <td width="54%">\$${extended_price5}</td>
-                  </tr>
-            `);
+            `);}
          </script>
+         <script>
+            var tax_rate = 0.0575; // tax rate is 5.75%
+              var tax = tax_rate * subtotal; // tax is tax rate times subtotal
+              if(subtotal <= 50){ // if subtotal is less than or equal to $50
+                   shipping = 2;  // shipping is $2
+                   }
+              else if(subtotal <= 100){ //if subtotal is less than or equal to $100
+                shipping = 5; // shipping is $5
+              }
+              else{ // all else (if subtotal is greater than $100)
+                shipping = 0.05*subtotal  //shipping is 5% of the subtotal
+              }
+              var total = tax + subtotal + shipping;  // total is equal to sum of tax, subtotal, and shipping
+              </script>
              <tr>
                     <td colspan="4" width="100%">&nbsp;</td>
                   </tr>

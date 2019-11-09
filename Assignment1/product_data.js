@@ -1,4 +1,4 @@
-[
+product_data = [
     {
         "type": "Bowl",
         "price": 30.00,
@@ -24,4 +24,4 @@
         "price": 25.00,
         "image": "./images/teether.jpg"
     }
-]
+];
