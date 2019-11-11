@@ -32,6 +32,6 @@ function isNonNegInt(q, returnErrors = false) {
         if(isNonNegInt(q)){ //if quantity written is a non-negative integer
             response.send(`Thank you for purchasing ${q} things!`); // would respond with full invoice if correct for Assignment 1
     } else {
-        response.send(`${q} is not a quantity! Press the back button and try again.`);
+        response.send(`${q} is not a quantity! Press the back button and try again.`); //will say q is not a quantity
     }
 }

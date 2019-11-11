@@ -45,9 +45,21 @@ function isNonNegInt(q, returnErrors = false) {
         }
     }
 
-function process_quantity_form (POST, response) {
-    if (typeof POST['quantity_textbox'] != 'undefined') { 
-        displayPurchase(POST, response);
+    function process_quantity_form (POST, response) {
+        if (typeof POST['purchase_submit_button'] != 'undefined') {
+           var contents = fs.readFileSync('./views/display_quantities_template.view', 'utf8');
+           receipt = '';
+           for(i in products) { 
+            let q = POST[`quantity_textbox${i}`];
+            let model = products[i]['model'];
+            let model_price = products[i]['price'];
+            if (isNonNegInt(q)) {
+              receipt += eval('`' + contents + '`'); // render template string
+            } else {
+              receipt += `<h3><font color="red">${q} is not a valid quantity for ${model}!</font></h3>`;
+            }
+          }
+          response.send(receipt);
+          response.end();
         }
-        
-}
+     }

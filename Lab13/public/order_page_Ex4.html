@@ -3,10 +3,10 @@
 <head>
     <script src="./product_data.js"></script>
 <script>
-    function checkQuantityTextbox(){ //this is function checkQuantityTextbox()
-        errs_array = isNonNegInt(quantity_textbox.value, true); // errs_array is equal to isNonNegInt
-        qty_textbox_message.innerHTML = errs_array.join(','); // says list of all the errors
-    }
+       function checkQuantityTextbox(theTextbox) { // the function checkQuantityTextbox with variable theTextbox
+            errs = isNonNegInt(theTextbox.value, true); //errs is equal to the value of isNonNegInt when using value of theTextbox if it returns true
+            document.getElementById(theTextbox.name + '_message').innerHTML = errs.join(", "); //get element of name of theTextbox, join the array of errs
+       }
     function isNonNegInt(q, returnErrors = false) {
     errors = []; // assume no errors at first
     if(Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
@@ -30,15 +30,20 @@ params.forEach(function (value, key) { GET[key] = value }); //
     <title>Document</title>
 </head>
 <body>
+   <form name='quantity_form' action="http://localhost:8080/process_form" method="POST">
     <script>
-    document.write(`<h3>${products[0]["model"]} at \$${products[0]["price"]}</h3>`);
+        for (i in products) { //for whatever i product
+            document.write(`<h3>${products[i]["model"]} at \$${products[i]["price"]}</h3>`); //write this thing
+            document.write(`
+    <label for="quantity_textbox">quantity desired:</label> 
+    <input type="text" name="quantity_textbox${i}" onkeyup="checkQuantityTextbox(this);">
+    <span id="quantity_textbox${i}_message">Enter a quantity</span>
+    `);
+        }
     </script>
-    <form name="quantity_form" action="/process_form" method="POST" >
-    <label for= "quantity_textbox"> quantity desired:</label> 
-    <input type="text" name="quantity_textbox" onkeyup="checkQuantityTextbox();">
-    <span id='qty_textbox_message'>Enter a quantity</span>
     <br>
-    <input type="submit" name = "purchaseSubmit" value="Purchase">
+    <input type="submit" value='Purchase' name="purchase_submit_button">
 </form>
+
 </body>
 </html>
