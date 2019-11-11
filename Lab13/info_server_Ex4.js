@@ -32,7 +32,7 @@ function isNonNegInt(q, returnErrors = false) {
 
     function process_quantity_form (POST, response) {
         if (typeof POST['purchase_submit_button'] != 'undefined') {
-           var contents = fs.readFileSync('./views/display_quantities_template.view', 'utf8');
+           var contents = fs.readFileSync('./views/display_quantity_template.view', 'utf8');
            receipt = '';
            for(i in products) { 
             let q = POST[`quantity_textbox${i}`];
