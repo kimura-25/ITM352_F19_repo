@@ -15,7 +15,7 @@ app.use(myParser.urlencoded({ extended: true }));
 app.post("/process_form", function (request, response) {
     let POST = request.body; 
     if (typeof POST['quantity_textbox'] != 'undefined') { 
-     displayPurchase(POST, response);
+     process_quantity_form(POST, response);
      }
  });
 
@@ -28,21 +28,6 @@ function isNonNegInt(q, returnErrors = false) {
     if(q < 0) errors.push('Negative value!'); // Check if it is non-negative
     if(parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
     return returnErrors ? errors : (errors.length == 0);
-    }
-
-    function displayPurchase(POST, response) {
-        q = POST['quantity_textbox']; //define q to POST the quantity written in the textbox
-        if (typeof POST['quantity_textbox'] != 'undefined') { //if the type of stuff in the quantity_textbox is not undefined
-            let q = POST['quantity_textbox']; //q is equal to whatever is in textbox
-            if (isNonNegInt(q)) { //if q is a positive integer
-                let model = products[0]['model']; //model is equal to the first product in the array
-                let model_price = products[0]['price']; // model_price is the price of the first product in the array    
-                var contents = fs.readFileSync('./views/display_quantity_template.view', 'utf8'); //display whatever is in the display_quantity_template.view file
-                response.send(eval('`' + contents + '`')); // render template string
-            } else {
-                response.send(`${q} is not a quantity!`); // or else send response that q is not a quantity
-            }
-        }
     }
 
     function process_quantity_form (POST, response) {
