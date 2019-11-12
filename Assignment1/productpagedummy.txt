@@ -49,7 +49,6 @@ var products = [product1, product2, product3, product4, product5];
     <section class="item">    
     <h2>${products[i].type}</h2>
     <p>$${products[i].price}</p>
-    <p>${products[i].description}</p>
     <img src= "${products[i].image}">    
 </section>
 `);

@@ -33,13 +33,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-
+<div><main>
+    <link rel="stylesheet" href="form-style.css">
 <body>
     <form name="quantity_form" action="/Assignment1/invoice.html" method="GET">
-
-
-
-        <table cellpadding="10" border="1">
+        <table cellpadding="10" border="1" bgcolor="#D2B48C">
             <tr>
                 <th>Item #</th>
                 <th>Product name</th>
@@ -49,15 +47,16 @@
             <script>
                 for (i = 0; i < product_data.length; i++) {
                     document.write(`
-    <tr>
-            <td>${i + 1}</td>
-            <td><img src="${product_data[i].image}"><br>${product_data[i].type}</td>
-            <td>\$${product_data[i].price}</td>
-            <td>
+                <tr>
+                   <td>${i + 1}</td>
+                    <td><img src="${product_data[i].image}"><br>${product_data[i].type}</td>
+                    <td>\$${product_data[i].price}</td>
+                    <td>
                 <input type="text" id = "htmlform" name="quantity_textbox${i}" size="1" onkeyup="checkQuantityTextbox();">
             </td>
     </tr>
     `);
+    
                 }
             </script>
 
