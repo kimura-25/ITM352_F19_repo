@@ -31,6 +31,9 @@ qString = querystring.stringify (GET); //stringing the query together
 if(hasValidQuantities == true && hasPurchases == true) { // if both hasValidQuantities and hasPurchases are true
   res.redirect('./invoice.html?'+ querystring.stringify(req.query)); // redirect to the invoice page with the query entered in the form
 } else {    // if either hasValidQuantities or hasPurchases is false
+  req.query["hasValidQuantities"]=hasValidQuantities;
+  req.query["hasPurchases"]=hasPurchases;
+  console.log(req.query);
   res.redirect('./form.html?' +  querystring.stringify(req.query)); // redirect to the form again, keeping the query that they wrote
 }
 
