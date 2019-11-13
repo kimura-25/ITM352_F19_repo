@@ -30,3 +30,7 @@ product_data = [
         "description": "Giraffe teether made of 100% all natural rubber and organic dye"
     }
 ];
+
+if (typeof module !='undefined') {
+    module.exports=product_data;
+}

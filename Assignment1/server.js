@@ -1,5 +1,6 @@
 var express = require('express'); // run express
 const querystring = require('querystring');
+const product_data = require('./public/product_data');
 
 var app = express(); //start express
 
@@ -24,18 +25,20 @@ app.get('/purchase', function(req, res, next) {
   console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query));
 
 
-let GET = request.query;
+let GET = req.query;
 console.log(GET);
 var hasValidQuantities = true; // assume quantities are valid integers from the start
 var hasPurchases = false; //assume quantity of purchases are false (invalid) from the start
 for (i = 0; i < product_data.length; i++){
-  q = GET ['quantity' +i];
-  if (iNonNegInt(q) == false){
+  q = GET ['quantity_textbox' +i];
+  if (isNonNegInt(q) == false){
       hasValidQuantities = false;
   }
   if (q>0){
       hasPurchases = true;
+    
   }
+  console.log(hasValidQuantities,hasPurchases);
 }
 qString = querystring.stringify (GET);
 if(hasValidQuantities == true && hasPurchases == true) {
