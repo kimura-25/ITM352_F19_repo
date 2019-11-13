@@ -8,8 +8,9 @@ app.get('/purchase', function(req, res, next) {
         console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query));
     // validate quantity data, go through each and check if good
     // if it ok, send to invoice. if not, send back to product page
-    hasValidQuantities = true;
 
+    hasValidQuantities = true;
+    for (i = 0; i < product_data.length;)
     if(hasValidQuantities) {
         res.redirect('./invoice.html?'+ querystring.stringify(req.query));
     } else {
@@ -34,3 +35,18 @@ function isNonNegInt(q, returnErrors = false) {
     if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
     return returnErrors ? errors : (errors.length == 0);
 }
+
+function process_form (GET, response) {
+    if (typeof GET['purchase'] != 'undefined') {
+       for(i in products) { 
+        let q = GET[`quantity_textbox${i}`];
+        if (isNonNegInt(q)) {
+          receipt += eval('`' + contents + '`'); // render template string
+        } else {
+          receipt += `<h3><font color="red">${q} is not a valid quantity for ${model}!</font></h3>`;
+        }
+      }
+      response.send(receipt);
+      response.end();
+    }
+ }
