@@ -3,11 +3,13 @@
 
 <script>
 // get the query string values from form post
-let params = (new URL(document.location)).searchParams;
-GET = {};
-params.forEach(function (value, key) { GET[key] = value });
+let params = (new URL(document.location)).searchParams; // searching for the parameters in a new URL document location
+GET = {}; //GET is an empty object
+params.forEach(function (value, key) { GET[key] = value }); // the value is equal to the object of GET
 
 subtotal = 0; //subtotal variable is equal to 0
+
+//Creating the Table HTML for the Invoice - borrowed from WOD Invoice2
 
 </script>
 
@@ -18,12 +20,11 @@ subtotal = 0; //subtotal variable is equal to 0
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Invoice</title>
 
 </head>
 <body>
-
-        <table border="2" align= "center">
+        <table border="2" align= "center" bgcolor="#D2B48C">
                 <tbody>
                   <tr>
                     <th style="text-align: center;" width="43%">Item</th>
@@ -36,7 +37,7 @@ subtotal = 0; //subtotal variable is equal to 0
                 qty = GET[`quantity_textbox${i}`]; // variable qty is equal to what node.js GETs from the quantity value entered in the form
                 var extended_price = product_data[i].price * qty // extended price is equal to the price of given product "i" in the array times quantity requested
                 var subtotal = extended_price + subtotal // makes a running subtotal, is equal to the extended_price plus whatever running subtotal is at that point
-
+//writing in the document the product name, price, and price*quantity for every product[i] in the array
                   document.write(`
                   <tr>
                     <td width="43%">${product_data[i].type}</td>
@@ -85,6 +86,13 @@ subtotal = 0; //subtotal variable is equal to 0
               <br>
               <form name="quantity_form" action="/confirmation.html" method="GET" align="center">
                 <input type="submit" value="Submit">
-        
+        <div>
+            <br><b>
+                Shipping Policy - We charge the following amounts for shipping for the following subtotals:
+               <br>$0 - $49.99: $2 shipping
+               <br>$50 - $99.99: $5 shipping
+               <br>Over $100: 5% of the subtotal amount
+            </b> </div>
+        </div>
 </body>
 </html>
