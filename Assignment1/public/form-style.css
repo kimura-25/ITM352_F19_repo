@@ -12,3 +12,12 @@ main{
     background-color: cornsilk;
     color: ivory;
 }
+
+body{
+    background-color:cornsilk;
+}
+
+/* Typography */
+h1,h2{
+    text-align: center
+}

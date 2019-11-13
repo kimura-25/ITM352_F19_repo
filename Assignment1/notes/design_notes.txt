@@ -18,4 +18,5 @@ app.post("/process_form", function (request, response) {
    response.send(POST); 
 });
 
-hi this to test repo
+can have hit back button to recognize error
+do code on server, process form
