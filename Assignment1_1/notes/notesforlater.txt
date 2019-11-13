@@ -1,2 +1,0 @@
-do css for invoice
-add doctype html for product_page
