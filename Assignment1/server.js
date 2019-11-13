@@ -3,14 +3,14 @@ const querystring = require('querystring');
 
 var app = express(); //start express
 
-app.get('/purchase', function(req, res, next) {
+/* app.get('/purchase', function(req, res, next) {
 
         console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query));
     // validate quantity data, go through each and check if good
     // if it ok, send to invoice. if not, send back to product page
 
     hasValidQuantities = true;
-    for (i = 0; i < product_data.length;)
+
     if(hasValidQuantities) {
         res.redirect('./invoice.html?'+ querystring.stringify(req.query));
     } else {
@@ -18,6 +18,33 @@ app.get('/purchase', function(req, res, next) {
     }
     
     
+});*/
+
+app.get('/purchase', function(req, res, next) {
+  console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query));
+
+
+let GET = request.query;
+console.log(GET);
+var hasValidQuantities = true; // assume quantities are valid integers from the start
+var hasPurchases = false; //assume quantity of purchases are false (invalid) from the start
+for (i = 0; i < product_data.length; i++){
+  q = GET ['quantity' +i];
+  if (iNonNegInt(q) == false){
+      hasValidQuantities = false;
+  }
+  if (q>0){
+      hasPurchases = true;
+  }
+}
+qString = querystring.stringify (GET);
+if(hasValidQuantities == true && hasPurchases == true) {
+  res.redirect('./invoice.html?'+ querystring.stringify(req.query));
+} else {
+  res.redirect('./form.html?' +  querystring.stringify(req.query));
+}
+
+
 });
 
 app.use(express.static('./public'));

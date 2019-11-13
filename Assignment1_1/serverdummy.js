@@ -1,10 +1,9 @@
 app.get('/purchase', function(req, res, next) {
 
         console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query));
-
-
-    let GET = request.query;
-    console.log(GET);
+    // validate quantity data, go through each and check if good
+    // if it ok, send to invoice. if not, send back to product page
+    let GET = request.body;
     var hasValidQuantities = true;
     var hasPurchases = false;
     for (i = 0; i < product_data.length; i++){
