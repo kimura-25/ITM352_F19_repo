@@ -8,7 +8,10 @@
         // get the query string values from form submission (Lab13 order_page)
         // From Assignment1_DesignExamples Asssignment1_2file products_display.html
         let params = (new URL(document.location)).searchParams; //params is a variable, 
-        
+ 
+        // Creating function window.onload so when the page is loading, it checks to make sure there is a quantity written and that the quantities in textbox are valid
+        //From Assignment1_Design_Examples > Asssignment1_2file > store_server.js 
+
         window.onload = function () { // creating the function for window.onload
             //Check if we're getting redirected from the server because of an error
             if (params.has('hasValidQuantities')) { //if params has a valid quantity
