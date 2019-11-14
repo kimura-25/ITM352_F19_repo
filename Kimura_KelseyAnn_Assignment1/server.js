@@ -1,16 +1,18 @@
-var express = require('express'); // run express
+//Creating the server via Express
+//Template based on server from Assignment1_Design_Examples > Asssignment1_2file > store_server.js 
+
+var express = require('express'); // server requires Express to run
 const querystring = require('querystring'); // requiring a query string - string of whatever is written in textbox
 const product_data = require('./public/product_data'); //using data from product_data.js
 
-var app = express(); //start express
+var app = express(); //run the express function and start express
 
 
 app.get('/purchase', function (req, res, next) { //getting the data from the form where action is '/purchase' 
   console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query)); // logging the date, IP address, and query of the purchase (quantities written in textboxes) into console
 
   // Validating quantity data, go through each and check if good
-  // If it ok, send to invoice. if not, send back to product page
-
+  // Done with help from Port
   let GET = req.query; // GET is equal to getting the request from the query
   console.log(GET); // putting the query that take from the form into the console
   var hasValidQuantities = true; // empty textbox is assumed true - quantity assumed valid even before entering anything
@@ -26,6 +28,8 @@ app.get('/purchase', function (req, res, next) { //getting the data from the for
     }
     console.log(hasValidQuantities, hasPurchases); // logging hasValidQuantities and hasPurchases into console to check validity
   }
+
+    // If it ok, send to invoice. if not, send back to product page
   qString = querystring.stringify(GET); //stringing the query together
   if (hasValidQuantities == true && hasPurchases == true) { // if both hasValidQuantities and hasPurchases are true
     res.redirect('./invoice.html?' + querystring.stringify(req.query)); // redirect to the invoice page with the query entered in the form
@@ -41,7 +45,9 @@ app.get('/purchase', function (req, res, next) { //getting the data from the for
 
 app.use(express.static('./public')); // create a static server using express from the public folder
 
-var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) }); // having the server listen on port 8080
+// Having the server listen on port 8080
+// From Assignment1_Design_Examples > Asssignment1_2file > store_server.js
+var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) }); 
 
 //Creating the function checkQuantityTextbox()
 function checkQuantityTextbox() { // the function checkQuantityTextbox
