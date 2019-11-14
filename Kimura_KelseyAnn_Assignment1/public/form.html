@@ -6,25 +6,50 @@
     </script>
     <script>
         // get the query string values from form submission (Lab13 order_page)
+        // From Assignment1_DesignExamples Asssignment1_2file products_display.html
         let params = (new URL(document.location)).searchParams; //params is a variable, 
-        window.onload = function () {
+        
+        window.onload = function () { // creating the function for window.onload
             //Check if we're getting redirected from the server because of an error
-            if (params.has('hasValidQuantities')) {
+            if (params.has('hasValidQuantities')) { //if params has a valid quantity
                 //if there is a quantity error, put up an alert
-                if (params.get('hasValidQuantities') == 'false') {
+                if (params.get('hasValidQuantities') == 'false') { //if there is an invalid quantity
                     alert('Please enter valid quantities.');
-                }            //if there is a quantity error, put up an alert
-                if (params.get('hasPurchases') == 'false') {
+                }      //if there is an invalid quantity error, put up an alert to enter a valid number
+                if (params.get('hasPurchases') == 'false') {    // if there are no quantities listed
                     alert('Please select quantities to purchase.');
-                }
+                } // if there is no quantities listed, put up alert to choose quantities
             }
+
+            
+        /*       window.onload = function () {
+                   let params = (new URL(document.location)).searchParams; // get the query string which has the form data
+                   // form was submitted so check that quantities are valid then redirect to invoice if ok. From Assignment1_Design_Examples Asssignment1_2file products_display.html
+                   if (params.has('purchase')) {
+                       has_errors = false; // assume quantities are valid from the start
+                       total_qty = 0; // need to check if something was selected so we will look if the total > 0
+                       for (i = 0; i < products.length; i++) {
+                           if (params.has(`quantity_textbox${i}`)) {
+                               a_qty = params.get(`quantity_textbox${i}`);
+                               // make textboxes sticky in case of invalid data
+                               product_selection_form[`quantity_textbox${i}`].value = a_qty;
+                               total_qty += a_qty;
+                               if (!isNonNegInt(a_qty)) {
+                                   has_errors = true; // oops, invalid quantity
+                                   checkQuantityTextbox(product_selection_form[`quantity_textbox${i}`]); // show where the error is
+                               }
+                           }
+                       }
+       */
+
+
             // put the original data back into the textboxes
-            for (i = 0; i < product_data.length; i++) {
-                if (params.has(`quantity_textbox${i}`)) {
-                    a_qty = params.get(`quantity_textbox${i}`);
+            for (i = 0; i < product_data.length; i++) { // for every product
+                if (params.has(`quantity_textbox${i}`)) { // if there is something in the textbox
+                    a_qty = params.get(`quantity_textbox${i}`); // have a_qty equal to the value from the textbox
                     // make textboxes sticky in case of invalid data
-                    quantity_form[`quantity_textbox${i}`].value = a_qty;
-                    if (!isNonNegInt(a_qty)) {
+                    quantity_form[`quantity_textbox${i}`].value = a_qty; // have the value from the textbox in the form for given product equal to a_qty
+                    if (!isNonNegInt(a_qty)) { // if a_qty is not an integer
                         checkQuantityTextbox(quantity_form[`quantity_textbox${i}`]); // show where the error is
                     }
                 }
@@ -79,31 +104,12 @@
 
         }
 
-        /*       window.onload = function () {
-                   let params = (new URL(document.location)).searchParams; // get the query string which has the form data
-                   // form was submitted so check that quantities are valid then redirect to invoice if ok. From Assignment1_Design_Examples Asssignment1_2file products_display.html
-                   if (params.has('purchase')) {
-                       has_errors = false; // assume quantities are valid from the start
-                       total_qty = 0; // need to check if something was selected so we will look if the total > 0
-                       for (i = 0; i < products.length; i++) {
-                           if (params.has(`quantity_textbox${i}`)) {
-                               a_qty = params.get(`quantity_textbox${i}`);
-                               // make textboxes sticky in case of invalid data
-                               product_selection_form[`quantity_textbox${i}`].value = a_qty;
-                               total_qty += a_qty;
-                               if (!isNonNegInt(a_qty)) {
-                                   has_errors = true; // oops, invalid quantity
-                                   checkQuantityTextbox(product_selection_form[`quantity_textbox${i}`]); // show where the error is
-                               }
-                           }
-                       }
-       */
-
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Order Form</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
 </head>
 <header>
     <h1>The Giraffe Factory</h1>
@@ -119,7 +125,7 @@
                         <th>Item #</th>
                         <th>Product name</th>
                         <th>Price</th>
-                        <th>quantity</th>
+                        <th>Quantity</th>
                     </tr>
                     <script>
                         //For every product in the array, write the product number, display its image and name, and list price
@@ -141,6 +147,7 @@
                     </script>
 
                 </table>
+                
                 <input type="submit" value="Purchase">
 
             </form>

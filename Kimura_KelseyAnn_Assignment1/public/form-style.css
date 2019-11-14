@@ -9,15 +9,18 @@ main{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    background-color: cornsilk;
     color: ivory;
 }
 
+/*Setting css for the body*/
+/* Font from BrowserHistory2*/
 body{
-    background-color:cornsilk;
+    background: url(./images/background.jpg);
+    font-family:'Open Sans',sans-serif;
 }
 
 /* Typography */
 h1,h2{
+    color: ivory;
     text-align: center
 }
