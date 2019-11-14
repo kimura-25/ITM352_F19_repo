@@ -35,6 +35,7 @@ subtotal = 0; //subtotal variable is equal to 0
             <script>
               for (i = 0; i < product_data.length; i++) { // when variable i is equal to 0, is less than the product data length, and i increases by 1
                 qty = GET[`quantity_textbox${i}`]; // variable qty is equal to what node.js GETs from the quantity value entered in the form
+                if (qty > 0){  
                 var extended_price = product_data[i].price * qty // extended price is equal to the price of given product "i" in the array times quantity requested
                 var subtotal = extended_price + subtotal // makes a running subtotal, is equal to the extended_price plus whatever running subtotal is at that point
 //writing in the document the product name, price, and price*quantity for every product[i] in the array
@@ -46,6 +47,7 @@ subtotal = 0; //subtotal variable is equal to 0
                     <td width="54%">\$${extended_price}</td>
                   </tr>
             `);}
+            }
          </script>
          <script>
             var tax_rate = 0.0575; // tax rate is 5.75%
