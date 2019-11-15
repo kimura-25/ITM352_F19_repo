@@ -57,6 +57,8 @@ subtotal = 0; //subtotal variable is equal to 0
             }
          </script>
          <script>
+           /*Calculating the tax, shipping cost, and total*/
+           /*From Invoice2 WOD*/
             var tax_rate = 0.0575; // tax rate is 5.75%
               var tax = tax_rate * subtotal; // tax is tax rate times subtotal
               if(subtotal <= 50){ // if subtotal is less than or equal to $50
@@ -79,7 +81,7 @@ subtotal = 0; //subtotal variable is equal to 0
                   </tr>
                   <tr>
                     <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Tax @ 5.75%</span></td>
-                    <td width="54%">$<script>document.write(tax.toFixed(2))/*writing the tax to 2 decimals*/</script></td>
+                    <td width="54%">$<script>document.write(tax.toFixed(2))/*writing the tax to 2 decimal places*/</script></td>
                   </tr>
                   <tr>
                     <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Shipping</span></td>
@@ -87,7 +89,7 @@ subtotal = 0; //subtotal variable is equal to 0
                   </tr>
                   <tr>
                     <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
-                    <td width="54%"><strong>$<script>document.write(total.toFixed(2))/*writing the total to 2 decimals*/</script></strong></td>
+                    <td width="54%"><strong>$<script>document.write(total.toFixed(2))/*writing the total to 2 decimal places*/</script></strong></td>
                   </tr>
             
                 </tbody>

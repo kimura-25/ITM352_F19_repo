@@ -26,10 +26,10 @@ app.get('/purchase', function (req, res, next) { //getting the data from the for
       hasPurchases = true; // hasPurchases is true - because there is a quantity greater than 0 entered in the textbox
 
     }
-    console.log(hasValidQuantities, hasPurchases); // logging hasValidQuantities and hasPurchases into console to check validity
+    console.log(hasValidQuantities, hasPurchases); // logging hasValidQuantities and hasPurchases into console to check validity (true or false)
   }
 
-    // If it ok, send to invoice. if not, send back to product page
+    // If it ok, send to invoice. if not, send back to the order form
   qString = querystring.stringify(GET); //stringing the query together
   if (hasValidQuantities == true && hasPurchases == true) { // if both hasValidQuantities and hasPurchases are true
     res.redirect('./invoice.html?' + querystring.stringify(req.query)); // redirect to the invoice page with the query entered in the form
