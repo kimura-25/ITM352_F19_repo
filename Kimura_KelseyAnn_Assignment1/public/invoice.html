@@ -45,7 +45,7 @@ subtotal = 0; //subtotal variable is equal to 0
                 if (qty > 0){  
                 var extended_price = product_data[i].price * qty // extended price is equal to the price of given product "i" in the array times quantity requested
                 var subtotal = extended_price + subtotal // makes a running subtotal, is equal to the extended_price plus whatever running subtotal is at that point
-//writing in the document the product name, price, and price*quantity for every product[i] in the array
+//writing in the document the product name, price, and price*quantity in the table for every product[i] in the array
                   document.write(`
                   <tr>
                     <td width="43%">${product_data[i].type}</td>
