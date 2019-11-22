@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+            //if(password==confirmpsw){
+         //  go to confirmation page
+         //  }
+         //else{go back and say password does not match}
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="login-style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div>
+        <!-- //Creating the login form*/
+/*Help from https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_password*/ -->
+        <!-- Help from https://www.w3schools.com/howto/howto_css_login_form.asp -->
+<!-- Code for Maximum Length of Text: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text -->
+        <form name="Register" method="POST">
+            Registration Page <br> <br>
+            <div class="container">
+                <label for="fullname"><b>Full name</b></label>
+                <input type="text" name="fullname" maxlength= "30" onkeyup="" required><br>
+                <label for="username"><b>Username</b></label>
+                <input type="text" name="username" onkeyup="" minlength="4" maxlength="10" required><br>
+                <label for="password"><b>Password</b></label>
+                <input type="password" name="password" onkeyup="" minlength="6" required><br>
+                <label for="confirmpsw"><b>Confirm Password</b></label>
+                <input type="password" name="confirmpsw" onkeyup="" required><br>
+                <label for="email"><b>Email Address</b></label>
+                <input type="text" name="email" onkeyup="" required><br>
+                <br>
+                <input type="submit" name="submit" value="Register">
+            </div>
+        </form>
+        <script>
+                Register.action="./register.html" + document.location.search;
+                 </script>            
+        </table>
+    </div>
+</body>
+
+</html>
