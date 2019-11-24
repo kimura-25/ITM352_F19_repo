@@ -2,6 +2,7 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
+const querystring = require('querystring');
 
 app.use(myParser.urlencoded({ extended: true }));
 var filename = 'user_data.json'
@@ -47,13 +48,13 @@ app.post("/login", function (request, response) {
     console.log(request.body);
     the_username = request.body.username;
     if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
-        if (users_reg_data[the_username].password == request.body.password)
+        if (users_reg_data[the_username].password == request.body.password) {
             response.send(the_username + ' logged in! ');
     } else {
-        response.redirect('/login');
+        response.redirect('/login?' + qstring);
     }
 }
-);
+});
 
 app.get("/register", function (request, response) {
     // Give a simple register form
@@ -84,7 +85,7 @@ app.get("/register", function (request, response) {
 
     fs.writeFileSync(filename, JSON.stringify(users_reg_data));
 
-    response.send(`${username}registered!`);
+    response.send(`${username} registered!`);
 
  });
 

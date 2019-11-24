@@ -46,15 +46,32 @@ app.post("/login.html", function (req, res) {
 app.post("/register.html", function (req, res) {
   console.log(req.body);
 
-  /*    if(req.body.password == req.body.confirmpsw){
-
-    }
-    else{
-
-    }*/
   //validate registration data
+  var errors = [];
+
+
+  //make sure name is valid
+  if (req.body.fullname == ""){
+    errors.push('Invalidfullname');
+  }
+  //check if username exists
+  //when check, change all to lowercase
+  if (typeof users_reg_data[req.body.username] != 'undefined') {
+    errors.push('Invalidusername')
+  }
+
+  //check if password format is valid
+
+
+  //check if password entered equal repeat password entered
+  if(req.body.password !== req.body.confirmpsw){
+    errors.push('PasswordNotaMatch')
+    }
+
+    //check if email is valid
 
   //if data is valid, save the data to the file and redirect to invoice
+
   res.redirect('./invoice.html?' + querystring.stringify(req.query))
   }
   );
