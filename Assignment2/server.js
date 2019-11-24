@@ -14,7 +14,7 @@ app.use(parser.urlencoded({ extended: true })); // decode, now request.body will
 
 var filename = 'user_data.json'
 
-if( fs.existsSync(filename)) { //check to see if file exists
+if (fs.existsSync(filename)) { //check to see if file exists
   stats = fs.statSync(filename);
 
   console.log(filename + ' has ' + stats.size + ' characters');
@@ -22,9 +22,9 @@ if( fs.existsSync(filename)) { //check to see if file exists
   data = fs.readFileSync(filename, 'utf-8')
 
   users_reg_data = JSON.parse(data);
-  
+
   console.log(users_reg_data.itm352.password);
-  
+
 } else {
   console.log(filename + ' does not exist!');
 }
@@ -35,10 +35,10 @@ app.post("/login.html", function (req, res) {
   console.log(req.body);
   the_username = req.body.username;
   if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
-      if (users_reg_data[the_username].password == req.body.password)
-          res.redirect('/invoice.html?' +  querystring.stringify(req.query)); // need to put query back into it
+    if (users_reg_data[the_username].password == req.body.password)
+      res.redirect('/invoice.html?' + querystring.stringify(req.query)); // need to put query back into it
   } else {
-      res.redirect('/login.html?' +  querystring.stringify(req.query));
+    res.redirect('/login.html?' + querystring.stringify(req.query));
   }
 }
 );
@@ -49,34 +49,52 @@ app.post("/register.html", function (req, res) {
   //validate registration data
   var errors = [];
 
-
   //make sure name is valid
-  if (req.body.fullname == ""){
+  if (req.body.fullname == "") {
     errors.push('Invalidfullname');
   }
-  //check if username exists
   //when check, change all to lowercase
+
+  //username must be minimum of 4 characters and maximum of 10
+  if ((req.body.username < 4)) {
+    errors.push('UsernameTooShort')
+  }
+  if ((req.body.username > 10)) {
+    errors.push('UsernameTooLong')
+  }
+  //check if username exists
   if (typeof users_reg_data[req.body.username] != 'undefined') {
-    errors.push('Invalidusername')
+    errors.push('Usernametaken')
+  }
+  //check letters and numbers only
+  var letterNumber = /^[0-9a-zA-Z]+$/
+  if (username.value.match(!letterNumber)) {
+    errors.push('LettersAndNumbersOnly')
   }
 
   //check if password format is valid
-
-
+  //check if password is a minimum of 6 characters long
+  if ((req.body.username < 6)) {
+    errors.push('UsernameTooShort')
+  }
   //check if password entered equal repeat password entered
-  if(req.body.password !== req.body.confirmpsw){
+  if (req.body.password !== req.body.confirmpsw) {
     errors.push('PasswordNotaMatch')
-    }
+  }
 
-    //check if email is valid
 
+
+  //check if email is valid
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(!req.body.email)) {
+    errors.push('InvalidEmail')
+  }
   //if data is valid, save the data to the file and redirect to invoice
 
   res.redirect('./invoice.html?' + querystring.stringify(req.query))
-  }
-  );
+}
+);
 
-  app.get('/purchase', function (req, res, next) { //getting the data from the form where action is '/purchase' 
+app.get('/purchase', function (req, res, next) { //getting the data from the form where action is '/purchase' 
   console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query)); // logging the date, IP address, and query of the purchase (quantities written in textboxes) into console
 
   // Validating quantity data, go through each and check if good
@@ -96,7 +114,7 @@ app.post("/register.html", function (req, res) {
     console.log(hasValidQuantities, hasPurchases); // logging hasValidQuantities and hasPurchases into console to check validity (true or false)
   }
 
-// If it ok, send to invoice. if not, send back to the order form
+  // If it ok, send to invoice. if not, send back to the order form
   qString = querystring.stringify(GET); //stringing the query together
   if (hasValidQuantities == true && hasPurchases == true) { // if both hasValidQuantities and hasPurchases are true
     res.redirect('./login.html?' + querystring.stringify(req.query)); // redirect to the invoice page with the query entered in the form
@@ -114,7 +132,7 @@ app.use(express.static('./public')); // create a static server using express fro
 
 // Having the server listen on port 8080
 // From Assignment1_Design_Examples > Asssignment1_2file > store_server.js
-var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) }); 
+var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) });
 
 //Creating the function checkQuantityTextbox()
 function checkQuantityTextbox() { // the function checkQuantityTextbox
