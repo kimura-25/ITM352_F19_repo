@@ -4,6 +4,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<script>
+
+// Changing input text to lowercase for username is case insensitive
+//Source Code: https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_onkeyup
+//toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
+
+function userlowercase() {
+    var username = document.getElementById("username");
+    username.value = username.value.toLowerCase();
+}
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -20,7 +33,7 @@
         Login Page <br> <br>
         <div class="container">
                 <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" onkeyup="" required><br>
+                <input type="text" placeholder="Enter Username" id="username" name="username" onkeyup="userlowercase()" required><br>
                 <label for="password"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="password" onkeyup="" required><br>
         <br>

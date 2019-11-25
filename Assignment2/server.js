@@ -29,9 +29,9 @@ if (fs.existsSync(filename)) { //check to see if file exists
   console.log(filename + ' does not exist!');
 }
 
-//added code to server from Lab14 but doesnt work since I dont have username variable here
 app.post("/login.html", function (req, res) {
   // Process login form POST and redirect to logged in page if ok, back to login page if not
+  //Code from Lab 14
   console.log(req.body);
   the_username = req.body.username;
   if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
@@ -115,6 +115,12 @@ function CheckRegistration(theTextbox) {
 
   
   //if data is valid, save the data to the file and redirect to invoice
+
+  //want to put alert for successful registration if can but alert no working :(
+  //InvoiceName = req.body.username
+
+  console.log(errors) // Displaying the errors in the console
+
   res.redirect('./invoice.html?' + querystring.stringify(req.query))
 }
 );
