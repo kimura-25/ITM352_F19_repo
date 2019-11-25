@@ -47,31 +47,52 @@ app.post("/register.html", function (req, res) {
   console.log(req.body);
 
   //validate registration data
+  //create an array to store errors
   var errors = [];
+
+function CheckRegistration(theTextbox) {
+    if (errors.length == 0)
+    if (errors.length > 0) document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
+  }
 
   //make sure name is valid
   if (req.body.fullname == "") {
     errors.push('Invalidfullname');
   }
+  //make sure that full name has no more than 30 characters
+  if ((req.body.fullname > 30)) {
+    errors.push('FullNameTooLong')
+  }
+  //make sure full name contains all letters
+  //Code for Validating Letters only: https://www.w3resource.com/javascript/form/all-letters-field.php
+  if (/^[A-Za-z]+$/.test(req.body.fullname)) {
+  }
+  else{
+    errors.push('LettersOnly')
+  }
+
   //when check, change all to lowercase
 
-  //username must be minimum of 4 characters and maximum of 10
-  if ((req.body.username < 4)) {
+  //Username must be minimum of 4 characters and maximum of 10
+  //Code for Validating Username Length: https://crunchify.com/javascript-function-to-validate-username-phone-fields-on-form-submit-event/
+  if ((req.body.username.length < 4)) { //if username is less than 4 characters, push an error
     errors.push('UsernameTooShort')
   }
-  if ((req.body.username > 10)) {
+  if ((req.body.username > 10)) { //if username is greater than 10 characters, push an error
     errors.push('UsernameTooLong')
   }
   //check if username exists
-  if (typeof users_reg_data[req.body.username] != 'undefined') {
+  if (typeof users_reg_data[req.body.username] != 'undefined') { //if the username is already defined in the registration data
     errors.push('Usernametaken')
   }
-  //check letters and numbers only
-  var letterNumber = /^[0-9a-zA-Z]+$/
-  if (username.value.match(!letterNumber)) {
+  //Check letters and numbers only
+  //Code for validating letters and numbers only: https://www.w3resource.com/javascript/form/letters-numbers-field.php
+  if (/^[0-9a-zA-Z]+$/.test(req.body.username)) {
+  }
+  else{
     errors.push('LettersAndNumbersOnly')
   }
-
+  
   //check if password format is valid
   //check if password is a minimum of 6 characters long
   if ((req.body.username < 6)) {
@@ -82,17 +103,20 @@ app.post("/register.html", function (req, res) {
     errors.push('PasswordNotaMatch')
   }
 
-
-
   //check if email is valid
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(!req.body.email)) {
+  //email validation code: https://www.w3resource.com/javascript/form/email-validation.php
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email)) {
+  }
+  else{
     errors.push('InvalidEmail')
   }
-  //if data is valid, save the data to the file and redirect to invoice
 
+  
+  //if data is valid, save the data to the file and redirect to invoice
   res.redirect('./invoice.html?' + querystring.stringify(req.query))
 }
 );
+
 
 app.get('/purchase', function (req, res, next) { //getting the data from the form where action is '/purchase' 
   console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query)); // logging the date, IP address, and query of the purchase (quantities written in textboxes) into console

@@ -1,3 +1,6 @@
+<!-- Kelsey Ann Kimura: Registration Page -->
+<!-- This webpage allows the user to register an account on the website. Validation Code is in place to verify the information the user enters is accurate -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +30,7 @@
             Registration Page <br> <br>
             <div class="container">
                 <label for="fullname"><b>Full name</b></label>
-                <input type="text" name="fullname" maxlength= "30" onkeyup="" required><br>
+                <input type="text" name="fullname" maxlength= "30" onkeyup="CheckRegistration()" required><br>
                 <label for="username"><b>Username</b></label>
                 <input type="text" name="username" onkeyup="" minlength="4" maxlength="10" required><br>
                 <label for="password"><b>Password</b></label>
@@ -37,7 +40,7 @@
                 <label for="email"><b>Email Address</b></label>
                 <input type="email" name="email" onkeyup="" required><br>
                 <br>
-                <input type="submit" name="submit" value="Register">
+                <input type="submit" name="submit" value="Register" "CheckRegistration(this)">
             </div>
         </form>
         <script>
