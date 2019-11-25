@@ -6,10 +6,19 @@
 
 <head>
     <script>
-            //if(password==confirmpsw){
-         //  go to confirmation page
-         //  }
-         //else{go back and say password does not match}
+
+// Changing input text to lowercase for username and email so case insensitive
+//Source Code: https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_onkeyup
+function userlowercase() {
+    var username = document.getElementById("username");
+    username.value = username.value.toLowerCase();
+}
+
+function emaillowercase() {
+    var email = document.getElementById("email");
+    email.value = email.value.toLowerCase();
+}
+
     </script>
 
     <meta charset="UTF-8">
@@ -30,15 +39,15 @@
             Registration Page <br> <br>
             <div class="container">
                 <label for="fullname"><b>Full name</b></label>
-                <input type="text" name="fullname" maxlength= "30" onkeyup="CheckRegistration()" required><br>
+                <input type="text" name="fullname" maxlength= "30" onkeyup="" required><br>
                 <label for="username"><b>Username</b></label>
-                <input type="text" name="username" onkeyup="" minlength="4" maxlength="10" required><br>
+                <input type="text" id="username" name="username" onkeyup="userlowercase()" minlength="4" maxlength="10" required><br>
                 <label for="password"><b>Password</b></label>
                 <input type="password" name="password" onkeyup="" minlength="6" required><br>
                 <label for="confirmpsw"><b>Confirm Password</b></label>
                 <input type="password" name="confirmpsw" onkeyup="" required><br>
                 <label for="email"><b>Email Address</b></label>
-                <input type="email" name="email" onkeyup="" required><br>
+                <input type="email" id ="email" name="email" onkeyup="emaillowercase()" required><br>
                 <br>
                 <input type="submit" name="submit" value="Register" "CheckRegistration(this)">
             </div>

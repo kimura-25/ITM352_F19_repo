@@ -71,7 +71,9 @@ function CheckRegistration(theTextbox) {
     errors.push('LettersOnly')
   }
 
-  //when check, change all to lowercase
+  //when check, change all to lowercase so is case insensitive
+  //var str = request.body.username
+  //var RegUser = str.toLowerCase();
 
   //Username must be minimum of 4 characters and maximum of 10
   //Code for Validating Username Length: https://crunchify.com/javascript-function-to-validate-username-phone-fields-on-form-submit-event/
