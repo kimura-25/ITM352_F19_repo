@@ -37,15 +37,15 @@ app.post("/login.html", function (req, res) {
   the_username = req.body.username.toLowerCase(); //username entered is case insensitive
     if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
     if (users_reg_data[the_username].password == req.body.password)
-    LogError.push('wat');
-    console.log(LogError)
     res.redirect('/invoice.html?' + querystring.stringify(req.query)); // need to put query back into it
   } 
   else {
     res.redirect('/login.html?' + querystring.stringify(req.query));
   }
 
-/*  if (LogError.length == 0) {
+/*  var LogError = [];
+  
+  if (LogError.length == 0) {
     console.log('none!')
     res.redirect('./invoice.html?' + querystring.stringify(req.query))
   }
