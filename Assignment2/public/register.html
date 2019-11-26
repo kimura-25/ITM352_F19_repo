@@ -7,18 +7,31 @@
 <head>
     <script>
 
-// Changing input text to lowercase for username and email is case insensitive
-//Source Code: https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_onkeyup
-//toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
-function userlowercase() {
-    var username = document.getElementById("username");
-    username.value = username.value.toLowerCase();
-}
+        // get the query string values from form submission (Lab13 order_page)
+        // From Assignment1_DesignExamples Asssignment1_2file products_display.html
+        let params = (new URL(document.location)).searchParams; //params is a variable, 
 
-function emaillowercase() {
-    var email = document.getElementById("email");
-    email.value = email.value.toLowerCase();
-}
+        // Creating function window.onload so when the page is loading, it checks to make sure there is a quantity written and that the quantities in textbox are valid
+        //From Assignment1_Design_Examples > Asssignment1_2file > store_server.js 
+
+        window.onload = function () { // creating the function for window.onload
+            //Check if we're getting redirected from the server because of an error
+            if (params.has('errors')) { //if params has invalid registration data
+
+                // Put the original data back into the textboxes
+                //put values of query string into box fullname
+                Register['fullname'].value = params.get('fullname');
+                Register['username'].value = params.get('username');
+                Register['password'].value = params.get('password');
+                Register['confirmpsw'].value = params.get('confirmpsw');
+                Register['email'].value = params.get('email');
+
+                //do for the rest of register form
+                //get errors, indicate them on form
+                //if there is a quantity error, put up an alert
+                alert('Fix the following errors: \n' + params.get('errors'));
+            }
+        }
 
     </script>
 
@@ -35,27 +48,29 @@ function emaillowercase() {
         <!-- //Creating the login form*/
 /*Help from https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_password*/ -->
         <!-- Help from https://www.w3schools.com/howto/howto_css_login_form.asp -->
-<!-- Code for Maximum Length of Text: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text -->
+        <!-- Code for Maximum Length of Text: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text -->
         <form name="Register" method="POST">
             Registration Page <br> <br>
             <div class="container">
                 <label for="fullname"><b>Full name</b></label>
-                <input type="text" name="fullname" maxlength= "30" onkeyup="" required><br>
+                <input type="text" name="fullname" maxlength="30" onkeyup="fullnamecheck(this)" required><br>
+                <label for="namelabel" id="_label"></label>
                 <label for="username"><b>Username</b></label>
-                <input type="text" id="username" name="username" onkeyup="userlowercase()" minlength="4" maxlength="10" required><br>
+                <input type="text" id="username" name="username" onkeyup="userlowercase()" minlength="4" maxlength="10"
+                    required><br>
                 <label for="password"><b>Password</b></label>
                 <input type="password" name="password" onkeyup="" minlength="6" required><br>
                 <label for="confirmpsw"><b>Confirm Password</b></label>
                 <input type="password" name="confirmpsw" onkeyup="" required><br>
                 <label for="email"><b>Email Address</b></label>
-                <input type="email" id ="email" name="email" onkeyup="emaillowercase()" required><br>
+                <input type="email" id="email" name="email" onkeyup="emaillowercase()" required><br>
                 <br>
-                <input type="submit" name="submit" value="Register" "CheckRegistration(this)">
+                <input type="submit" name="submit" value="Register">
             </div>
         </form>
         <script>
-                Register.action="./register.html" + document.location.search;
-                 </script>            
+            Register.action = "./register.html" + document.location.search;
+        </script>
         </table>
     </div>
 </body>

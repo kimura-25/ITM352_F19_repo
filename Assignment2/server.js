@@ -23,8 +23,6 @@ if (fs.existsSync(filename)) { //check to see if file exists
 
   users_reg_data = JSON.parse(data);
 
-  console.log(users_reg_data.itm352.password);
-
 } else {
   console.log(filename + ' does not exist!');
 }
@@ -32,43 +30,58 @@ if (fs.existsSync(filename)) { //check to see if file exists
 app.post("/login.html", function (req, res) {
   // Process login form POST and redirect to logged in page if ok, back to login page if not
   //Code from Lab 14
+  var LogError = [];
   console.log(req.body);
-  the_username = req.body.username;
-  if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
+  //To make username case insensitive
+  //toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
+  the_username = req.body.username.toLowerCase(); //username entered is case insensitive
+    if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
     if (users_reg_data[the_username].password == req.body.password)
-      res.redirect('/invoice.html?' + querystring.stringify(req.query)); // need to put query back into it
-  } else {
+    LogError.push('wat');
+    console.log(LogError)
+    res.redirect('/invoice.html?' + querystring.stringify(req.query)); // need to put query back into it
+  } 
+  else {
     res.redirect('/login.html?' + querystring.stringify(req.query));
   }
+
+/*  if (LogError.length == 0) {
+    console.log('none!')
+    res.redirect('./invoice.html?' + querystring.stringify(req.query))
+  }
+  if (LogError.length > 0) {
+    console.log('meh')
+    req.query.username=req.body.username;
+    req.query.errors=errors.join(';');
+    res.redirect('./login.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
+  }
+*/
+
 }
 );
 
 app.post("/register.html", function (req, res) {
-  console.log(req.body);
+  qstr = req.body
+  console.log(qstr);
 
   //validate registration data
   //create an array to store errors
   var errors = [];
 
-function CheckRegistration(theTextbox) {
-    if (errors.length == 0)
-    if (errors.length > 0) document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
-  }
-
   //make sure name is valid
   if (req.body.fullname == "") {
-    errors.push('Invalidfullname');
+    errors.push('Invalid Full Name');
   }
   //make sure that full name has no more than 30 characters
   if ((req.body.fullname > 30)) {
-    errors.push('FullNameTooLong')
+    errors.push('Full Name Too Long')
   }
   //make sure full name contains all letters
   //Code for Validating Letters only: https://www.w3resource.com/javascript/form/all-letters-field.php
   if (/^[A-Za-z]+$/.test(req.body.fullname)) {
   }
   else{
-    errors.push('LettersOnly')
+    errors.push('Use Letters Only for Full Name')
   }
 
   //when check, change all to lowercase so is case insensitive
@@ -78,39 +91,42 @@ function CheckRegistration(theTextbox) {
   //Username must be minimum of 4 characters and maximum of 10
   //Code for Validating Username Length: https://crunchify.com/javascript-function-to-validate-username-phone-fields-on-form-submit-event/
   if ((req.body.username.length < 4)) { //if username is less than 4 characters, push an error
-    errors.push('UsernameTooShort')
+    errors.push('Username Too Short')
   }
   if ((req.body.username > 10)) { //if username is greater than 10 characters, push an error
-    errors.push('UsernameTooLong')
+    errors.push('Username Too Long')
   }
   //check if username exists
-  if (typeof users_reg_data[req.body.username] != 'undefined') { //if the username is already defined in the registration data
-    errors.push('Usernametaken')
+  //toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
+  var reguser = req.body.username.toLowerCase(); //make username user enters case insensitive
+  if (typeof users_reg_data[reguser] != 'undefined') { //if the username is already defined in the registration data
+    errors.push('Username taken')
   }
   //Check letters and numbers only
   //Code for validating letters and numbers only: https://www.w3resource.com/javascript/form/letters-numbers-field.php
   if (/^[0-9a-zA-Z]+$/.test(req.body.username)) {
   }
   else{
-    errors.push('LettersAndNumbersOnly')
+    errors.push('Letters And Numbers Only for Username')
   }
   
   //check if password format is valid
   //check if password is a minimum of 6 characters long
   if ((req.body.username < 6)) {
-    errors.push('UsernameTooShort')
+    errors.push('Username Too Short')
   }
   //check if password entered equal repeat password entered
   if (req.body.password !== req.body.confirmpsw) {
-    errors.push('PasswordNotaMatch')
+    errors.push('Password Not a Match')
   }
 
   //check if email is valid
   //email validation code: https://www.w3resource.com/javascript/form/email-validation.php
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email)) {
+  var regemail = req.body.email.toLowerCase(); // to make email case insensitive
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(regemail)) {
   }
   else{
-    errors.push('InvalidEmail')
+    errors.push('Invalid Email')
   }
 
   
@@ -118,10 +134,24 @@ function CheckRegistration(theTextbox) {
 
   //want to put alert for successful registration if can but alert no working :(
   //InvoiceName = req.body.username
+  if (errors.length == 0) {
+    console.log('none!')
+    res.redirect('./invoice.html?' + querystring.stringify(req.query))
+  }
+  if (errors.length > 0) {
+    console.log(errors)
+    req.query.fullname=req.body.fullname;
+    req.query.username=req.body.username;
+    req.query.password=req.body.password;
+    req.query.confirmpsw=req.body.confirmpsw;
+    req.query.email=req.body.email;
 
-  console.log(errors) // Displaying the errors in the console
+    req.query.errors=errors.join(';');
+    res.redirect('./register.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
+  }
 
-  res.redirect('./invoice.html?' + querystring.stringify(req.query))
+  //add errors to querystring
+
 }
 );
 
