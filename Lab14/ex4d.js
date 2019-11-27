@@ -2,7 +2,7 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
-const querystring = require('querystring');
+var querystring = require('querystring');
 
 app.use(myParser.urlencoded({ extended: true }));
 var filename = 'user_data.json'
@@ -45,13 +45,16 @@ app.get("/login", function (request, response) {
 
 app.post("/login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
-    console.log(request.body);
+    qs = querystring.stringify(request.query)
+    console.log(request.query);
     the_username = request.body.username;
     if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
         if (users_reg_data[the_username].password == request.body.password) {
+            // make the query string of product quantity needed for invoice
             response.send(the_username + ' logged in! ');
+            return
     } else {
-        response.redirect('/login');
+        response.redirect('/login?' + qs);
     }
 }
 });

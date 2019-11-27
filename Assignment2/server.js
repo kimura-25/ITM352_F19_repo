@@ -26,6 +26,15 @@ if (fs.existsSync(filename)) { //check to see if file exists
 } else {
   console.log(filename + ' does not exist!');
 }
+/*
+app.get("/invoice.html", function (req, res){
+  if(typeof validuser == 'undefined'){
+    console.log('meh');
+    res.redirect('/login.html?' + querystring.stringify(req.query));
+  }
+
+});
+*/
 
 app.post("/login.html", function (req, res) {
   // Process login form POST and redirect to logged in page if ok, back to login page if not
@@ -35,27 +44,27 @@ app.post("/login.html", function (req, res) {
   //To make username case insensitive
   //toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
   the_username = req.body.username.toLowerCase(); //username entered is case insensitive
-    if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
-    if (users_reg_data[the_username].password == req.body.password)
-    res.redirect('/invoice.html?' + querystring.stringify(req.query)); // need to put query back into it
-  } 
+  if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
+    if (users_reg_data[the_username].password == req.body.password) {
+    req.query.username = the_username;
+      res.redirect('/invoice.html?' + querystring.stringify(req.query)); // need to put query back into it
+      return;
+    } else{
+      LogError.push = ('Invalid Password');
+      console.log(LogError);
+      req.query.username= the_username;
+      req.query.password=req.body.password;
+      req.query.LogError=LogError.join(';');
+    }
+  }
   else {
-    res.redirect('/login.html?' + querystring.stringify(req.query));
+    LogError.push = ('Invalid Username');
+    console.log(LogError);
+    req.query.username= the_username;
+    req.query.password=req.body.password;
+    req.query.LogError=LogError.join(';');
   }
-
-/*  var LogError = [];
-  
-  if (LogError.length == 0) {
-    console.log('none!')
-    res.redirect('./invoice.html?' + querystring.stringify(req.query))
-  }
-  if (LogError.length > 0) {
-    console.log('meh')
-    req.query.username=req.body.username;
-    req.query.errors=errors.join(';');
-    res.redirect('./login.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
-  }
-*/
+  res.redirect('/login.html?' + querystring.stringify(req.query));
 
 }
 );
@@ -69,18 +78,18 @@ app.post("/register.html", function (req, res) {
   var errors = [];
 
   //make sure name is valid
-  if (req.body.fullname == "") {
+  if (req.body.name == "") {
     errors.push('Invalid Full Name');
   }
   //make sure that full name has no more than 30 characters
-  if ((req.body.fullname > 30)) {
+  if ((req.body.name > 30)) {
     errors.push('Full Name Too Long')
   }
   //make sure full name contains all letters
   //Code for Validating Letters only: https://www.w3resource.com/javascript/form/all-letters-field.php
-  if (/^[A-Za-z]+$/.test(req.body.fullname)) {
+  if (/^[A-Za-z]+$/.test(req.body.name)) {
   }
-  else{
+  else {
     errors.push('Use Letters Only for Full Name')
   }
 
@@ -106,10 +115,10 @@ app.post("/register.html", function (req, res) {
   //Code for validating letters and numbers only: https://www.w3resource.com/javascript/form/letters-numbers-field.php
   if (/^[0-9a-zA-Z]+$/.test(req.body.username)) {
   }
-  else{
+  else {
     errors.push('Letters And Numbers Only for Username')
   }
-  
+
   //check if password format is valid
   //check if password is a minimum of 6 characters long
   if ((req.body.username < 6)) {
@@ -125,28 +134,29 @@ app.post("/register.html", function (req, res) {
   var regemail = req.body.email.toLowerCase(); // to make email case insensitive
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(regemail)) {
   }
-  else{
+  else {
     errors.push('Invalid Email')
   }
 
-  
+
   //if data is valid, save the data to the file and redirect to invoice
 
   //want to put alert for successful registration if can but alert no working :(
   //InvoiceName = req.body.username
   if (errors.length == 0) {
-    console.log('none!')
+    console.log('none!');
+    req.query.username = reguser;
     res.redirect('./invoice.html?' + querystring.stringify(req.query))
   }
   if (errors.length > 0) {
     console.log(errors)
-    req.query.fullname=req.body.fullname;
-    req.query.username=req.body.username;
-    req.query.password=req.body.password;
-    req.query.confirmpsw=req.body.confirmpsw;
-    req.query.email=req.body.email;
+    req.query.name = req.body.name;
+    req.query.username = req.body.username;
+    req.query.password = req.body.password;
+    req.query.confirmpsw = req.body.confirmpsw;
+    req.query.email = req.body.email;
 
-    req.query.errors=errors.join(';');
+    req.query.errors = errors.join(';');
     res.redirect('./register.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
   }
 

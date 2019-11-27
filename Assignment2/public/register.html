@@ -19,8 +19,8 @@
             if (params.has('errors')) { //if params has invalid registration data
 
                 // Put the original data back into the textboxes
-                //put values of query string into box fullname
-                Register['fullname'].value = params.get('fullname');
+                //put values of query string into boxes
+                Register['name'].value = params.get('name');
                 Register['username'].value = params.get('username');
                 Register['password'].value = params.get('password');
                 Register['confirmpsw'].value = params.get('confirmpsw');
@@ -28,7 +28,7 @@
 
                 //do for the rest of register form
                 //get errors, indicate them on form
-                //if there is a quantity error, put up an alert
+                //if there is a registration error, put up an alert
                 alert('Fix the following errors: \n' + params.get('errors'));
             }
         }
@@ -52,11 +52,11 @@
         <form name="Register" method="POST">
             Registration Page <br> <br>
             <div class="container">
-                <label for="fullname"><b>Full name</b></label>
-                <input type="text" name="fullname" maxlength="30" onkeyup="fullnamecheck(this)" required><br>
+                <label for="name"><b>Name</b></label>
+                <input type="text" name="name" maxlength="30" onkeyup="" required><br>
                 <label for="namelabel" id="_label"></label>
                 <label for="username"><b>Username</b></label>
-                <input type="text" id="username" name="username" onkeyup="userlowercase()" minlength="4" maxlength="10"
+                <input type="text" id="username" name="username" onkeyup="" minlength="4" maxlength="10"
                     required><br>
                 <label for="password"><b>Password</b></label>
                 <input type="password" name="password" onkeyup="" minlength="6" required><br>

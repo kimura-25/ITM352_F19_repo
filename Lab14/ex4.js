@@ -2,7 +2,7 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
-const querystring = require('querystring');
+var qs = require('querystring');
 
 app.use(myParser.urlencoded({ extended: true }));
 var filename = 'user_data.json'
@@ -23,11 +23,30 @@ if (fs.existsSync(filename)) { //check to see if file exists
 
     fs.writeFileSync(filename, JSON.stringify(users_reg_data));
 */
-    console.log(users_reg_data);
+
 
 } else {
     console.log(filename + ' does not exist!');
 }
+
+var user_product_quantities = {};
+app.get("/purchase", function (request, response) {
+    //quantity data in query string
+    user_product_quantities = request.query;
+    console.log(user_product_quantities);
+// do the validation etc
+
+// if not valid go back to product display
+
+//otherwise go to login
+response.redirect('login')
+
+});
+
+app.get("/invoice", function (request, response) {
+
+response.send(JSON.stringify(user_product_quantities));
+});
 
 app.get("/login", function (request, response) {
     // Give a simple login form
@@ -45,11 +64,12 @@ app.get("/login", function (request, response) {
 
 app.post("/login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
-    console.log(request.body);
+    console.log(user_product_quantities);
     the_username = request.body.username;
     if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
         if (users_reg_data[the_username].password == request.body.password) {
-            response.send(the_username + ' logged in! ');
+            theQuantQuerystring = qs.stringify(user_product_quantities);
+            response.send('/invoice.html?' + theQuantQuerystring);
     } else {
         response.redirect('/login');
     }
@@ -89,4 +109,5 @@ app.get("/register", function (request, response) {
 
  });
 
+app.use(express.static('.'));
 app.listen(8080, () => console.log(`listening on port 8080`));
