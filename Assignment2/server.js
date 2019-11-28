@@ -45,7 +45,7 @@ app.post("/login.html", function (req, res) {
   //toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
   the_username = req.body.username.toLowerCase(); //username entered is case insensitive
   if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
-    if (users_reg_data[the_username].password == req.body.password) {
+    if (users_reg_data[the_username].password == req.body.password) { //make sure password matches exactly - case sensitive
     req.query.username = the_username;
       res.redirect('/invoice.html?' + querystring.stringify(req.query)); // need to put query back into it
       return;
@@ -124,8 +124,8 @@ app.post("/register.html", function (req, res) {
   if ((req.body.username < 6)) {
     errors.push('Username Too Short')
   }
-  //check if password entered equal repeat password entered
-  if (req.body.password !== req.body.confirmpsw) {
+  //check if password entered equals to the repeat password entered - make sure password is case sensitive
+  if (req.body.password !== req.body.confirmpsw) { // if password equals confirm password
     errors.push('Password Not a Match')
   }
 
