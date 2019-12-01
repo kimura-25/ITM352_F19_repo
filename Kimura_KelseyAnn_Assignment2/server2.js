@@ -77,22 +77,27 @@ app.post("/register.html", function (req, res) {
 
   //validate registration data
   //create an array to store errors
-  var errors = [];
+  var nameerrors = [];
+  var usererrors = [];
+  var passerrors = [];
+  var confirmerrors = [];
+  var emailerrors = [];
+
 
   //make sure name is valid
   if (req.body.name == "") {
-    errors.push('Invalid Full Name');
+    nameerrors.push('Invalid Full Name');
   }
   //make sure that full name has no more than 30 characters
   if ((req.body.name.length > 30)) {
-    errors.push('Full Name Too Long')
+    nameerrors.push('Full Name Too Long')
   }
   //make sure full name contains all letters
   //Code for Validating Letters only: https://www.w3resource.com/javascript/form/all-letters-field.php
   if (/^[A-Za-z]+$/.test(req.body.name)) {
   }
   else {
-    errors.push('Use Letters Only for Full Name')
+    nameerrors.push('Use Letters Only for Full Name')
   }
 
   //when check, change all to lowercase so is case insensitive
@@ -102,33 +107,33 @@ app.post("/register.html", function (req, res) {
   //Username must be minimum of 4 characters and maximum of 10
   //Code for Validating Username Length: https://crunchify.com/javascript-function-to-validate-username-phone-fields-on-form-submit-event/
   if ((req.body.username.length < 4)) { //if username is less than 4 characters, push an error
-    errors.push('Username Too Short')
+    usererrors.push('Username Too Short')
   }
   if ((req.body.username.length > 10)) { //if username is greater than 10 characters, push an error
-    errors.push('Username Too Long')
+    usererrors.push('Username Too Long')
   }
   //check if username exists
   //toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
   var reguser = req.body.username.toLowerCase(); //make username user enters case insensitive
   if (typeof users_reg_data[reguser] != 'undefined') { //if the username is already defined in the registration data
-    errors.push('Username taken')
+    usererrors.push('Username taken')
   }
   //Check letters and numbers only
   //Code for validating letters and numbers only: https://www.w3resource.com/javascript/form/letters-numbers-field.php
   if (/^[0-9a-zA-Z]+$/.test(req.body.username)) {
   }
   else {
-    errors.push('Letters And Numbers Only for Username')
+    usererrors.push('Letters And Numbers Only for Username')
   }
 
   //check if password format is valid
   //check if password is a minimum of 6 characters long
   if ((req.body.password.length < 6)) {
-    errors.push('Password Too Short')
+    passerrors.push('Password Too Short')
   }
   //check if password entered equals to the repeat password entered - make sure password is case sensitive
   if (req.body.password !== req.body.confirmpsw) { // if password equals confirm password
-    errors.push('Password Not a Match')
+    confirmerrors.push('Password Not a Match')
   }
 
   //check if email is valid
@@ -137,7 +142,7 @@ app.post("/register.html", function (req, res) {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(regemail)) {
   }
   else {
-    errors.push('Invalid Email')
+    emailerrors.push('Invalid Email')
   }
 
 
