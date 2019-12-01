@@ -47,6 +47,8 @@ app.post("/login.html", function (req, res) {
   if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
     if (users_reg_data[the_username].password == req.body.password) { //make sure password matches exactly - case sensitive
     req.query.username = the_username;
+      console.log(users_reg_data[req.query.username].name);
+      req.query.name = users_reg_data[req.query.username].name
       res.redirect('/invoice.html?' + querystring.stringify(req.query)); // need to put query back into it
       return;
     } else{
@@ -82,7 +84,7 @@ app.post("/register.html", function (req, res) {
     errors.push('Invalid Full Name');
   }
   //make sure that full name has no more than 30 characters
-  if ((req.body.name > 30)) {
+  if ((req.body.name.length > 30)) {
     errors.push('Full Name Too Long')
   }
   //make sure full name contains all letters
@@ -140,7 +142,6 @@ app.post("/register.html", function (req, res) {
 
 
   //if data is valid, save the data to the file and redirect to invoice
-
   //want to put alert for successful registration if can but alert no working :(
   //InvoiceName = req.body.username
   if (errors.length == 0) {
