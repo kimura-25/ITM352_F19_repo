@@ -104,7 +104,7 @@ app.post("/register.html", function (req, res) {
   if ((req.body.username.length < 4)) { //if username is less than 4 characters, push an error
     errors.push('Username Too Short')
   }
-  if ((req.body.username > 10)) { //if username is greater than 10 characters, push an error
+  if ((req.body.username.length > 10)) { //if username is greater than 10 characters, push an error
     errors.push('Username Too Long')
   }
   //check if username exists
@@ -142,11 +142,10 @@ app.post("/register.html", function (req, res) {
 
 
   //if data is valid, save the data to the file and redirect to invoice
-  //want to put alert for successful registration if can but alert no working :(
-  //InvoiceName = req.body.username
   if (errors.length == 0) {
     console.log('none!');
     req.query.username = reguser;
+    req.query.name = req.body.name;
     res.redirect('./invoice.html?' + querystring.stringify(req.query))
   }
   if (errors.length > 0) {

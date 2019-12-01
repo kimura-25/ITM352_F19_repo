@@ -9,7 +9,7 @@
 
         // get the query string values from form submission (Lab13 order_page)
         // From Assignment1_DesignExamples Asssignment1_2file products_display.html
-        let params = (new URL(document.location)).searchParams; //params is a variable, 
+        let params = (new URL(document.location)).searchParams; //Allow to get parameters
 
         // Creating function window.onload so when the page is loading, it checks to make sure there is a quantity written and that the quantities in textbox are valid
         //From Assignment1_Design_Examples > Asssignment1_2file > store_server.js 
@@ -29,7 +29,9 @@
                 //do for the rest of register form
                 //get errors, indicate them on form
                 //if there is a registration error, put up an alert
+                console.log("meh");
                 alert('Fix the following errors: \n' + params.get('errors'));
+
             }
         }
 
@@ -70,7 +72,7 @@
                 <label for="confirmpswlabel" id="confirmpswlabel">Please type your password again</label>
                 <br>
                 <label for="email"><b>Email Address</b></label>
-                <input type="email" id="email" name="email" onkeyup="emaillowercase()" required><br>
+                <input type="email" id="email" name="email" onkeyup="" required><br>
                 <label for="emaillabel" id="emaillabel">Please enter a email</label>
                 <br>
                 <input type="submit" name="submit" value="Register">
