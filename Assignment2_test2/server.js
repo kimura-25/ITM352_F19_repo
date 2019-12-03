@@ -26,7 +26,15 @@ if (fs.existsSync(filename)) { //check to see if file exists
 } else {
   console.log(filename + ' does not exist!');
 }
+/*
+app.get("/invoice.html", function (req, res){
+  if(typeof validuser == 'undefined'){
+    console.log('meh');
+    res.redirect('/login.html?' + querystring.stringify(req.query));
+  }
 
+});
+*/
 
 //Validation for the Login Information when Login Page is loaded
 app.post("/login.html", function (req, res) {
@@ -152,8 +160,25 @@ app.post("/register.html", function (req, res) {
   }
 
 
+  //if data is valid and no errors, save the data to the file and redirect to invoice
+  if (errors.length == 0) { //if there are no errors
+    console.log('none!'); //to double check if statement working
+    req.query.username = reguser; //put username in querystring
+    req.query.name = req.body.name; //put name into querystring
+    res.redirect('./invoice.html?' + querystring.stringify(req.query)) //redirect to the invoice
+  }
+//add errors to querystring (for purpose of putting back into textbox)
+  if (errors.length > 0) { //if there is one or more errors
+    console.log(errors) //to double check if statement working
+    req.query.name = req.body.name; //put name in querystring
+    req.query.username = req.body.username; //put username in querystring
+    req.query.password = req.body.password; //put password into querystring
+    req.query.confirmpsw = req.body.confirmpsw; //put confirm password into querystring
+    req.query.email = req.body.email; //put email back into querystring
 
-
+    req.query.errors = errors.join(';'); //join all errors together into querystring
+    res.redirect('./register.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
+  }
   if (nameerrors.length == 0) { //if no name errors
     console.log('no name errors!'); // to make sure if statement working
   }
@@ -193,25 +218,7 @@ app.post("/register.html", function (req, res) {
     console.log('error:'+ emailerrors); //console log email errors
     req.query.emailerrors = emailerrors.join(';'); //joining email errors together
   } 
-  //if data is valid and no errors, save the data to the file and redirect to invoice
-  if (errors.length == 0) { //if there are no errors
-    console.log('none!'); //to double check if statement working
-    req.query.username = reguser; //put username in querystring
-    req.query.name = req.body.name; //put name into querystring
-    res.redirect('./invoice.html?' + querystring.stringify(req.query)) //redirect to the invoice
-  }
-  //add errors to querystring (for purpose of putting back into textbox)
-  else { //if there is one or more errors
-    console.log(errors) //to double check if statement working
-    req.query.name = req.body.name; //put name in querystring
-    req.query.username = req.body.username; //put username in querystring
-    req.query.password = req.body.password; //put password into querystring
-    req.query.confirmpsw = req.body.confirmpsw; //put confirm password into querystring
-    req.query.email = req.body.email; //put email back into querystring
 
-    req.query.errors = errors.join(';'); //join all errors together into querystring
-    res.redirect('./register.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
-  }
 }
 );
 

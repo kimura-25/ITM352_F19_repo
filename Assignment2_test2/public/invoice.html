@@ -134,15 +134,11 @@
             <script>document.write(total.toFixed(2))/*writing the total to 2 decimal places*/</script></strong></td>
       </tr>
 
-    </body>
+    </tbody>
   </table>
   <br>
-  <form name="quantity_form" action = "/confirmation.html?" + document.location.search "method="GET" align="center">
+  <form name="quantity_form" action="/confirmation.html" method="GET" align="center">
     <input type="submit" value="Submit">
-  </form>
-  <script>
-  quantity_form.action = "/confirmation.html" + document.location.search;
-  </script>
     <div>
       <br><b>
         Shipping Policy - We charge the following amounts for shipping for the following subtotals:
@@ -151,11 +147,6 @@
         <br>Over $100: 5% of the subtotal amount
       </b> </div>
     </div>
-    <style>
-    div{
-      text-align:center;
-    }
-    </style>
 </body>
 
 </html>
