@@ -21,7 +21,8 @@ if (fs.existsSync(filename)) { //only open if file exists
 
   data = fs.readFileSync(filename, 'utf-8') //opens the file
 
-  users_reg_data = JSON.parse(data); //assign return value to data, use JSON.parse() to convert into an object and assign to user_reg_data
+  //assign return value to data, use JSON.parse() to convert into an object and assign to user_reg_data
+  users_reg_data = JSON.parse(data); 
 
 } else { //if file does not exist
   console.log(filename + ' does not exist!'); //saying filename doesn't exist in console

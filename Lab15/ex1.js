@@ -4,7 +4,16 @@ var app = express();
 var myParser = require("body-parser");
 var qs = require('querystring');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
+
+app.use(session({secret: "ITM352 rocks!"}));
+
 app.use(cookieParser());
+
+app.get("/use_session", function (request, response){
+    response.send(`welcome, your session ID is <sess id> where ${request.session.id}`)
+    ;
+});
 
 app.get('/set_cookie', function (request, response) {
     response.cookie('myname', 'Kelsey Ann Kimura', {maxAge: 5*1000}).send('cookie set');
@@ -85,7 +94,8 @@ app.post("/login", function (request, response) {
     if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
         if (users_reg_data[the_username].password == request.body.password) {
             theQuantQuerystring = qs.stringify(user_product_quantities);
-            response.send('/invoice.html?' + theQuantQuerystring);
+            response.send(the_username + ' logged in! ');
+            return
     } else {
         response.redirect('/login');
     }

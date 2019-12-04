@@ -4,6 +4,31 @@ var app = express();
 var myParser = require("body-parser");
 var querystring = require('querystring');
 
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+
+app.use(session({secret: "ITM352 rocks!"}));
+
+app.use(cookieParser());
+
+app.get("/use_session", function (request, response){
+    response.send(`welcome, your session ID is <sess id> where ${request.session.id}`)
+    ;
+});
+
+app.get('/set_cookie', function (request, response) {
+    response.cookie('myname', 'Kelsey Ann Kimura', {maxAge: 5*1000}).send('cookie set');
+});
+
+app.get('/use_cookie', function (request, response) {
+    output = "No cookie with myname"
+    if(typeof request.cookies.myname != 'undefined') {
+    output = `Welcome to the Use Cookie page ${request.cookies.myname}`;
+    }
+    response.send(output);
+});
+
+
 app.use(myParser.urlencoded({ extended: true }));
 var filename = 'user_data.json'
 
