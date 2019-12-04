@@ -14,17 +14,17 @@ app.use(parser.urlencoded({ extended: true })); // decode, now request.body will
 
 var filename = 'user_data.json' //loading the user_data.json file
 
-if (fs.existsSync(filename)) { //check to see if file exists
-  stats = fs.statSync(filename);
+if (fs.existsSync(filename)) { //only open if file exists
+  stats = fs.statSync(filename); //used to printout size of filename
 
-  console.log(filename + ' has ' + stats.size + ' characters');
+  console.log(filename + ' has ' + stats.size + ' characters'); //stating size of file
 
-  data = fs.readFileSync(filename, 'utf-8')
+  data = fs.readFileSync(filename, 'utf-8') //opens the file
 
-  users_reg_data = JSON.parse(data);
+  users_reg_data = JSON.parse(data); //assign return value to data, use JSON.parse() to convert into an object and assign to user_reg_data
 
-} else {
-  console.log(filename + ' does not exist!');
+} else { //if file does not exist
+  console.log(filename + ' does not exist!'); //saying filename doesn't exist in console
 }
 
 
