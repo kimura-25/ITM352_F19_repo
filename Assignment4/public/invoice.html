@@ -57,7 +57,7 @@
 
 <body>
   <script>
-
+  //Getting the name from the querystring to display on invoice page
     usr = GET[`name`];
     document.write(`
     <h1>Hello there, ${usr}!</h1>
@@ -75,7 +75,7 @@
       <script>
         for (i = 0; i < product_data.length; i++) { // when variable i is equal to 0, is less than the product data length, and i increases by 1
           qty = GET[`quantity_textbox${i}`]; // variable qty is equal to what node.js GETs from the quantity value entered in the form
-          if (qty > 0) {
+          if (qty > 0) { //if quantity is greater than 0
             var extended_price = product_data[i].price * qty // extended price is equal to the price of given product "i" in the array times quantity requested
             var subtotal = extended_price + subtotal // makes a running subtotal, is equal to the extended_price plus whatever running subtotal is at that point
             //writing in the document the product name, price, and price*quantity in the table for every product[i] in the array
@@ -134,11 +134,12 @@
             <script>document.write(total.toFixed(2))/*writing the total to 2 decimal places*/</script></strong></td>
       </tr>
 
-    </tbody>
+    </body>
   </table>
   <br>
-  <form name="quantity_form" action="/confirmation.html" method="GET" align="center">
+  <form name="quantity_form" action = "/confirmation.html?" + document.location.search "method="GET" align="center">
     <input type="submit" value="Submit">
+  </form>
     <div>
       <br><b>
         Shipping Policy - We charge the following amounts for shipping for the following subtotals:
@@ -147,6 +148,12 @@
         <br>Over $100: 5% of the subtotal amount
       </b> </div>
     </div>
+    <style>
+    /*Aligning shipping text to center*/
+    div{
+      text-align:center;
+    }
+    </style>
 </body>
 
 </html>

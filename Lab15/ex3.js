@@ -21,11 +21,9 @@ app.get('/set_cookie', function (request, response) {
 });
 
 app.get('/use_cookie', function (request, response) {
-    output = "No cookie with myname"
-    if(typeof request.cookies.myname != 'undefined') {
-    output = `Welcome to the Use Cookie page ${request.cookies.myname}`;
+    if(typeof request.cookies.username != 'undefined') {
+        response.send(`Welcome back ${request.cookies.username}!` + '<br>' + `You last logged in on ${request.session.last_login}`);
     }
-    response.send(output);
 });
 
 
@@ -75,6 +73,7 @@ response.send(JSON.stringify(user_product_quantities));
 });
 
 app.get("/login", function (request, response) {
+
     // Give a simple login form
     str = `
 <body>
@@ -102,7 +101,9 @@ app.post("/login", function (request, response) {
             now = 'first login!';
         }
             request.session.last_login = now;
-            response.send(msg + '<br>' + `${the_username} is logged in at ${now}`);
+            response
+                .cookie('username', the_username, {maxAge: 10*1000})
+                .send(msg + '<br>' + `${the_username} is logged in at ${now}`);
             return
     } else {
         response.redirect('/login');
