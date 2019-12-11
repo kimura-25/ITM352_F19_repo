@@ -17,7 +17,6 @@
                 // Put the original data back into the textboxes
                 //put values of query string into boxes
                 Register['name'].value = params.get('name'); //for name
-                Register['compname'].value = params.get('compname'); //for company name
                 Register['username'].value = params.get('username');//for username
                 Register['password'].value = params.get('password');//for password
                 Register['confirmpsw'].value = params.get('confirmpsw'); //for confirm password
@@ -71,16 +70,12 @@
 /*Help from https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_password*/ -->
         <!-- Help from https://www.w3schools.com/howto/howto_css_login_form.asp -->
         <!-- Code for Maximum Length of Text: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text -->
-        <form name="Register" method="POST">
+        <form name="Register" method="POST" action="process_register">
             Registration Page <br> <br>
             <div class="container">
                 <label for="name"><b>Name</b></label>
                 <input type="text" name="name" maxlength="30" onkeyup="" required><br>
                 <label for="namelabel" id="namelabel"></label>
-                <br>
-                <label for="name"><b>Company Name</b></label>
-                <input type="text" name="compname" maxlength="30" onkeyup="" required><br>
-                <label for="compnamelabel" id="compnamelabel"></label>
                 <br>
                 <label for="username"><b>Username</b></label>
                 <input type="text" id="username" name="username" onkeyup="" minlength="4" maxlength="10" required>
@@ -106,7 +101,7 @@
                 <label for="genre" required><b>What genre are you looking for?</b></label>
                 <br>
                 <!-- Code for Dropdown Menu: https://www.w3schools.com/html/html_form_elements.asp -->
-                <select name="genre" size="1">
+                <select name="genre" id="genre" size="1">
                         <option name="pacificroots" value="pacificroots">Pacific Roots</option>
                         <option name="guitar" value="guitar">Guitar & 'Ukulele Masters</option>
                         <option name="contemporary" value="contemporary">Island Contemporary</option>

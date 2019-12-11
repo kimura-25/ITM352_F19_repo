@@ -36,7 +36,43 @@ if (fs.existsSync(filename1)) { //only open if file exists
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
 }
 
-app.get("/artist_select.html", function (req,res){
+app.post("/submit_request", function (req,res){
+  console.log('requested!');
+}); 
+
+app.get("/artist_single.html", function (req,res){
+  console.log('single artist page');
+    pagestr = `
+    <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>${artist_data[0].name}</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+        <link rel="stylesheet" href="form-style.css">
+    </head>  
+    <h1>Pasifika Artist Network</h1>
+<body>
+    <div>
+        <h1>${artist_data[0].name}</h1>
+        <br><img src="${artist_data[0].image}">
+        <br>
+        <p>${artist_data[0].bio}</p>
+        <button type="button" onclick="window.location.href = '/request';">Request artist</button>
+    </div>
+
+</body>
+</html>`;
+    res.send(pagestr);
+  });
+
+app.get("/request", function (req,res){
+res.redirect('/request.html')
+});
+
+app.get("/artist_all.html", function (req,res){
   console.log(req.body);
   pagestr = `
   <!DOCTYPE html>
@@ -80,95 +116,8 @@ pagestr +=`
               </script>
   
           </table>
-          <input type="submit" value="Purchase">
-  
-      </form>
-  </main></div>
-  </body>
-  <br>
-  <footer>
-   <h2>Pasifika Artists Network LLC</h2>
-  </footer>
-  </html>`;
-  res.send(pagestr);
-});
-  
 
-app.get("/artist_single.html", function (req,res){
-  console.log('single artist page');
-    pagestr = `
-    <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>${artist_data[0].name}</title>
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
-        <link rel="stylesheet" href="form-style.css">
-    </head>  
-    <h1>Pasifika Artist Network</h1>
-<body>
-    <div>
-        <h1>${artist_data[0].name}</h1>
-        <br>${artist_data[0].image}
-        <br>
-        <p>${artist_data[0].bio}</p>
-        <button type="button">Request artist</button>
-    </div>
-
-</body>
-</html>`;
-    res.send(pagestr);
-  });
-
-app.get("/artist_all.html", function (req,res){
-  console.log('all artist page');
-  pagestr = `
-  <!DOCTYPE html>
-  <html lang="en">
   
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Artist All</title>
-      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
-      <link rel="stylesheet" href="form-style.css">
-  </head>
-  <header>
-      <h1>Pasifika Artist Network</h1>
-  </header>
-  <div><main>
-  <body>
-          <table cellpadding="10" border="1" bgcolor="#FFA500">
-              <tr>
-                  <th>Artist Name</th>
-                  <th>Description</th>
-                  <th>Genre</th>
-              </tr>`;
-
-  //For every product in the array, write the product number, display its image and name, and list price
-                  for (i = 0; i < artist_data.length; i++) { 
-                  /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
-pagestr +=`
-                  <tr>
-                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}<br><button type="button" id="button${artist_data[i]}" onclick="window.location.href = 'artist_single.html';">More info</button></td>
-                      <td>${artist_data[i].description}</td>
-                      <td>${artist_data[i].genre}</td>
-                      
-      </tr>
-      `;
-      
-                  }
-
-                  pagestr +=`
-              </script>
-  
-          </table>
-          <input type="submit" value="Purchase">
-  
-      </form>
   </main></div>
   </body>
   <br>
@@ -179,9 +128,11 @@ pagestr +=`
   res.send(pagestr);
 });
 
-//app.post("/process_register", function (req, res) {
-//console.log('hi');
-//});
+/*app.post("/process_register", function (req, res) {
+console.log('hi');
+res.redirect('/artist_all.html');
+});*/
+
 
 //Validation for the Login Information when Login Page is loaded
 app.post("/login.html", function (req, res) {
@@ -219,7 +170,7 @@ app.post("/login.html", function (req, res) {
 }
 );
 
-app.post("/register.html", function (req, res) {
+app.post("/process_register", function (req, res) {
   // Process registration form POST and redirect to invoice if ok, back to registration page if not
   //validate registration data
 
@@ -368,13 +319,13 @@ app.post("/register.html", function (req, res) {
     console.log('none!'); //to double check if statement working
     req.query.username = reguser; //put username in querystring
     req.query.name = req.body.name; //put name into querystring
+    req.query.genre = req.body.genre; //put genre into querystring
     res.redirect('./artist_all.html?' + querystring.stringify(req.query)) //redirect to the artist page
   }
   //add errors to querystring (for purpose of putting back into textbox)
   else { //if there is one or more errors
     console.log(errors) //to double check if statement working
     req.query.name = req.body.name; //put name in querystring
-    req.query.compname = req.body.compname; //put company name in querystring
     req.query.username = req.body.username; //put username in querystring
     req.query.password = req.body.password; //put password into querystring
     req.query.confirmpsw = req.body.confirmpsw; //put confirm password into querystring
@@ -388,55 +339,9 @@ app.post("/register.html", function (req, res) {
 }
 );
 
-
-app.get('/purchase', function (req, res, next) { //getting the data from the form where action is '/purchase' 
-  console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query)); // logging the date, IP address, and query of the purchase (quantities written in textboxes) into console
-
-  // Validating quantity data, go through each and check if good
-  // Done with help from Port
-  let GET = req.query; // GET is equal to getting the request from the query
-  console.log(GET); // putting the query that take from the form into the console
-  var hasValidQuantities = true; // empty textbox is assumed true - quantity assumed valid even before entering anything
-  var hasPurchases = false; //assume quantity of purchases are false (invalid) from the start
-  for (i = 0; i < artist_data.length; i++) { // for every product in the array, increasing by 1
-    q = GET['quantity_textbox' + i]; // q is equal to the quantity pulled from what is entered into the textbox
-    if (isNonNegInt(q) == false) { //if the quantity is not an integer
-      hasValidQuantities = false; //hasValidQuantities is false 
-    }
-    if (q > 0) { // if the quantity entered in textbox is greater than 0
-      hasPurchases = true; // hasPurchases is true - because there is a quantity greater than 0 entered in the textbox
-    }
-    console.log(hasValidQuantities, hasPurchases); // logging hasValidQuantities and hasPurchases into console to check validity (true or false)
-  }
-
-  // If it ok, send to invoice. if not, send back to the order form
-  qString = querystring.stringify(GET); //stringing the query together
-  if (hasValidQuantities == true && hasPurchases == true) { // if both hasValidQuantities and hasPurchases are true
-    res.redirect('./login.html?' + querystring.stringify(req.query)); // redirect to the invoice page with the query entered in the form
-  } else {    // if either hasValidQuantities or hasPurchases is false
-    req.query["hasValidQuantities"] = hasValidQuantities; // request the query for hasValidQuantities
-    req.query["hasPurchases"] = hasPurchases; // request the query for hasPurchases
-    console.log(req.query); // log the query into the console
-    res.redirect('./form.html?' + querystring.stringify(req.query)); // redirect to the form again, keeping the query that they wrote
-  }
-
-
-});
-
 app.use(express.static('./public')); // create a static server using express from the public folder
 
 // Having the server listen on port 8080
 // From Assignment1_Design_Examples > Asssignment1_2file > store_server.js
 var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) });
-
-//Creating the isNonNegInt function, which checks to make sure the quantity is a positive integer 
-//From Lab 12 and 13
-function isNonNegInt(q, returnErrors = false) { // creating function with variable q, when returnErrors is false
-  errors = []; // assume no errors at first
-  if (q == '') q = 0; // handle blank inputs as if they are 0
-  if (Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
-  if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
-  if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
-  return returnErrors ? errors : (errors.length == 0); // return no errors if the errors length is 0
-}
 
