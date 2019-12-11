@@ -36,6 +36,34 @@ if (fs.existsSync(filename1)) { //only open if file exists
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
 }
 
+app.get("/artist_single.html", function (req,res){
+  console.log(artist_data);
+    pagestr = `
+    <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Artist All</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+        <link rel="stylesheet" href="form-style.css">
+    </head>  
+    <h1>Pasifika Artist Network</h1>
+<body>
+    <div>
+        <h1>${artist_data[0].name}</h1>
+        <br>${artist_data[0].image}
+        <br>
+        <p>${artist_data[0].bio}</p>
+        <button type="button">Request artist</button>
+    </div>
+
+</body>
+</html>`;
+    res.send(pagestr);
+  });
+
 app.get("/artist_all.html", function (req,res){
 console.log(artist_data);
   pagestr = `
@@ -55,7 +83,7 @@ console.log(artist_data);
   </header>
   <div><main>
   <body>
-          <table cellpadding="10" border="1" bgcolor="#D2B48C">
+          <table cellpadding="10" border="1" bgcolor="#FFA500">
               <tr>
                   <th>Artist Name</th>
                   <th>Description</th>
@@ -67,9 +95,10 @@ console.log(artist_data);
                   /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
 pagestr +=`
                   <tr>
-                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}</td>
+                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}<br><button type="button" onclick="window.location.href = 'artist_single.html';">More info</button></td>
                       <td>${artist_data[i].description}</td>
                       <td>${artist_data[i].genre}</td>
+                      
       </tr>
       `;
       
@@ -86,7 +115,7 @@ pagestr +=`
   </body>
   <br>
   <footer>
-   <h1>50% of sales go to supporting endangered giraffes in Africa!</h1>
+   <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
   res.send(pagestr);
