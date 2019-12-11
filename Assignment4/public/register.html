@@ -69,7 +69,7 @@
 /*Help from https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_password*/ -->
         <!-- Help from https://www.w3schools.com/howto/howto_css_login_form.asp -->
         <!-- Code for Maximum Length of Text: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text -->
-        <form name="Register" method="POST">
+        <form name="Register" method="POST" action="process_register">
             Registration Page <br> <br>
             <div class="container">
                 <label for="name"><b>Name</b></label>
@@ -117,9 +117,6 @@
                 <input type="submit" name="submit" value="Register">
             </div>
         </form>
-        <script>
-            Register.action = "./register.html" + document.location.search; //keeping querystring on register page
-        </script>
     </div>
 </body>
 </html>

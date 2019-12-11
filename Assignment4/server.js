@@ -57,10 +57,9 @@ console.log(artist_data);
   <body>
           <table cellpadding="10" border="1" bgcolor="#D2B48C">
               <tr>
-                  <th>Item #</th>
-                  <th>Product name</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
+                  <th>Artist Name</th>
+                  <th>Description</th>
+                  <th>Genre</th>
               </tr>`;
 
   //For every product in the array, write the product number, display its image and name, and list price
@@ -68,9 +67,8 @@ console.log(artist_data);
                   /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
 pagestr +=`
                   <tr>
-                     <td>${i + 1}</td>
                       <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}</td>
-                      <td>\$${artist_data[i].description}</td>
+                      <td>${artist_data[i].description}</td>
                       <td>${artist_data[i].genre}</td>
       </tr>
       `;
@@ -92,6 +90,10 @@ pagestr +=`
   </footer>
   </html>`;
   res.send(pagestr);
+});
+
+app.post("/process_register", function (req, res) {
+console.log(req.body);
 });
 
 //Validation for the Login Information when Login Page is loaded
