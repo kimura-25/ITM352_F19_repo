@@ -3,13 +3,12 @@
 
 form {
     display: inline-block;
-    background-color: tan;
-    border: ivory;
+    background-color: ivory;
+    border: black;
     border-style: solid;
     border-width: 5px;
 
 }
 body{
     font-family:'Open Sans',sans-serif; /*font is Open-Sans*/
-    background: url(./images/background.jpg); /*Background image is from the ./public/images folder*/
 }
