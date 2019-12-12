@@ -53,7 +53,7 @@ app.post("/submit_request", function (req,res){
 <body>
   <div>
     <h2>Your request has been processed</h2>
-    <button type="button" onclick="window.location.href = '/artist_search';">Return to search</button>
+    <button type="button" onclick="window.location.href = '/artist_all.html';">Return to search</button>
   </div>
 
 </body>
@@ -97,6 +97,7 @@ app.get("/artist_all.html", function (req,res){
   </head>
   <header>
       <h1>Pasifika Artist Network</h1>
+      <h2>Search results for ${req.query.name}</h2>
   </header>
   <div><main>
   <body>
@@ -109,7 +110,7 @@ app.get("/artist_all.html", function (req,res){
 
   //For every product in the array, write the product number, display its image and name, and list price
                   for (i = 0; i < artist_data.length; i++) { 
-                      if(artist_data[i].keyword == req.body.genre) {
+                      if(artist_data[i].keyword == req.query.genre) {
                   /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
 pagestr +=`
                 <form action="/artist_single.html" method="GET">
@@ -125,7 +126,23 @@ pagestr +=`
       </form>
       `;
     }
-                  }
+    else {
+      /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
+pagestr +=`
+    <form action="/artist_single.html" method="GET">
+      <tr>
+          <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
+          <br>
+          <input type="hidden" name="artist_index" value="${i}">
+          <input type="submit" value="More Info" name="button${artist_data[i].name}"></td>
+          <td>${artist_data[i].description}</td>
+          <td>${artist_data[i].genre}</td>
+          
+</tr>
+</form>
+`;
+}   
+  }
 
                   pagestr +=`
               </script>
@@ -423,7 +440,7 @@ app.post("/artist_search", function (req, res) {
   }
 
   //if data is valid and no errors, save the data to the file and redirect to invoice
-
+/*
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
@@ -453,7 +470,7 @@ app.post("/artist_search", function (req, res) {
                   for (i = 0; i < artist_data.length; i++) { 
                       if(artist_data[i].keyword == req.body.genre) {
                   /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
-pagestr +=`
+/*pagestr +=`
                 <form action="/artist_single.html" method="GET">
                   <tr>
                       <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
@@ -482,14 +499,14 @@ pagestr +=`
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
-
+*/
 
   if (errors.length == 0) { //if there are no errors
     console.log(req.body.genre); //to double check if statement working
     req.query.username = reguser; //put username in querystring
     req.query.name = req.body.name; //put name into querystring
     req.query.genre = req.body.genre; //put genre into querystring
-    res.send(pagestr); //redirect to the artist page
+    res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
   }
   //add errors to querystring (for purpose of putting back into textbox)
   else { //if there is one or more errors
