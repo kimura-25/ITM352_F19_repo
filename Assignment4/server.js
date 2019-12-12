@@ -36,30 +36,108 @@ if (fs.existsSync(filename1)) { //only open if file exists
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
 }
 
-app.post("/submit_request", function (req,res){
-  console.log('requested!');
+app.get("/submit_request", function (req,res){
+  console.log(req.query.request_notes);
+  console.log(req.query.date);
+  pagestr = `
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Request confirmed</title>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+      <link rel="stylesheet" href="form-style.css">
+  </head>  
+<body>
+  <div>
+    <h2>Your request has been processed</h2>
+    <button type="button">Return to search</button>
+  </div>
+
+</body>
+</html>`;
+  res.send(pagestr);
+});
+
+
+app.get("/artist_all.html", function (req,res){
+pagestr = `
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Artist All</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+    <link rel="stylesheet" href="form-style.css">
+</head>
+<header>
+    <h1>Pasifika Artist Network</h1>
+</header>
+<div><main>
+<body>
+        <table cellpadding="10" border="1" bgcolor="#FFA500">
+            <tr>
+                <th>Artist Name</th>
+                <th>Description</th>
+                <th>Genre</th>
+            </tr>`;
+
+//For every product in the array, write the product number, display its image and name, and list price
+                for (i = 0; i < artist_data.length; i++) { 
+                /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
+pagestr +=`
+                <tr>
+                    <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}<br><button type="button" id="button${artist_data[i]}" onclick="window.location.href = 'artist_single.html';">More info</button></td>
+                    <td>${artist_data[i].description}</td>
+                    <td>${artist_data[i].genre}</td>
+                    
+    </tr>
+    `;
+    
+                }
+
+                pagestr +=`
+            </script>
+
+        </table>
+
+
+</main></div>
+</body>
+<br>
+<footer>
+ <h2>Pasifika Artists Network LLC</h2>
+</footer>
+</html>`;
+
 }); 
 
 app.get("/artist_single.html", function (req,res){
-  console.log('single artist page');
-    pagestr = `
+  console.log('single artist page', req.query);
+  index = req.query.artist_index;
+  pagestr = `
     <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>${artist_data[0].name}</title>
+        <title>${artist_data[index].name}</title>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
         <link rel="stylesheet" href="form-style.css">
     </head>  
     <h1>Pasifika Artist Network</h1>
 <body>
     <div>
-        <h1>${artist_data[0].name}</h1>
-        <br><img src="${artist_data[0].image}">
+        <h1>${artist_data[index].name}</h1>
+        <br><img src="${artist_data[index].image}">
         <br>
-        <p>${artist_data[0].bio}</p>
+        <p>${artist_data[index].bio}</p>
         <button type="button" onclick="window.location.href = '/request';">Request artist</button>
     </div>
 
@@ -73,7 +151,6 @@ res.redirect('/request.html')
 });
 
 app.get("/artist_all.html", function (req,res){
-  console.log(req.body);
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">
@@ -128,6 +205,7 @@ pagestr +=`
   res.send(pagestr);
 });
 
+
 /*app.post("/process_register", function (req, res) {
 console.log('hi');
 res.redirect('/artist_all.html');
@@ -170,8 +248,8 @@ app.post("/login.html", function (req, res) {
 }
 );
 
-app.post("/process_register", function (req, res) {
-  // Process registration form POST and redirect to invoice if ok, back to registration page if not
+app.post("/artist_search", function (req, res) {
+  // Process registration form POST and redirect to artist search page if ok, back to registration page if not
   //validate registration data
 
   //to log what was entered in the textboxes
@@ -315,12 +393,73 @@ app.post("/process_register", function (req, res) {
   }
 
   //if data is valid and no errors, save the data to the file and redirect to invoice
+
+  pagestr = `
+  <!DOCTYPE html>
+  <html lang="en">`;
+
+  pagestr +=`
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Artist All</title>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+      <link rel="stylesheet" href="form-style.css">
+  </head>
+  <header>
+      <h1>Pasifika Artist Network</h1>
+  </header>
+  <div><main>
+  <body>
+          <table cellpadding="10" border="1" bgcolor="#FFA500">
+              <tr>
+                  <th>Artist Name</th>
+                  <th>Description</th>
+                  <th>Genre</th>
+              </tr>`;
+
+  //For every product in the array, write the product number, display its image and name, and list price
+                  for (i = 0; i < artist_data.length; i++) { 
+                      if(artist_data[i].keyword == req.body.genre) {
+                  /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
+pagestr +=`
+                <form action="/artist_single.html" method="GET">
+                  <tr>
+                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
+                      <br>
+                      <input type="hidden" name="artist_index" value="${i}">
+                      <input type="submit" value="More Info" name="button${artist_data[i].name}"></td>
+                      <td>${artist_data[i].description}</td>
+                      <td>${artist_data[i].genre}</td>
+                      
+      </tr>
+      </form>
+      `;
+    }
+                  }
+
+                  pagestr +=`
+              </script>
+  
+          </table>
+
+  
+  </main></div>
+  </body>
+  <br>
+  <footer>
+   <h2>Pasifika Artists Network LLC</h2>
+  </footer>
+  </html>`;
+
+
   if (errors.length == 0) { //if there are no errors
-    console.log('none!'); //to double check if statement working
+    console.log(req.body.genre); //to double check if statement working
     req.query.username = reguser; //put username in querystring
     req.query.name = req.body.name; //put name into querystring
     req.query.genre = req.body.genre; //put genre into querystring
-    res.redirect('./artist_all.html?' + querystring.stringify(req.query)) //redirect to the artist page
+    res.send(pagestr); //redirect to the artist page
   }
   //add errors to querystring (for purpose of putting back into textbox)
   else { //if there is one or more errors
@@ -330,7 +469,6 @@ app.post("/process_register", function (req, res) {
     req.query.password = req.body.password; //put password into querystring
     req.query.confirmpsw = req.body.confirmpsw; //put confirm password into querystring
     req.query.email = req.body.email; //put email back into querystring
-    req.query.address = req.body.address; //put address back into querystring
     req.query.phone = req.body.phone; //put phone number back into querystring
 
     req.query.errors = errors.join(';'); //join all errors together into querystring
