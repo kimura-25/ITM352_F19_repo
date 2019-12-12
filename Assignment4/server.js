@@ -81,57 +81,68 @@ res.send(pagestr)
 
 
 app.get("/artist_all.html", function (req,res){
-pagestr = `
-<!DOCTYPE html>
-<html lang="en">
+  console.log('artist all', req.query);
+  pagestr = `
+  <!DOCTYPE html>
+  <html lang="en">`;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Artist All</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
-    <link rel="stylesheet" href="form-style.css">
-</head>
-<header>
-    <h1>Pasifika Artist Network</h1>
-</header>
-<div><main>
-<body>
-        <table cellpadding="10" border="1" bgcolor="#FFA500">
-            <tr>
-                <th>Artist Name</th>
-                <th>Description</th>
-                <th>Genre</th>
-            </tr>`;
+  pagestr +=`
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Artist All</title>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+      <link rel="stylesheet" href="form-style.css">
+  </head>
+  <header>
+      <h1>Pasifika Artist Network</h1>
+  </header>
+  <div><main>
+  <body>
+          <table cellpadding="10" border="1" bgcolor="#FFA500">
+              <tr>
+                  <th>Artist Name</th>
+                  <th>Description</th>
+                  <th>Genre</th>
+              </tr>`;
 
-//For every product in the array, write the product number, display its image and name, and list price
-                for (i = 0; i < artist_data.length; i++) { 
-                /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
+  //For every product in the array, write the product number, display its image and name, and list price
+                  for (i = 0; i < artist_data.length; i++) { 
+                      if(artist_data[i].keyword == req.body.genre) {
+                  /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
 pagestr +=`
-                <tr>
-                    <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}<br><button type="button" id="button${artist_data[i]}" onclick="window.location.href = 'artist_single.html';">More info</button></td>
-                    <td>${artist_data[i].description}</td>
-                    <td>${artist_data[i].genre}</td>
-                    
-    </tr>
-    `;
-    
-                }
+                <form action="/artist_single.html" method="GET">
+                  <tr>
+                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
+                      <br>
+                      <input type="hidden" name="artist_index" value="${i}">
+                      <input type="submit" value="More Info" name="button${artist_data[i].name}"></td>
+                      <td>${artist_data[i].description}</td>
+                      <td>${artist_data[i].genre}</td>
+                      
+      </tr>
+      </form>
+      `;
+    }
+                  }
 
-                pagestr +=`
-            </script>
+                  pagestr +=`
+              </script>
+  
+          </table>
 
-        </table>
+  
+  </main></div>
+  </body>
+  <br>
+  <footer>
+   <h2>Pasifika Artists Network LLC</h2>
+  </footer>
+  </html>`;
 
+  res.send(pagestr);
 
-</main></div>
-</body>
-<br>
-<footer>
- <h2>Pasifika Artists Network LLC</h2>
-</footer>
-</html>`;
 
 }); 
 
@@ -168,7 +179,7 @@ app.get("/request", function (req,res){
 res.redirect('/request.html')
 });
 
-app.get("/artist_all.html", function (req,res){
+/*app.get("/artist_all.html", function (req,res){
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">
@@ -196,7 +207,7 @@ app.get("/artist_all.html", function (req,res){
   //For every product in the array, write the product number, display its image and name, and list price
                   for (i = 0; i < artist_data.length; i++) { 
                   /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
-pagestr +=`
+/*pagestr +=`
                   <tr>
                       <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}<br><button type="button" id="button${artist_data[i]}" onclick="window.location.href = 'artist_single.html';">More info</button></td>
                       <td>${artist_data[i].description}</td>
@@ -222,6 +233,7 @@ pagestr +=`
   </html>`;
   res.send(pagestr);
 });
+
 
 
 /*app.post("/process_register", function (req, res) {
