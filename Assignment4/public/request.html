@@ -3,12 +3,18 @@
 
 <script>
 
-/*let params = (new URL(document.location)).searchParams; //params is a variable, 
+let params = (new URL(document.location)).searchParams; //params is a variable, 
 
 window.onload = function(){
-    if (params.has(''))
+    if (params.has('artist_request')){
+
+    }
+    else{
+        alert('Please select an artist');
+        window.location='/artist_all.html' + window.location.search;
+    }
 }
-*/
+
 
 /*Validating Date is after today*/
 //Source: https://www.codexworld.com/how-to/check-given-date-is-greater-than-today-javascript/

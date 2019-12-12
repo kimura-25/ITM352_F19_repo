@@ -163,6 +163,7 @@ pagestr +=`
 }); 
 
 app.get("/artist_single.html", function (req,res){
+  if(req.query.artist_index !== undefined){
   console.log('single artist page', req.query);
   index = req.query.artist_index;
   pagestr = `
@@ -183,7 +184,9 @@ app.get("/artist_single.html", function (req,res){
         <br><img src="${artist_data[index].image}">
         <br>
         <p>${artist_data[index].bio}</p>
-<form action = "/request">
+
+<form action = '/request.html' + + querystring.stringify(req.query)>
+<input type="hidden" name="artist_request" value="${artist_data[index].name}">
 <input type="submit" value="Request artist"></td>
   </form>
         </div>
@@ -191,10 +194,15 @@ app.get("/artist_single.html", function (req,res){
 </body>
 </html>`;
     res.send(pagestr);
+  }
+  else{
+    res.redirect('artist_all.html')
+  }
   });
 
 app.get("/request", function (req,res){
 res.redirect('/request.html')
+console.log(req.query);
 });
 
 /*app.get("/artist_all.html", function (req,res){
