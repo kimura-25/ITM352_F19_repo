@@ -2,14 +2,21 @@
 <html lang="en">
 
 <script>
+/*Validating Date is after today*/
+//Source: https://www.codexworld.com/how-to/check-given-date-is-greater-than-today-javascript/
 
-function checkdate(){
-console.log('uhh');
+function checkdate() {
+    var d = new Date(date.value);
+    console.log(date);
+    var t = new Date()
+    console.log(t + d);
+    if(d <= t){
+        console.log('nogoodday');
+        alert('Given date is greater than the current date.');
+    }
 }
 
-
 </script>
-
 
 <head>
     <meta charset="UTF-8">
@@ -21,13 +28,26 @@ console.log('uhh');
 </head>
 
 <body>
-    <form name="request_form" method="GET" action="submit_request">
+    <form name="request_form" method="POST" action="submit_request">
+        <label for="name"><b>Name</b></label>
+        <input type="text" name="name" maxlength="30" onkeyup="" required><br>
+        <label for="namelabel" id="namelabel"></label>
+        <br>
+        <label for="email"><b>Email Address</b></label>
+        <input type="email" id="email" name="email" onkeyup="" required><br>
+        <label for="emaillabel" id="emaillabel"></label>
+        <br>
+        <label for="phone"><b>Phone Number</b></label>
+        <input type="text" name="phone" maxlength="30" onkeyup="" required><br>
+        <label for="phonelabel" id="phonelabel"></label>
+        <br>
         <label for="date">Date of Request</label>
         <br>
         <input type="date" id="date" name="date" onclick="checkdate()" required>
         <br>
         <br>
-        <label for="request_notes">Please describe the details of the event (location, time, specific requests, etc.)</label>
+        <label for="request_notes">Please describe the details of the event (location, time, specific requests,
+            etc.)</label>
         <br>
         <input type="text" id="request_notes" name="request_notes" style="height:200px;width:400px;">
         <br>

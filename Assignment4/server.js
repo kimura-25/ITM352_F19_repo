@@ -36,9 +36,9 @@ if (fs.existsSync(filename1)) { //only open if file exists
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
 }
 
-app.get("/submit_request", function (req,res){
+app.post("/submit_request", function (req,res){  
   console.log(req.query.request_notes);
-  console.log(req.query.date);
+  console.log(req.query.date);  
   pagestr = `
   <!DOCTYPE html>
 <html lang="en">
@@ -53,12 +53,30 @@ app.get("/submit_request", function (req,res){
 <body>
   <div>
     <h2>Your request has been processed</h2>
-    <button type="button">Return to search</button>
+    <button type="button" onclick="window.location.href = '/artist_search';">Return to search</button>
   </div>
 
 </body>
 </html>`;
-  res.send(pagestr);
+res.send(pagestr)
+/*
+  if (errors.length == 0) { //if there are no errors
+    console.log(req.body.genre); //to double check if statement working
+    req.query.name = req.body.name; //put name into querystring
+    req.query.genre = req.body.genre; //put genre into querystring
+    res.send(pagestr); //redirect to the artist page
+  }
+  //add errors to querystring (for purpose of putting back into textbox)
+  else { //if there is one or more errors
+    console.log(errors) //to double check if statement working
+    req.query.name = req.body.name; //put name in querystring
+    req.query.email = req.body.email; //put email back into querystring
+    req.query.phone = req.body.phone; //put phone number back into querystring
+
+    req.query.errors = errors.join(';'); //join all errors together into querystring
+    res.redirect('./request.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
+  }
+  */
 });
 
 
