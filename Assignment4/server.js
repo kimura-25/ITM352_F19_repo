@@ -117,7 +117,8 @@ pagestr +=`
                       <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
                       <br>
                       <input type="hidden" name="artist_index" value="${i}">
-                      <input type="submit" value="More Info" name="button${artist_data[i].name}"></td>
+                      <input type="hidden" name="name" value=${req.query.name}>
+                      <input type="submit" value="More Info" name="${artist_data[i].name}"></td>
                       <td>${artist_data[i].description}</td>
                       <td>${artist_data[i].genre}</td>
                       
@@ -133,6 +134,7 @@ pagestr +=`
           <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
           <br>
           <input type="hidden" name="artist_index" value="${i}">
+          <input type="hidden" name="name" value=${req.query.name}>
           <input type="submit" value="More Info" name="button${artist_data[i].name}"></td>
           <td>${artist_data[i].description}</td>
           <td>${artist_data[i].genre}</td>
@@ -203,69 +205,8 @@ app.get("/artist_single.html", function (req,res){
 app.get("/request", function (req,res){
 res.redirect('/request.html')
 console.log(req.query);
+request_name = req.query.name;
 });
-
-/*app.get("/artist_all.html", function (req,res){
-  pagestr = `
-  <!DOCTYPE html>
-  <html lang="en">
-  
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Artist All</title>
-      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
-      <link rel="stylesheet" href="form-style.css">
-  </head>
-  <header>
-      <h1>Pasifika Artist Network</h1>
-  </header>
-  <div><main>
-  <body>
-          <table cellpadding="10" border="1" bgcolor="#FFA500">
-              <tr>
-                  <th>Artist Name</th>
-                  <th>Description</th>
-                  <th>Genre</th>
-              </tr>`;
-
-  //For every product in the array, write the product number, display its image and name, and list price
-                  for (i = 0; i < artist_data.length; i++) { 
-                  /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
-/*pagestr +=`
-                  <tr>
-                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}<br><button type="button" id="button${artist_data[i]}" onclick="window.location.href = 'artist_single.html';">More info</button></td>
-                      <td>${artist_data[i].description}</td>
-                      <td>${artist_data[i].genre}</td>
-                      
-      </tr>
-      `;
-      
-                  }
-
-                  pagestr +=`
-              </script>
-  
-          </table>
-
-  
-  </main></div>
-  </body>
-  <br>
-  <footer>
-   <h2>Pasifika Artists Network LLC</h2>
-  </footer>
-  </html>`;
-  res.send(pagestr);
-});
-
-
-
-/*app.post("/process_register", function (req, res) {
-console.log('hi');
-res.redirect('/artist_all.html');
-});*/
 
 
 //Validation for the Login Information when Login Page is loaded

@@ -4,6 +4,9 @@
 <script>
 
 let params = (new URL(document.location)).searchParams; //params is a variable, 
+GET = {}; //GET is an empty object
+params.forEach(function (value, key) { GET[key] = value }); // the value is equal to the object of GET
+
 
 window.onload = function(){
     if (params.has('artist_request')){
