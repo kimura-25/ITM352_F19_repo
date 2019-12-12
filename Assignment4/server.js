@@ -97,7 +97,6 @@ app.get("/artist_all.html", function (req,res){
   </head>
   <header>
       <h1>Pasifika Artist Network</h1>
-      <h2>Search results for ${req.query.name}</h2>
   </header>
   <div><main>
   <body>
@@ -184,8 +183,10 @@ app.get("/artist_single.html", function (req,res){
         <br><img src="${artist_data[index].image}">
         <br>
         <p>${artist_data[index].bio}</p>
-        <button type="button" onclick="window.location.href = '/request';">Request artist</button>
-    </div>
+<form action = "/request">
+<input type="submit" value="Request artist"></td>
+  </form>
+        </div>
 
 </body>
 </html>`;
