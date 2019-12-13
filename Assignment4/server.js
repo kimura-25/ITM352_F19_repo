@@ -99,6 +99,7 @@ app.get("/artist_all.html", function (req,res){
 </div>
 
 <div class="navbar">
+  <a href="./search.html">Search</a>
   <a href="./my_list.html">My List</a>
 </div>
 <br>
@@ -216,6 +217,10 @@ app.get("/artist_single.html", function (req,res){
         <link rel="stylesheet" href="form-style.css">
     </head>  
     <h1>Pasifika Artist Network</h1>
+    <div class="navbar">
+  <a href="./search.html">Search</a>
+  <a href="./my_list.html">My List</a>
+</div>
 <body>
 <form action = '/login.html' + querystring.stringify(req.query)>
 
