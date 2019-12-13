@@ -193,7 +193,6 @@ console.log(req.query);
                       <input type="submit" value="More Info" name="${artist_data[fav_artist[0]].name}"></td>
                       <td>${artist_data[fav_artist[0]].description}</td>
                       <td>${artist_data[fav_artist[0]].genre}</td>
-                      
       </tr>
       </form>
               </script>
