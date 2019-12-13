@@ -9,13 +9,17 @@ params.forEach(function (value, key) { GET[key] = value }); // the value is equa
 
 
 window.onload = function(){
-    if (params.has('artist_request')){
+    if (params.has('request_errors')){
+        request_form['date'].value = params.get('date');
+        console.log('hi');
+    }
+/*    if (params.has('artist_request')){
 
     }
     else{
         alert('Please select an artist');
         window.location='/artist_all.html' + window.location.search;
-    }
+    }*/
 }
 
 
@@ -29,7 +33,11 @@ function checkdate() {
     console.log(t + d);
     if(d <= t){
         console.log('nogoodday');
-        alert('Given date is greater than the current date.');
+        document.getElementById("dateerror").innerHTML =  '<font color="red">Date has already passed. Please select a future date.</font>'
+    }
+    else{
+        document.getElementById("dateerror").innerHTML = " "
+
     }
 }
 
@@ -45,22 +53,12 @@ function checkdate() {
 </head>
 
 <body>
-    <form name="request_form" method="POST" action="submit_request">
-        <label for="name"><b>Name</b></label>
-        <input type="text" name="name" maxlength="30" onkeyup="" required><br>
-        <label for="namelabel" id="namelabel"></label>
-        <br>
-        <label for="email"><b>Email Address</b></label>
-        <input type="email" id="email" name="email" onkeyup="" required><br>
-        <label for="emaillabel" id="emaillabel"></label>
-        <br>
-        <label for="phone"><b>Phone Number</b></label>
-        <input type="text" name="phone" maxlength="30" onkeyup="" required><br>
-        <label for="phonelabel" id="phonelabel"></label>
-        <br>
+    <form name="request_form" method="POST" action="./submit_request">
         <label for="date">Date of Request</label>
         <br>
         <input type="date" id="date" name="date" onclick="checkdate()" required>
+        <br>
+        <label for="dateerror" id="dateerror" name="dateerror"></label>
         <br>
         <br>
         <label for="request_notes">Please describe the details of the event (location, time, specific requests,

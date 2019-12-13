@@ -53,6 +53,15 @@
                 var phoneerrors = params.get('phoneerrors'); //make variable phone errors
                 document.getElementById("phonelabel").innerHTML = phoneerrors; //write email errors where occur
             }
+/*            if (params.has('artist_request')) {
+                var artist_request = params.get('artist_request');
+                console.log(artist_request)
+                artist_request2.value = artist_request;
+            }
+            else {
+                alert('Please select an artist');
+                window.location = '/artist_all.html' + window.location.search;
+            } */
         }
 
     </script>
@@ -70,7 +79,7 @@
 /*Help from https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_password*/ -->
         <!-- Help from https://www.w3schools.com/howto/howto_css_login_form.asp -->
         <!-- Code for Maximum Length of Text: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text -->
-        <form name="Register" method="POST" action="/artist_search">
+        <form name="Register" method="POST" action="/submit_register">
             Registration Page <br> <br>
             <div class="container">
                 <label for="name"><b>Name</b></label>
@@ -98,30 +107,7 @@
                 <input type="text" name="phone" maxlength="30" onkeyup="" required><br>
                 <label for="phonelabel" id="phonelabel"></label>
                 <br>
-                <label for="genre" required><b>What genre are you looking for?</b></label>
-                <br>
-                <!-- Code for Dropdown Menu: https://www.w3schools.com/html/html_form_elements.asp -->
-                <select name="genre" id="genre" size="1">
-                        <option name="select_genre" value="select_genre">Select Genre</option>
-                        <option name="pacificroots" value="pacificroots">Pacific Roots</option>
-                        <option name="guitar" value="guitar">Guitar & 'Ukulele Masters</option>
-                        <option name="contemporary" value="contemporary">Island Contemporary</option>
-                        <option name="vocal" value="vocal">Vocal & Island Harmonies</option>
-                        <option name="taiko" value="taiko">Taiko Master</option>
-                        <option name="dance" value="dance">Dance & Hula</option>
-                        <option name="spokenword" value="spokenword">Spoken Word</option>
-                </select>
-                <br>
-                <br>
-                <label for="artistname"><b>Any specific artist?</b></label>
-                <br>
-                <select name="artistname" size="1">
-                    <option value="aotearoa">Aotearoa's Finest</option>
-                    <option value="raiatea">Raiatea Helm</option>
-                    <option value="kahumoku">George Kahumoku Jr.</option>
-                    <option value="kapono">Henry Kapono</option>
-                    <option value="kalani">Kalani Pe'a</option>
-                </select>
+                <input type="hidden" name="artist_request2" id="artist_request2">
                 <br>
                 <br>
                 <input type="submit" name="submit" value="Register">

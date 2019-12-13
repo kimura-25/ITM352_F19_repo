@@ -7,6 +7,8 @@ const querystring = require('querystring'); // requiring a query string - string
 var product_data = require('./public/product_data.js'); //using data from artist_data.js
 var app = express(); //run the express function and start express
 var parser = require('body-parser');
+var session = require('express-session');
+
 
 
 app.use(parser.urlencoded({ extended: true })); // decode, now request.body will exist
@@ -37,8 +39,23 @@ if (fs.existsSync(filename1)) { //only open if file exists
 }
 
 app.post("/submit_request", function (req,res){  
-  console.log(req.query.request_notes);
-  console.log(req.query.date);  
+  req.query.request_notes = req.body.request_notes;
+  req.query.date = req.body.date;
+  var request_errors = []; //to store all errors
+
+    var d = new Date(req.query.date);
+    var t = new Date()
+    console.log(t + d);
+    if(d <= t){
+      request_errors.push = ('Pick another date');
+      console.log(request_errors);
+      req.query.date = req.body.date;
+      req.query.request_notes = req.body.request_notes;
+      res.redirect('./request.html?' + querystring.stringify(req.query));
+      return
+    }
+
+
   pagestr = `
   <!DOCTYPE html>
 <html lang="en">
@@ -53,35 +70,89 @@ app.post("/submit_request", function (req,res){
 <body>
   <div>
     <h2>Your request has been processed</h2>
-    <button type="button" onclick="window.location.href = '/artist_all.html';">Return to search</button>
+    <button type="button" onclick="window.location.href = '/search.html';">Return to search</button>
   </div>
 
 </body>
 </html>`;
 res.send(pagestr)
-/*
-  if (errors.length == 0) { //if there are no errors
-    console.log(req.body.genre); //to double check if statement working
-    req.query.name = req.body.name; //put name into querystring
-    req.query.genre = req.body.genre; //put genre into querystring
-    res.send(pagestr); //redirect to the artist page
-  }
-  //add errors to querystring (for purpose of putting back into textbox)
-  else { //if there is one or more errors
-    console.log(errors) //to double check if statement working
-    req.query.name = req.body.name; //put name in querystring
-    req.query.email = req.body.email; //put email back into querystring
-    req.query.phone = req.body.phone; //put phone number back into querystring
 
-    req.query.errors = errors.join(';'); //join all errors together into querystring
-    res.redirect('./request.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
-  }
-  */
 });
 
 
 app.get("/artist_all.html", function (req,res){
   console.log('artist all', req.query);
+  pagestr = `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Artist All</title>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+      <link rel="stylesheet" href="form-style.css">
+  </head>
+  <header>
+      <h1>Pasifika Artist Network</h1>
+  </header>
+</div>
+
+<div class="navbar">
+  <a href="./my_list.html">My List</a>
+</div>
+<br>
+  <body>
+  <div><main>
+          <table cellpadding="10" border="1" bgcolor="#FFA500">
+              <tr>
+                  <th>Artist Name</th>
+                  <th>Description</th>
+                  <th>Genre</th>
+              </tr>`;
+
+  //For every product in the array, write the product number, display its image and name, and list price
+                  for (i = 0; i < artist_data.length; i++) { 
+                      if(req.query.genre == artist_data[i].keyword) {
+                  /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
+pagestr +=`
+                <form action="/artist_single.html" method="GET">
+                  <tr>
+                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
+                      <br>
+                      <input type="hidden" name="artist_index" value="${i}">
+                      <input type="submit" value="More Info" name="${artist_data[i].name}"></td>
+                      <td>${artist_data[i].description}</td>
+                      <td>${artist_data[i].genre}</td>
+                      
+      </tr>
+      </form>
+      `;
+    }
+
+  }
+
+                  pagestr +=`
+              </script>
+  
+          </table>
+
+  
+  </main></div>
+  </body>
+  <br>
+  <footer>
+   <h2>Pasifika Artists Network LLC</h2>
+  </footer>
+  </html>`;
+
+  res.send(pagestr);
+
+
+}); 
+
+app.get("/my_list.html", function (req,res){
+console.log(req.query);
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
@@ -105,52 +176,20 @@ app.get("/artist_all.html", function (req,res){
                   <th>Artist Name</th>
                   <th>Description</th>
                   <th>Genre</th>
-              </tr>`;
-
-  //For every product in the array, write the product number, display its image and name, and list price
-                  for (i = 0; i < artist_data.length; i++) { 
-                      if(artist_data[i].keyword == req.query.genre) {
-                  /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
-pagestr +=`
+              </tr>
                 <form action="/artist_single.html" method="GET">
                   <tr>
-                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
+                      <td><img src="${artist_data[0].image}"><br>${artist_data[0].name}
                       <br>
-                      <input type="hidden" name="artist_index" value="${i}">
-                      <input type="hidden" name="name" value=${req.query.name}>
-                      <input type="submit" value="More Info" name="${artist_data[i].name}"></td>
-                      <td>${artist_data[i].description}</td>
-                      <td>${artist_data[i].genre}</td>
+                      <input type="hidden" name="artist_request" value="${artist_data[0].name}">
+                      <input type="submit" value="More Info" name="${artist_data[0].name}"></td>
+                      <td>${artist_data[0].description}</td>
+                      <td>${artist_data[0].genre}</td>
                       
       </tr>
       </form>
-      `;
-    }
-    else {
-      /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
-pagestr +=`
-    <form action="/artist_single.html" method="GET">
-      <tr>
-          <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
-          <br>
-          <input type="hidden" name="artist_index" value="${i}">
-          <input type="hidden" name="name" value=${req.query.name}>
-          <input type="submit" value="More Info" name="button${artist_data[i].name}"></td>
-          <td>${artist_data[i].description}</td>
-          <td>${artist_data[i].genre}</td>
-          
-</tr>
-</form>
-`;
-}   
-  }
-
-                  pagestr +=`
               </script>
-  
           </table>
-
-  
   </main></div>
   </body>
   <br>
@@ -158,10 +197,7 @@ pagestr +=`
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
-
-  res.send(pagestr);
-
-
+res.send(pagestr);
 }); 
 
 app.get("/artist_single.html", function (req,res){
@@ -181,16 +217,18 @@ app.get("/artist_single.html", function (req,res){
     </head>  
     <h1>Pasifika Artist Network</h1>
 <body>
-    <div>
+<form action = '/login.html' + querystring.stringify(req.query)>
+
+<div>
         <h1>${artist_data[index].name}</h1>
         <br><img src="${artist_data[index].image}">
         <br>
         <p>${artist_data[index].bio}</p>
 
-<form action = '/request.html' + + querystring.stringify(req.query)>
-<input type="hidden" name="artist_request" value="${artist_data[index].name}">
-<input type="submit" value="Request artist"></td>
-  </form>
+<input type="hidden" name="artist_request" id="artist_request" value="${index}">
+<input type="submit" value="Request artist">
+  </form> 
+  <br>
         </div>
 
 </body>
@@ -208,13 +246,16 @@ console.log(req.query);
 request_name = req.query.name;
 });
 
+app.post("/register.html", function (req, res) {
+  console.log(req.query.artist_request);
+});
 
 //Validation for the Login Information when Login Page is loaded
 app.post("/login.html", function (req, res) {
   // Process login form POST and redirect to invoice page if ok, back to login page if not
   //Code from Lab 14
-  var LogError = [];
   console.log(req.body);
+  var LogError = [];
   //To make username case insensitive
   //toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
   the_username = req.body.username.toLowerCase(); //username entered is case insensitive, assign to variable the_username
@@ -223,7 +264,7 @@ app.post("/login.html", function (req, res) {
     req.query.username = the_username; //adding the case insensitive username to the query
       console.log(users_reg_data[req.query.username].name); //logging the name to ensure if statement is working
       req.query.name = users_reg_data[req.query.username].name //adding the name for the registered user to the querystring
-      res.redirect('/artist_all.html?' + querystring.stringify(req.query)); //keeping the querystring when redirecting to the invoice
+      res.redirect('/request.html?' + querystring.stringify(req.query)); //keeping the querystring when redirecting to the invoice
       return; //ending the if statement
     } else{ // if the password does not match what is in the registration data for the given username
       LogError.push = ('Invalid Password'); //push login error for invalid password
@@ -245,7 +286,13 @@ app.post("/login.html", function (req, res) {
 }
 );
 
-app.post("/artist_search", function (req, res) {
+app.post("/search_artist", function (req,res){    
+req.query.genre = req.body.genre;
+console.log(req.query.genre);
+res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
+});
+
+app.post("/submit_register", function (req, res) {
   // Process registration form POST and redirect to artist search page if ok, back to registration page if not
   //validate registration data
 
@@ -389,74 +436,12 @@ app.post("/artist_search", function (req, res) {
     req.query.phoneerrors = phoneerrors.join(';'); //join phone errors together
   }
 
-  //if data is valid and no errors, save the data to the file and redirect to invoice
-/*
-  pagestr = `
-  <!DOCTYPE html>
-  <html lang="en">`;
-
-  pagestr +=`
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Artist All</title>
-      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
-      <link rel="stylesheet" href="form-style.css">
-  </head>
-  <header>
-      <h1>Pasifika Artist Network</h1>
-  </header>
-  <div><main>
-  <body>
-          <table cellpadding="10" border="1" bgcolor="#FFA500">
-              <tr>
-                  <th>Artist Name</th>
-                  <th>Description</th>
-                  <th>Genre</th>
-              </tr>`;
-
-  //For every product in the array, write the product number, display its image and name, and list price
-                  for (i = 0; i < artist_data.length; i++) { 
-                      if(artist_data[i].keyword == req.body.genre) {
-                  /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
-/*pagestr +=`
-                <form action="/artist_single.html" method="GET">
-                  <tr>
-                      <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
-                      <br>
-                      <input type="hidden" name="artist_index" value="${i}">
-                      <input type="submit" value="More Info" name="button${artist_data[i].name}"></td>
-                      <td>${artist_data[i].description}</td>
-                      <td>${artist_data[i].genre}</td>
-                      
-      </tr>
-      </form>
-      `;
-    }
-                  }
-
-                  pagestr +=`
-              </script>
-  
-          </table>
-
-  
-  </main></div>
-  </body>
-  <br>
-  <footer>
-   <h2>Pasifika Artists Network LLC</h2>
-  </footer>
-  </html>`;
-*/
-
   if (errors.length == 0) { //if there are no errors
     console.log(req.body.genre); //to double check if statement working
     req.query.username = reguser; //put username in querystring
     req.query.name = req.body.name; //put name into querystring
     req.query.genre = req.body.genre; //put genre into querystring
-    res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
+    res.redirect('./request.html?' + querystring.stringify(req.query)); //redirect to the artist page
   }
   //add errors to querystring (for purpose of putting back into textbox)
   else { //if there is one or more errors
