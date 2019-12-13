@@ -102,6 +102,8 @@ app.get("/artist_all.html", function (req,res){
   <a href="./search.html">Search</a>
   <a href="./my_list.html">My List</a>
 </div>
+<p>You have _ Search Results</p>
+
 <br>
   <body>
   <div><main>
@@ -115,6 +117,7 @@ app.get("/artist_all.html", function (req,res){
   //For every product in the array, write the product number, display its image and name, and list price
                   for (i = 0; i < artist_data.length; i++) { 
                       if(req.query.genre == artist_data[i].keyword) {
+
                   /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
 pagestr +=`
                 <form action="/artist_single.html" method="GET">
