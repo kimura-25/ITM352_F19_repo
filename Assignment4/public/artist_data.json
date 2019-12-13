@@ -1,5 +1,6 @@
 [
     {
+        "artist_id": "0",
         "name": "Aotearoa's Finest", 
         "image": "./images/AotearoasFinest.jpg", 
         "description": "“distinctive New Zealand voice… masters of this new generation” Leading singer/songwriters fuse cultural roots with today",
@@ -8,6 +9,7 @@
         "keyword": "pacificroots"
     },
     {
+        "artist_id": "1",
         "name": "Raiatea Helm", 
         "image": "./images/raiatea.jpg", 
         "description": "“sings in the high-voiced throwback leo ki‘eki‘e [Hawaiian falsetto] style … poised and utterly elegant.” –New York Times Native Arts & Cultures Foundation Fellow",
@@ -16,6 +18,7 @@
         "keyword": "vocal"
     },
     {
+        "artist_id": "2",
         "name": "George Kahumoku Jr.", 
         "image": "./images/kahumoku.jpg", 
         "description": "“Kahumoku was an affable raconteur, mixing his dialogue with passionate renderings of material…” –LA Times",
@@ -24,6 +27,7 @@
         "keyword": "guitar"
     },
     {
+        "artist_id": "3",
         "name": "Henry Kapono", 
         "image": "./images/kapono.jpg", 
         "description": "“Kapono is one of the great island songwriters of his generation.” - Star Advertiser",
@@ -32,6 +36,7 @@
         "keyword": "contemporary"
     },
     {
+        "artist_id": "4",
         "name": "Kalani Pe'a", 
         "image": "./images/kalani.jpg", 
         "description": "“…a gorgeous voice major, innovative figure in contemporary Hawaiian music.”—Maui News <br> Native Arts & Cultures Foundation Fellow",

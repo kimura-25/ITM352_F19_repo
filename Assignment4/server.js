@@ -9,8 +9,7 @@ var app = express(); //run the express function and start express
 var parser = require('body-parser');
 var session = require('express-session');
 
-
-
+app.use(session({secret: "anything"}));
 app.use(parser.urlencoded({ extended: true })); // decode, now request.body will exist
 
 //Login Server code from Lab 14
@@ -99,7 +98,7 @@ app.get("/artist_all.html", function (req,res){
 </div>
 
 <div class="navbar">
-  <a href="./search.html">Search</a>
+  <a href="./search.html">Back to Search</a>
   <a href="./my_list.html">My List</a>
 </div>
 <p>You have _ Search Results</p>
@@ -117,7 +116,6 @@ app.get("/artist_all.html", function (req,res){
   //For every product in the array, write the product number, display its image and name, and list price
                   for (i = 0; i < artist_data.length; i++) { 
                       if(req.query.genre == artist_data[i].keyword) {
-
                   /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
 pagestr +=`
                 <form action="/artist_single.html" method="GET">
@@ -125,7 +123,12 @@ pagestr +=`
                       <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
                       <br>
                       <input type="hidden" name="artist_index" value="${i}">
-                      <input type="submit" value="More Info" name="${artist_data[i].name}"></td>
+                      <input type="submit" value="More Info" name="${artist_data[i].name}">
+                      <br>
+                      <br>
+                      <input type="checkbox" id="fav_artist${i}" name="fav_artist${i}">
+                      <label for="fav_artist${i}" name="fav_artist${i}" name="fav_artist${i}">Add to Favorites</label>
+                      </td>
                       <td>${artist_data[i].description}</td>
                       <td>${artist_data[i].genre}</td>
                       
@@ -152,10 +155,11 @@ pagestr +=`
 
   res.send(pagestr);
 
-
 }); 
 
 app.get("/my_list.html", function (req,res){
+  fav_artist = req.session.fav_artist;
+  console.log(fav_artist);
 console.log(req.query);
   pagestr = `
   <!DOCTYPE html>
@@ -183,12 +187,12 @@ console.log(req.query);
               </tr>
                 <form action="/artist_single.html" method="GET">
                   <tr>
-                      <td><img src="${artist_data[0].image}"><br>${artist_data[0].name}
+                      <td><img src="${artist_data[fav_artist[0]].image}"><br>${artist_data[fav_artist[0]].name}
                       <br>
-                      <input type="hidden" name="artist_request" value="${artist_data[0].name}">
-                      <input type="submit" value="More Info" name="${artist_data[0].name}"></td>
-                      <td>${artist_data[0].description}</td>
-                      <td>${artist_data[0].genre}</td>
+                      <input type="hidden" name="artist_request" value="${artist_data[fav_artist[0]].name}">
+                      <input type="submit" value="More Info" name="${artist_data[fav_artist[0]].name}"></td>
+                      <td>${artist_data[fav_artist[0]].description}</td>
+                      <td>${artist_data[fav_artist[0]].genre}</td>
                       
       </tr>
       </form>
@@ -208,6 +212,12 @@ app.get("/artist_single.html", function (req,res){
   if(req.query.artist_index !== undefined){
   console.log('single artist page', req.query);
   index = req.query.artist_index;
+    var fav_artist = [];
+  if(req.query["fav_artist" + index] != undefined){
+    fav_artist.push(index);
+    req.session.fav_artist = fav_artist;
+    console.log(req.session.fav_artist);
+  }
   pagestr = `
     <!DOCTYPE html>
 <html lang="en">
@@ -221,7 +231,7 @@ app.get("/artist_single.html", function (req,res){
     </head>  
     <h1>Pasifika Artist Network</h1>
     <div class="navbar">
-  <a href="./search.html">Search</a>
+  <a href="./search.html">Back to Search</a>
   <a href="./my_list.html">My List</a>
 </div>
 <body>
