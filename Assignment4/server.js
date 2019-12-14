@@ -14,7 +14,7 @@ var nodemailer = require('nodemailer');
 
 app.use(session({ secret: "anything" }));
 app.use(parser.urlencoded({ extended: true })); // decode, now request.body will exist
-
+app.use(parser.json());
 //Login Server code from Lab 14
 
 var filename1 = 'user_data.json' //loading the user_data.json file
@@ -86,7 +86,7 @@ if (request_errors.length == 0) {
         }
       });
       let mailOptions = {
-        from: 'karen@pasifika-artists.com',
+        from: 'itm352asst4test@gmail.com',
         to: req.session.email,
         subject:'Artist Booking Request Confirmation',
         text:'Booking Confirmation'
@@ -120,6 +120,25 @@ app.get("/artist_all.html", function (req, res) {
   <!DOCTYPE html>
   <html lang="en">
   <head>
+  <script>
+  async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrer: 'no-referrer', // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return await response.json(); // parses JSON response into native JavaScript objects
+  }
+  </script>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -161,7 +180,7 @@ app.get("/artist_all.html", function (req, res) {
                       <input type="submit" value="More Info" name="${artist_data[i].name}">
                       <br>
                       <br>
-                      <input type="checkbox" id="fav_artist${i}" name="fav_artist${i}">
+                      <input type="checkbox" id="fav_artist${i}" name="fav_artist${i}" onclick="postData('add_to_fav', {'artist_index': ${i},'add': this.checked})">
                       <label for="fav_artist${i}" name="fav_artist${i}" name="fav_artist${i}">Add to Favorites</label>
                       </td>
                       <td>${artist_data[i].description}</td>
@@ -201,7 +220,8 @@ app.get("/my_list.html", function (req, res) {
 
   pagestr += `
   <head>
-      <meta charset="UTF-8">
+
+  <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Artist All</title>
@@ -223,7 +243,8 @@ app.get("/my_list.html", function (req, res) {
                   <th>Description</th>
                   <th>Genre</th>
               </tr>`;
-  for (i = 0; i < fav_artist.length; i++) {
+  if (i !== undefined){
+  for (i = fav_artist.length - 1 ; i >= 0; i--) {
     pagestr += ` 
     <form action="/artist_single.html" method="GET">
       <tr>
@@ -237,6 +258,11 @@ app.get("/my_list.html", function (req, res) {
       </tr>
       </form>`;
     }
+  } else{
+    pagestr +=`
+    <p>No favorites saved</p>
+    `;
+  }
     pagestr += ` 
           </table>
   </main></div>
@@ -309,8 +335,8 @@ next();
 
 
 
-app.post("/register.html", function (req, res) {
-  console.log(req.query.artist_request);
+app.post("/add_to_fav", function (req, res) {
+  console.log(req.body);
 });
 
 //Validation for the Login Information when Login Page is loaded
