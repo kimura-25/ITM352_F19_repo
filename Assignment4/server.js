@@ -304,7 +304,7 @@ app.get("/artist_single.html", function (req, res) {
   <a href="./my_list.html">My List</a>
 </div>
 <body>
-<form action = '/login.html' + querystring.stringify(req.query)>
+<form action = '/request_artist'>
 <div>
         <h1>${artist_data[index].name}</h1>
         <br><img src="${artist_data[index].image}">
@@ -351,12 +351,12 @@ if(req.body["add" + artist_index] != undefined){
 }
 });
 
-/*app.post("/request_artist", function (req, res){
-  req.query.artist_name = req.body.artist_name;
-  console.log(req.query.artist_name);
+app.get("/request_artist", function (req, res){
+  artist_name = req.body.artist_name;
+  console.log(artist_name);
   res.redirect('./login.html?' + querystring.stringify(req.query));
 });
-*/
+
 
 //Validation for the Login Information when Login Page is loaded
 app.post("/login.html", function (req, res) {
