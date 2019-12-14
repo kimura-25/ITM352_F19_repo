@@ -73,7 +73,6 @@ if (request_errors.length == 0) {
     <h2>Your request has been processed</h2>
     <button type="button" onclick="window.location.href = '/search2.html';">Return to search</button>
   </div>
-
 </body>
 </html>`;
       //Sending mail to user
@@ -111,6 +110,7 @@ if (request_errors.length == 0) {
 
 app.get("/search.html", function (req, res, next) {
   req.session.fav_artist = [];
+  req.session.add = [];
   next();
 });
 
@@ -150,13 +150,11 @@ app.get("/artist_all.html", function (req, res) {
       <h1>Pasifika Artist Network</h1>
   </header>
 </div>
-
 <div class="navbar">
   <a href="./search2.html">Back to Search</a>
   <a href="./my_list.html">My List</a>
 </div>
 <p>You have _ Search Results</p>
-
 <br>
   <body>
   <div><main>
@@ -180,7 +178,7 @@ app.get("/artist_all.html", function (req, res) {
                       <input type="submit" value="More Info" name="${artist_data[i].name}">
                       <br>
                       <br>
-                      <input type="checkbox" id="fav_artist${i}" name="fav_artist${i}" onclick="postData('add_to_fav', {'artist_index': ${i},'add': this.checked})">
+                      <input type="checkbox" id="fav_artist${i}" name="fav_artist${i}" onclick="postData('add_to_fav', {'artist_index': ${i},'add${i}': this.checked})">
                       <label for="fav_artist${i}" name="fav_artist${i}" name="fav_artist${i}">Add to Favorites</label>
                       </td>
                       <td>${artist_data[i].description}</td>
@@ -197,7 +195,6 @@ app.get("/artist_all.html", function (req, res) {
               </script>
   
           </table>
-
   
   </main></div>
   </body>
@@ -220,7 +217,6 @@ app.get("/my_list.html", function (req, res) {
 
   pagestr += `
   <head>
-
   <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -243,7 +239,7 @@ app.get("/my_list.html", function (req, res) {
                   <th>Description</th>
                   <th>Genre</th>
               </tr>`;
-  if (i !== undefined){
+
   for (i = fav_artist.length - 1 ; i >= 0; i--) {
     pagestr += ` 
     <form action="/artist_single.html" method="GET">
@@ -258,11 +254,7 @@ app.get("/my_list.html", function (req, res) {
       </tr>
       </form>`;
     }
-  } else{
-    pagestr +=`
-    <p>No favorites saved</p>
-    `;
-  }
+
     pagestr += ` 
           </table>
   </main></div>
@@ -304,19 +296,16 @@ app.get("/artist_single.html", function (req, res) {
 </div>
 <body>
 <form action = '/login.html' + querystring.stringify(req.query)>
-
 <div>
         <h1>${artist_data[index].name}</h1>
         <br><img src="${artist_data[index].image}">
         <br>
         <p>${artist_data[index].bio}</p>
-
 <input type="hidden" name="artist_request" id="artist_request" value="${index}">
 <input type="submit" value="Request artist">
   </form> 
   <br>
         </div>
-
 </body>
 </html>`;
     res.send(pagestr);
@@ -336,7 +325,19 @@ next();
 
 
 app.post("/add_to_fav", function (req, res) {
+  artist_index = req.body.artist_index;
+  add = req.body["add" + artist_index];
   console.log(req.body);
+  console.log(add);
+  if (add == true){
+    add_array = req.session.add;
+    add_array.push(artist_index);
+    console.log(add_array);
+  } else {
+    add_array = req.session.add
+    add_array.pop(artist_index);
+    console.log(add_array);
+  }
 });
 
 //Validation for the Login Information when Login Page is loaded
@@ -557,4 +558,3 @@ app.use(express.static('./public')); // create a static server using express fro
 // Having the server listen on port 8080
 // From Assignment1_Design_Examples > Asssignment1_2file > store_server.js
 var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) });
-
