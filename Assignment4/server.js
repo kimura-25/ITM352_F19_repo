@@ -10,7 +10,7 @@ var parser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
-
+var nodemailer = require('nodemailer');
 
 app.use(session({ secret: "anything" }));
 app.use(parser.urlencoded({ extended: true })); // decode, now request.body will exist
@@ -40,7 +40,9 @@ if (fs.existsSync(filename1)) { //only open if file exists
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
 }
 
-app.post("/submit_request", function (req, res) {
+app.post("/submit_request", function (req, res,next) {
+  req.session.date = req.body.date;
+  console.log(req.session.date)
   req.query.request_notes = req.body.request_notes;
   req.query.date = req.body.date;
   var request_errors = []; //to store all errors
@@ -51,13 +53,10 @@ app.post("/submit_request", function (req, res) {
   if (d <= t) {
     request_errors.push = ('Pick another date');
     console.log(request_errors);
-    req.query.date = req.body.date;
-    req.query.request_notes = req.body.request_notes;
-    res.redirect('./request.html?' + querystring.stringify(req.query));
-    return
   }
 
 
+if (request_errors.length == 0) {
   pagestr = `
   <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +76,35 @@ app.post("/submit_request", function (req, res) {
 
 </body>
 </html>`;
-  res.send(pagestr)
+      //Attempt to send mail
+/*      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'kelsey@kimuraohana.net',
+          pass: ''
+        }
+      });
+      let mailOptions = {
+        from: 'kelsey@kimuraohana.net',
+        to: 'kimura25@hawaii.edu',
+        subject:'ITM 352 Email',
+        text:'Booking Confirmation'
+      };
+      transporter.sendMail(mailOptions, function(error,info){
+        if(error){
+          console.log(error);
+        } else{
+          console.log('Email sent: ' + info.response);
+        }
+      })
+*/
+  res.send(pagestr);
+  } 
+  else {
+    req.query.date = req.body.date;
+    req.query.request_notes = req.body.request_notes;
+    res.redirect('./request.html?' + querystring.stringify(req.query));
+  }
 
 });
 
@@ -272,11 +299,14 @@ app.get("/artist_single.html", function (req, res) {
   }
 });
 
-app.get("/request", function (req, res) {
-  res.redirect('/request.html')
-  console.log(req.query);
-  request_name = req.query.name;
+app.get("/request.html", function (req,res,next){
+req.session.email = req.query.email
+email = req.session.email;
+console.log(email);
+next();
 });
+
+
 
 app.post("/register.html", function (req, res) {
   console.log(req.query.artist_request);
@@ -296,6 +326,8 @@ app.post("/login.html", function (req, res) {
       req.query.username = the_username; //adding the case insensitive username to the query
       console.log(users_reg_data[req.query.username].name); //logging the name to ensure if statement is working
       req.query.name = users_reg_data[req.query.username].name //adding the name for the registered user to the querystring
+      req.query.email = users_reg_data[the_username].email; //add email to querystring
+      res.cookie('name', req.query.username);
       res.redirect('/request.html?' + querystring.stringify(req.query)); //keeping the querystring when redirecting to the invoice
       return; //ending the if statement
     } else { // if the password does not match what is in the registration data for the given username
@@ -313,7 +345,6 @@ app.post("/login.html", function (req, res) {
     req.query.password = req.body.password; //add password to querystring
     req.query.LogError = LogError.join(';'); //joining login errors for querystring
   }
-  res.cookie('myname', req.query.username);
   res.redirect('/login.html?' + querystring.stringify(req.query)); //redirecting user to the login page with the querystring
 
 }
@@ -474,6 +505,8 @@ app.post("/submit_register", function (req, res) {
     req.query.username = reguser; //put username in querystring
     req.query.name = req.body.name; //put name into querystring
     req.query.genre = req.body.genre; //put genre into querystring
+    req.query.email = req.body.email
+    res.cookie('name', req.query.username);
     res.redirect('./request.html?' + querystring.stringify(req.query)); //redirect to the artist page
   }
   //add errors to querystring (for purpose of putting back into textbox)

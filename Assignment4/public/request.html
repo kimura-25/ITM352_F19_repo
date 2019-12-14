@@ -53,10 +53,26 @@ function checkdate() {
 </head>
 
 <body>
+    <script>
+    email = GET[`email`];
+    document.write(`
+    <p>Your request will be sent to your email ${email}!</p>
+    `)
+    </script>
     <form name="request_form" method="POST" action="./submit_request">
         <label for="date">Date of Request</label>
         <br>
         <input type="date" id="date" name="date" onclick="checkdate()" required>
+        <br>
+        <br>
+        <label for="time">Approximate Time of Day</label>
+        <br>
+        <input type="time" id="time" name="time" min="0:00" max="24:00">
+        <br>
+        <br>
+        <label for="location">Location</label>
+        <br>
+        <input type="text" id="location" name="location" required>
         <br>
         <label for="dateerror" id="dateerror" name="dateerror"></label>
         <br>
