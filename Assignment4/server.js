@@ -12,7 +12,7 @@ var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
 
-app.use(session({secret: "anything"}));
+app.use(session({ secret: "anything" }));
 app.use(parser.urlencoded({ extended: true })); // decode, now request.body will exist
 
 //Login Server code from Lab 14
@@ -33,29 +33,29 @@ if (fs.existsSync(filename1)) { //only open if file exists
   artist_data_json = fs.readFileSync(filename2, 'utf-8') //open filename2
 
   //assign return value to data, use JSON.parse() to convert into an object and assign to user_reg_data
-  users_reg_data = JSON.parse(user_data); 
+  users_reg_data = JSON.parse(user_data);
   artist_data = JSON.parse(artist_data_json);
 
 } else { //if file does not exist
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
 }
 
-app.post("/submit_request", function (req,res){  
+app.post("/submit_request", function (req, res) {
   req.query.request_notes = req.body.request_notes;
   req.query.date = req.body.date;
   var request_errors = []; //to store all errors
 
-    var d = new Date(req.query.date);
-    var t = new Date()
-    console.log(t + d);
-    if(d <= t){
-      request_errors.push = ('Pick another date');
-      console.log(request_errors);
-      req.query.date = req.body.date;
-      req.query.request_notes = req.body.request_notes;
-      res.redirect('./request.html?' + querystring.stringify(req.query));
-      return
-    }
+  var d = new Date(req.query.date);
+  var t = new Date()
+  console.log(t + d);
+  if (d <= t) {
+    request_errors.push = ('Pick another date');
+    console.log(request_errors);
+    req.query.date = req.body.date;
+    req.query.request_notes = req.body.request_notes;
+    res.redirect('./request.html?' + querystring.stringify(req.query));
+    return
+  }
 
 
   pagestr = `
@@ -77,16 +77,16 @@ app.post("/submit_request", function (req,res){
 
 </body>
 </html>`;
-res.send(pagestr)
+  res.send(pagestr)
 
 });
 
-app.get("/search.html", function (req,res,next){
-req.session.fav_artist = [];
-next();
+app.get("/search.html", function (req, res, next) {
+  req.session.fav_artist = [];
+  next();
 });
 
-app.get("/artist_all.html", function (req,res){
+app.get("/artist_all.html", function (req, res) {
   console.log('artist all', req.query);
   pagestr = `
   <!DOCTYPE html>
@@ -121,10 +121,10 @@ app.get("/artist_all.html", function (req,res){
               </tr>`;
 
   //Display search results based on genre if the keyword matches 
-                  for (i = 0; i < artist_data.length; i++) { 
-                      if(req.query.genre == artist_data[i].keyword) {
-                  /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
-pagestr +=`
+  for (i = 0; i < artist_data.length; i++) {
+    if (req.query.genre == artist_data[i].keyword) {
+      /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
+      pagestr += `
                 <form action="/artist_single.html" method="GET">
                   <tr>
                       <td><img src="${artist_data[i].image}"><br>${artist_data[i].name}
@@ -146,7 +146,7 @@ pagestr +=`
 
   }
 
-                  pagestr +=`
+  pagestr += `
               </script>
   
           </table>
@@ -162,17 +162,16 @@ pagestr +=`
 
   res.send(pagestr);
 
-}); 
+});
 
-app.get("/my_list.html", function (req,res){
+app.get("/my_list.html", function (req, res) {
   fav_artist = req.session.fav_artist;
   console.log(fav_artist);
-console.log(req.query);
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
 
-  pagestr +=`
+  pagestr += `
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -196,19 +195,21 @@ console.log(req.query);
                   <th>Description</th>
                   <th>Genre</th>
               </tr>`;
-              for (i = 0; i < fav_artist.length; i++) { 
-              pagestr +=` 
-                <form action="/artist_single.html" method="GET">
-                  <tr>
-                      <td><img src="${artist_data[fav_artist[i]].image}"><br>${artist_data[fav_artist[i]].name}
-                      <br>
-                      <input type="hidden" name="artist_request" value="${artist_data[fav_artist[i]].name}">
-                      <input type="submit" value="More Info" name="${artist_data[fav_artist[i]].name}"></td>
-                      <td>${artist_data[fav_artist[i]].description}</td>
-                      <td>${artist_data[fav_artist[i]].genre}</td>
+  for (i = 0; i < fav_artist.length; i++) {
+    pagestr += ` 
+    <form action="/artist_single.html" method="GET">
+      <tr>
+          <td><img src="${artist_data[fav_artist[i]].image}"><br>${artist_data[fav_artist[i]].name}
+          <br>
+          <input type="hidden" name="artist_request" value="${artist_data[fav_artist[i]].name}">
+          <input type="hidden" name="artist_index" value="${artist_data[fav_artist[i]].artist_id}">
+          <input type="submit" value="More Info" name="${artist_data[fav_artist[i]].name}"></td>
+          <td>${artist_data[fav_artist[i]].description}</td>
+          <td>${artist_data[fav_artist[i]].genre}</td>
       </tr>
-      </form>
-              </script>
+      </form>`;
+    }
+    pagestr += ` 
           </table>
   </main></div>
   </body>
@@ -217,21 +218,21 @@ console.log(req.query);
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
-  }
-res.send(pagestr);
-}); 
+  
+  res.send(pagestr);
+});
 
-app.get("/artist_single.html", function (req,res){
-  if(req.query.artist_index !== undefined){
-  console.log('single artist page', req.query);
-  index = req.query.artist_index;
-    var fav_artist = [];
-  if(req.query["fav_artist" + index] != undefined){
-    fav_artist.push(index);
-    req.session.fav_artist = fav_artist;
-    console.log(req.session.fav_artist);
-  }
-  pagestr = `
+app.get("/artist_single.html", function (req, res) {
+  if (req.query.artist_index !== undefined) {
+    console.log('single artist page', req.query);
+    index = req.query.artist_index;
+    fav_artist = req.session.fav_artist;
+    if (req.query["fav_artist" + index] != undefined) {
+      fav_artist.push(index);
+      req.session.fav_artist = fav_artist;
+      console.log(req.session.fav_artist);
+    }
+    pagestr = `
     <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -266,15 +267,15 @@ app.get("/artist_single.html", function (req,res){
 </html>`;
     res.send(pagestr);
   }
-  else{
+  else {
     res.redirect('artist_all.html')
   }
-  });
+});
 
-app.get("/request", function (req,res){
-res.redirect('/request.html')
-console.log(req.query);
-request_name = req.query.name;
+app.get("/request", function (req, res) {
+  res.redirect('/request.html')
+  console.log(req.query);
+  request_name = req.query.name;
 });
 
 app.post("/register.html", function (req, res) {
@@ -292,35 +293,36 @@ app.post("/login.html", function (req, res) {
   the_username = req.body.username.toLowerCase(); //username entered is case insensitive, assign to variable the_username
   if (typeof users_reg_data[the_username] != 'undefined') { //check if the username exists in the json data
     if (users_reg_data[the_username].password == req.body.password) { //make sure password matches exactly - case sensitive
-    req.query.username = the_username; //adding the case insensitive username to the query
+      req.query.username = the_username; //adding the case insensitive username to the query
       console.log(users_reg_data[req.query.username].name); //logging the name to ensure if statement is working
       req.query.name = users_reg_data[req.query.username].name //adding the name for the registered user to the querystring
       res.redirect('/request.html?' + querystring.stringify(req.query)); //keeping the querystring when redirecting to the invoice
       return; //ending the if statement
-    } else{ // if the password does not match what is in the registration data for the given username
+    } else { // if the password does not match what is in the registration data for the given username
       LogError.push = ('Invalid Password'); //push login error for invalid password
       console.log(LogError); //console log error to check working
-      req.query.username= the_username; //add username to querystring
-      req.query.password=req.body.password; //add password to querystring
-      req.query.LogError=LogError.join(';'); //joining the login errors for the querystring
+      req.query.username = the_username; //add username to querystring
+      req.query.password = req.body.password; //add password to querystring
+      req.query.LogError = LogError.join(';'); //joining the login errors for the querystring
     }
   }
   else { //if username does not exist in registration data
     LogError.push = ('Invalid Username'); //push login error for invalid username
     console.log(LogError); //console log error to check working
-    req.query.username= the_username; //add username to querystring
-    req.query.password=req.body.password; //add password to querystring
-    req.query.LogError=LogError.join(';'); //joining login errors for querystring
+    req.query.username = the_username; //add username to querystring
+    req.query.password = req.body.password; //add password to querystring
+    req.query.LogError = LogError.join(';'); //joining login errors for querystring
   }
+  res.cookie('myname', req.query.username);
   res.redirect('/login.html?' + querystring.stringify(req.query)); //redirecting user to the login page with the querystring
 
 }
 );
 
-app.post("/search_artist", function (req,res){    
-req.query.genre = req.body.genre;
-console.log(req.query.genre);
-res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
+app.post("/search_artist", function (req, res) {
+  req.query.genre = req.body.genre;
+  console.log(req.query.genre);
+  res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
 });
 
 app.post("/submit_register", function (req, res) {
@@ -399,11 +401,11 @@ app.post("/submit_register", function (req, res) {
   //check if email is valid
   //email validation code: https://www.w3resource.com/javascript/form/email-validation.php
   var regemail = req.body.email.toLowerCase(); // to make email case insensitive
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(regemail)) { 
-  //if in right email format: X@Y.Z
-  //X: user address can only contain letters, numbers, and "_" and "."
-  //Y: host machine can only contain letters, numbers, and "."
-  //Z: Z is the domain name which is either 2 or 3 letters such as “edu” or “tv”
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(regemail)) {
+    //if in right email format: X@Y.Z
+    //X: user address can only contain letters, numbers, and "_" and "."
+    //Y: host machine can only contain letters, numbers, and "."
+    //Z: Z is the domain name which is either 2 or 3 letters such as “edu” or “tv”
   }
   else { //if email doesn't follow above criteria
     emailerrors.push('Invalid Email') //push to email errors array
@@ -412,7 +414,7 @@ app.post("/submit_register", function (req, res) {
 
   //check if phone number valid
   //validation code from https://www.w3resource.com/javascript/form/phone-no-validation.php
-  if (/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(req.body.phone)){
+  if (/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(req.body.phone)) {
 
   } else {
     phoneerrors.push('Invalid Phone Number') //push to phone number array
@@ -423,7 +425,7 @@ app.post("/submit_register", function (req, res) {
     console.log('no name errors!'); // to make sure if statement working
   }
   if (nameerrors.length > 0) { //if have name errors
-    console.log('error:'+ nameerrors) //console log name errors
+    console.log('error:' + nameerrors) //console log name errors
     req.query.nameerrors = nameerrors.join(';'); //joining name errors together
   }
 
@@ -431,7 +433,7 @@ app.post("/submit_register", function (req, res) {
     console.log('no user errors!'); //to make sure if statement working
   }
   if (usererrors.length > 0) { //if have username errors
-    console.log('error:'+ usererrors) //console log username errors
+    console.log('error:' + usererrors) //console log username errors
     req.query.usererrors = usererrors.join(';'); //joining username errors together
   }
 
@@ -439,15 +441,15 @@ app.post("/submit_register", function (req, res) {
     console.log('no password errors!'); //to make sure if statement working
   }
   if (passerrors.length > 0) { //if have password errors
-    console.log('error:'+ passerrors) //console log password errors
+    console.log('error:' + passerrors) //console log password errors
     req.query.passerrors = passerrors.join(';'); //joining password errors together
   }
-  
+
   if (confirmerrors.length == 0) { //if have no errors with password confirmation
     console.log('no confirm errors!'); //to make sure if statement working
   }
   if (confirmerrors.length > 0) { //if have password confirmation errors
-    console.log('error:'+ confirmerrors); // console log password errors
+    console.log('error:' + confirmerrors); // console log password errors
     req.query.confirmerrors = confirmerrors.join(';'); //joining password confirmation errors together
   }
 
@@ -455,15 +457,15 @@ app.post("/submit_register", function (req, res) {
     console.log('no email errors!'); // to confirm no email errors
   }
   if (emailerrors.length > 0) { //if there is more than 1 error
-    console.log('error:'+ emailerrors); //console log email errors
+    console.log('error:' + emailerrors); //console log email errors
     req.query.emailerrors = emailerrors.join(';'); //joining email errors together
-  } 
+  }
 
   if (phoneerrors.length == 0) { //if no phone errors
     console.log('no phone errors!'); // to confirm no phone errors
   }
-  if (phoneerrors.length > 0){ //if more than 1 error
-    console.log('error:'+ phoneerrors); //console log phone errors
+  if (phoneerrors.length > 0) { //if more than 1 error
+    console.log('error:' + phoneerrors); //console log phone errors
     req.query.phoneerrors = phoneerrors.join(';'); //join phone errors together
   }
 
