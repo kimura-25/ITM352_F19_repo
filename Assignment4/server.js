@@ -41,14 +41,21 @@ if (fs.existsSync(filename1)) { //only open if file exists
 }
 
 app.post("/submit_request", function (req, res,next) {
-  req.session.date = req.body.date;
+  req.query.date = req.body.date;
+  req.query.location = req.body.location;
+  req.query.time = req.body.time;
+  req.query.request_notes = req.body.request_notes;
+  req.session.location = req.query.location;
+  req.session.request_notes = req.query.request_notes;
+  req.session.time = req.query.time;
   console.log(req.session.date)
   req.query.request_notes = req.body.request_notes;
-  req.query.date = req.body.date;
+ // req.session.date = req.query.date;
   var request_errors = []; //to store all errors
 
   var d = new Date(req.query.date);
   var t = new Date()
+  req.session.date = d;
   console.log(t + d);
   if (d <= t) {
     request_errors.push = ('Pick another date');
@@ -88,7 +95,7 @@ if (request_errors.length == 0) {
         from: 'itm352asst4test@gmail.com',
         to: req.session.email,
         subject:'Artist Booking Request Confirmation',
-        text:'Booking Confirmation'
+        text:'Hello ' + req.session.name + ', Your request for artist booking has been submitted. Here are the details of your request: Date' + req.session.date + ' Time: ' + req.session.time + ' Location ' + req.session.location + ' Notes: ' + req.session.request_notes + '. We will contact you for any further details. Thank you, Pasifika Arists'
       };
       transporter.sendMail(mailOptions, function(error,info){
         if(error){
@@ -304,6 +311,7 @@ app.get("/artist_single.html", function (req, res) {
         <br>
         <p>${artist_data[index].bio}</p>
 <input type="hidden" name="artist_request" id="artist_request" value="${index}">
+<input type="hidden" name="artist_name" id="artist_name" value="${artist_data[index].name}">
 <input type="submit" value="Request artist">
   </form> 
   <br>
@@ -318,7 +326,8 @@ app.get("/artist_single.html", function (req, res) {
 });
 
 app.get("/request.html", function (req,res,next){
-req.session.email = req.query.email
+req.session.email = req.query.email;
+req.session.name = req.query.name;
 email = req.session.email;
 console.log(email);
 next();
@@ -335,16 +344,23 @@ if(req.body["add" + artist_index] != undefined){
   if (add == true){
     add_array.push(artist_index);
     console.log(add_array);
-  } else {
+  } if (add == false) {
     add_array.pop(artist_index);
     console.log(add_array);
   }
 }
 });
 
+/*app.post("/request_artist", function (req, res){
+  req.query.artist_name = req.body.artist_name;
+  console.log(req.query.artist_name);
+  res.redirect('./login.html?' + querystring.stringify(req.query));
+});
+*/
+
 //Validation for the Login Information when Login Page is loaded
 app.post("/login.html", function (req, res) {
-  // Process login form POST and redirect to invoice page if ok, back to login page if not
+  // Process login form POST and redirect to request page if ok, back to login page if not
   //Code from Lab 14
   console.log(req.body);
   var LogError = [];
