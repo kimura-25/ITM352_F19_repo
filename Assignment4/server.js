@@ -212,8 +212,7 @@ app.get("/my_list.html", function (req, res) {
   /*fav_artist = req.session.fav_artist;
   console.log(fav_artist);
   */
-  add_array = req.session.add;
-  console.log(req.session.add);
+  console.log(add_array);
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
@@ -243,7 +242,7 @@ app.get("/my_list.html", function (req, res) {
                   <th>Genre</th>
               </tr>`;
 
-  for (i = add_array.length - 1 ; i >= 0; i--) {
+  for (i = 0; i < add_array.length; i++) {
     pagestr += ` 
     <form action="/artist_single.html" method="GET">
       <tr>
@@ -329,10 +328,10 @@ next();
 
 app.post("/add_to_fav", function (req, res) {
   artist_index = req.body.artist_index;
-  add = req.body["add" + artist_index];
   add_array = req.session.add;
   console.log(req.body);
-  console.log(add);
+if(req.body["add" + artist_index] != undefined){
+  add = req.body["add" + artist_index];
   if (add == true){
     add_array.push(artist_index);
     console.log(add_array);
@@ -340,6 +339,7 @@ app.post("/add_to_fav", function (req, res) {
     add_array.pop(artist_index);
     console.log(add_array);
   }
+}
 });
 
 //Validation for the Login Information when Login Page is loaded
