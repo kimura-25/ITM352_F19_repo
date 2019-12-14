@@ -8,6 +8,9 @@ var product_data = require('./public/product_data.js'); //using data from artist
 var app = express(); //run the express function and start express
 var parser = require('body-parser');
 var session = require('express-session');
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 
 app.use(session({secret: "anything"}));
 app.use(parser.urlencoded({ extended: true })); // decode, now request.body will exist
@@ -69,7 +72,7 @@ app.post("/submit_request", function (req,res){
 <body>
   <div>
     <h2>Your request has been processed</h2>
-    <button type="button" onclick="window.location.href = '/search.html';">Return to search</button>
+    <button type="button" onclick="window.location.href = '/search2.html';">Return to search</button>
   </div>
 
 </body>
@@ -78,6 +81,10 @@ res.send(pagestr)
 
 });
 
+app.get("/search.html", function (req,res,next){
+req.session.fav_artist = [];
+next();
+});
 
 app.get("/artist_all.html", function (req,res){
   console.log('artist all', req.query);
@@ -98,7 +105,7 @@ app.get("/artist_all.html", function (req,res){
 </div>
 
 <div class="navbar">
-  <a href="./search.html">Back to Search</a>
+  <a href="./search2.html">Back to Search</a>
   <a href="./my_list.html">My List</a>
 </div>
 <p>You have _ Search Results</p>
@@ -113,7 +120,7 @@ app.get("/artist_all.html", function (req,res){
                   <th>Genre</th>
               </tr>`;
 
-  //For every product in the array, write the product number, display its image and name, and list price
+  //Display search results based on genre if the keyword matches 
                   for (i = 0; i < artist_data.length; i++) { 
                       if(req.query.genre == artist_data[i].keyword) {
                   /*for every product in the artist_data, display the item number, image, type, and price for each product in the table*/
@@ -177,6 +184,10 @@ console.log(req.query);
   <header>
       <h1>Pasifika Artist Network</h1>
   </header>
+  <div class="navbar">
+  <a href="./search2.html">Back to Search</a>
+  <a href="./my_list.html">My List</a>
+</div>
   <div><main>
   <body>
           <table cellpadding="10" border="1" bgcolor="#FFA500">
@@ -184,15 +195,17 @@ console.log(req.query);
                   <th>Artist Name</th>
                   <th>Description</th>
                   <th>Genre</th>
-              </tr>
+              </tr>`;
+              for (i = 0; i < fav_artist.length; i++) { 
+              pagestr +=` 
                 <form action="/artist_single.html" method="GET">
                   <tr>
-                      <td><img src="${artist_data[fav_artist[0]].image}"><br>${artist_data[fav_artist[0]].name}
+                      <td><img src="${artist_data[fav_artist[i]].image}"><br>${artist_data[fav_artist[i]].name}
                       <br>
-                      <input type="hidden" name="artist_request" value="${artist_data[fav_artist[0]].name}">
-                      <input type="submit" value="More Info" name="${artist_data[fav_artist[0]].name}"></td>
-                      <td>${artist_data[fav_artist[0]].description}</td>
-                      <td>${artist_data[fav_artist[0]].genre}</td>
+                      <input type="hidden" name="artist_request" value="${artist_data[fav_artist[i]].name}">
+                      <input type="submit" value="More Info" name="${artist_data[fav_artist[i]].name}"></td>
+                      <td>${artist_data[fav_artist[i]].description}</td>
+                      <td>${artist_data[fav_artist[i]].genre}</td>
       </tr>
       </form>
               </script>
@@ -204,6 +217,7 @@ console.log(req.query);
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
+  }
 res.send(pagestr);
 }); 
 
@@ -230,7 +244,7 @@ app.get("/artist_single.html", function (req,res){
     </head>  
     <h1>Pasifika Artist Network</h1>
     <div class="navbar">
-  <a href="./search.html">Back to Search</a>
+  <a href="./search2.html">Back to Search</a>
   <a href="./my_list.html">My List</a>
 </div>
 <body>
