@@ -209,8 +209,11 @@ app.get("/artist_all.html", function (req, res) {
 });
 
 app.get("/my_list.html", function (req, res) {
-  fav_artist = req.session.fav_artist;
+  /*fav_artist = req.session.fav_artist;
   console.log(fav_artist);
+  */
+  add_array = req.session.add;
+  console.log(req.session.add);
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
@@ -240,17 +243,17 @@ app.get("/my_list.html", function (req, res) {
                   <th>Genre</th>
               </tr>`;
 
-  for (i = fav_artist.length - 1 ; i >= 0; i--) {
+  for (i = add_array.length - 1 ; i >= 0; i--) {
     pagestr += ` 
     <form action="/artist_single.html" method="GET">
       <tr>
-          <td><img src="${artist_data[fav_artist[i]].image}"><br>${artist_data[fav_artist[i]].name}
+          <td><img src="${artist_data[add_array[i]].image}"><br>${artist_data[add_array[i]].name}
           <br>
-          <input type="hidden" name="artist_request" value="${artist_data[fav_artist[i]].name}">
-          <input type="hidden" name="artist_index" value="${artist_data[fav_artist[i]].artist_id}">
-          <input type="submit" value="More Info" name="${artist_data[fav_artist[i]].name}"></td>
-          <td>${artist_data[fav_artist[i]].description}</td>
-          <td>${artist_data[fav_artist[i]].genre}</td>
+          <input type="hidden" name="artist_request" value="${artist_data[add_array[i]].name}">
+          <input type="hidden" name="artist_index" value="${artist_data[add_array[i]].artist_id}">
+          <input type="submit" value="More Info" name="${artist_data[add_array[i]].name}"></td>
+          <td>${artist_data[add_array[i]].description}</td>
+          <td>${artist_data[add_array[i]].genre}</td>
       </tr>
       </form>`;
     }
@@ -327,14 +330,13 @@ next();
 app.post("/add_to_fav", function (req, res) {
   artist_index = req.body.artist_index;
   add = req.body["add" + artist_index];
+  add_array = req.session.add;
   console.log(req.body);
   console.log(add);
   if (add == true){
-    add_array = req.session.add;
     add_array.push(artist_index);
     console.log(add_array);
   } else {
-    add_array = req.session.add
     add_array.pop(artist_index);
     console.log(add_array);
   }
