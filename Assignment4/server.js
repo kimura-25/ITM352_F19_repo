@@ -76,7 +76,8 @@ if (request_errors.length == 0) {
 
 </body>
 </html>`;
-      //Attempt to send mail
+      //Sending mail to user
+      //Code from https://www.w3schools.com/nodejs/nodejs_email.asp
       let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -87,7 +88,7 @@ if (request_errors.length == 0) {
       let mailOptions = {
         from: 'karen@pasifika-artists.com',
         to: req.session.email,
-        subject:'ITM 352 Email',
+        subject:'Artist Booking Request Confirmation',
         text:'Booking Confirmation'
       };
       transporter.sendMail(mailOptions, function(error,info){
