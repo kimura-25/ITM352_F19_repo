@@ -77,7 +77,7 @@ if (request_errors.length == 0) {
 </body>
 </html>`;
       //Attempt to send mail
-/*      let transporter = nodemailer.createTransport({
+      let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: 'kelsey@kimuraohana.net',
@@ -86,7 +86,7 @@ if (request_errors.length == 0) {
       });
       let mailOptions = {
         from: 'kelsey@kimuraohana.net',
-        to: 'kimura25@hawaii.edu',
+        to: req.session.email,
         subject:'ITM 352 Email',
         text:'Booking Confirmation'
       };
@@ -97,7 +97,7 @@ if (request_errors.length == 0) {
           console.log('Email sent: ' + info.response);
         }
       })
-*/
+
   res.send(pagestr);
   } 
   else {
