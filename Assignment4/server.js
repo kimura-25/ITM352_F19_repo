@@ -80,12 +80,12 @@ if (request_errors.length == 0) {
       let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'kelsey@kimuraohana.net',
-          pass: ''
+          user: 'itm352asst4test@gmail.com',
+          pass: 'helloworld!'
         }
       });
       let mailOptions = {
-        from: 'kelsey@kimuraohana.net',
+        from: 'karen@pasifika-artists.com',
         to: req.session.email,
         subject:'ITM 352 Email',
         text:'Booking Confirmation'
