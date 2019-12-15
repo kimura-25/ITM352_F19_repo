@@ -119,6 +119,7 @@ if (request_errors.length == 0) {
 
 app.get("/search.html", function (req, res, next) {
   req.session.fav_artist = [];
+  req.session.last_viewed = [];
   req.session.add = [];
   add_array = req.session.add;
   next();
@@ -162,8 +163,9 @@ app.get("/artist_all.html", function (req, res) {
 </div>
 <ul>
 <li> <img src="./images/logo.jpg"></li>
-<li><a href="./search2.html">Back to Search</a></listyle="float:right">
-<li><a href="./my_list.html">My List</a></li style="float:center">
+<li><a href="./search2.html">Back to Search</a></li>
+<li><a href="./my_list.html">My List</a></li>
+<li><a href="./last_viewed.html">Last Viewed</a></li>
 </ul>
 
 <p>You have _ Search Results</p>
@@ -244,8 +246,9 @@ app.get("/my_list.html", function (req, res) {
   </header>
   <ul>
   <li> <img src="./images/logo.jpg"></li>
-  <li><a href="./search2.html">Back to Search</a></listyle="float:right">
-  <li><a href="./my_list.html">My List</a></li style="float:center">
+  <li><a href="./search2.html">Back to Search</a></li>
+  <li><a href="./my_list.html">My List</a></li>
+  <li><a href="./last_viewed.html">Last Viewed</a></li>
 </ul>
 
   <div><main>
@@ -303,8 +306,9 @@ if (add_array.length = 0) {
   </header>
   <ul>
   <li> <img src="./images/logo.jpg"></li>
-  <li><a href="./search2.html">Back to Search</a></listyle="float:right">
-  <li><a href="./my_list.html">My List</a></li style="float:center">
+  <li><a href="./search2.html">Back to Search</a></li>
+  <li><a href="./my_list.html">My List</a></li>
+  <li><a href="./last_viewed.html">Last Viewed</a></li>
 </ul>
 
   <div><main>
@@ -323,16 +327,92 @@ if (add_array.length = 0) {
 
 });
 
+app.get("/last_viewed.html", function (req, res) {
+  /*fav_artist = req.session.fav_artist;
+  console.log(fav_artist);
+  */
+
+  last_viewed = req.session.last_viewed;  
+  console.log(last_viewed);
+
+  pagestr = `
+  <!DOCTYPE html>
+  <html lang="en">`;
+
+  pagestr += `
+  <head>
+  <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Artist All</title>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+      <link rel="stylesheet" href="form-style.css">
+  </head>
+  <header>
+      <h1>Pasifika Artist Network</h1>
+  </header>
+  <ul>
+  <li> <img src="./images/logo.jpg"></li>
+  <li><a href="./search2.html">Back to Search</a></li>
+  <li><a href="./my_list.html">My List</a></li>
+  <li><a href="./last_viewed.html">Last Viewed</a></li>
+</ul>
+
+  <div><main>
+  <body>
+          <table cellpadding="10" border="1" bgcolor="#FFA500">
+              <tr>
+                  <th>Artist Name</th>
+                  <th>Description</th>
+                  <th>Genre</th>
+              </tr>`;
+
+  for (i = 0; i < last_viewed.length; i++) {
+    pagestr += ` 
+    <form action="/artist_single.html" method="GET">
+      <tr>
+          <td><img src="${artist_data[last_viewed[i]].image}"><br>${artist_data[last_viewed[i]].name}
+          <br>
+          <input type="hidden" name="artist_request" value="${artist_data[last_viewed[i]].name}">
+          <input type="hidden" name="artist_index" value="${artist_data[last_viewed[i]].artist_id}">
+          <input type="submit" value="More Info" name="${artist_data[last_viewed[i]].name}"></td>
+          <td>${artist_data[last_viewed[i]].description}</td>
+          <td>${artist_data[last_viewed[i]].genre}</td>
+      </tr>
+      </form>`;
+    }
+
+    pagestr += ` 
+          </table>
+  </main></div>
+  </body>
+  <br>
+  <footer>
+   <h2>Pasifika Artists Network LLC</h2>
+  </footer>
+  </html>`;
+  
+  res.send(pagestr);
+
+});
+
+
 app.get("/artist_single.html", function (req, res) {
   if (req.query.artist_index !== undefined) {
     console.log('single artist page', req.query);
     index = req.query.artist_index;
+    last_viewed = req.session.last_viewed;
+
+    last_viewed.push(index);
+    console.log(last_viewed);
+
     fav_artist = req.session.fav_artist;
     if (req.query["fav_artist" + index] != undefined) {
       fav_artist.push(index);
       req.session.fav_artist = fav_artist;
       console.log(req.session.fav_artist);
     }
+
     pagestr = `
     <!DOCTYPE html>
 <html lang="en">
@@ -346,11 +426,12 @@ app.get("/artist_single.html", function (req, res) {
     </head>  
     <h1>Pasifika Artist Network</h1>
     <ul>
-        <li> <img src="./images/logo.jpg"></li>
-        <li><a href="./search2.html">Back to Search</a></listyle="float:right">
-        <li><a href="./my_list.html">My List</a></li style="float:center">
-      </ul>
-
+    <li> <img src="./images/logo.jpg"></li>
+    <li><a href="./search2.html">Back to Search</a></li>
+    <li><a href="./my_list.html">My List</a></li>
+    <li><a href="./last_viewed.html">Last Viewed</a></li>
+  </ul>
+  
   <body>
 <form action = '/request_artist'>
 <div>
