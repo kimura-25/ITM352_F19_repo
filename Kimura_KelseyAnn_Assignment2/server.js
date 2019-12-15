@@ -21,7 +21,7 @@ if (fs.existsSync(filename)) { //only open if file exists
 
   data = fs.readFileSync(filename, 'utf-8') //opens the file
 
-  //assign return value to data, use JSON.parse() to convert into an object and assign to user_reg_data
+  //assign return value to data, use JSON.parse() to convert into an object and assign to users_reg_data
   users_reg_data = JSON.parse(data); 
 
 } else { //if file does not exist
@@ -199,6 +199,9 @@ app.post("/register.html", function (req, res) {
     console.log('none!'); //to double check if statement working
     req.query.username = reguser; //put username in querystring
     req.query.name = req.body.name; //put name into querystring
+    // store information into a JSON file
+ 
+
     res.redirect('./invoice.html?' + querystring.stringify(req.query)) //redirect to the invoice
   }
   //add errors to querystring (for purpose of putting back into textbox)
@@ -209,6 +212,8 @@ app.post("/register.html", function (req, res) {
     req.query.password = req.body.password; //put password into querystring
     req.query.confirmpsw = req.body.confirmpsw; //put confirm password into querystring
     req.query.email = req.body.email; //put email back into querystring
+
+    
 
     req.query.errors = errors.join(';'); //join all errors together into querystring
     res.redirect('./register.html?' + querystring.stringify(req.query)) //trying to add query from registration page and invoice back to register page on reload
