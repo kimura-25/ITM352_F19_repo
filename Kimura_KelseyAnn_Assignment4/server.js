@@ -19,22 +19,26 @@ app.use(parser.json());
 
 var filename1 = 'user_data.json' //loading the user_data.json file
 var filename2 = './public/artist_data.json'//loading artist_data.json file
+var filename3 ='request_data.json' //loading request_data.json file
 
 if (fs.existsSync(filename1)) { //only open if file exists
   stats1 = fs.statSync(filename1); //used to printout size of filename
   stats2 = fs.statSync(filename2); //used to printout size of filename
-
+  stats3 = fs.statSync(filename3); //used to printout size of filename
 
   console.log(filename1 + ' has ' + stats1.size + ' characters'); //stating size of file
   console.log(filename2 + ' has ' + stats2.size + ' characters'); //stating size of file
-
+  console.log(filename3 + ' has ' + stats3.size + ' characters'); //stating size of file
 
   user_data = fs.readFileSync(filename1, 'utf-8') //opens the filename1
   artist_data_json = fs.readFileSync(filename2, 'utf-8') //open filename2
+  request_data_json = fs.readFileSync(filename3, 'utf-8') //open filename2
+
 
   //assign return value to data, use JSON.parse() to convert into an object and assign to user_reg_data
   users_reg_data = JSON.parse(user_data);
   artist_data = JSON.parse(artist_data_json);
+  request_data = JSON.parse(request_data_json);
 
 } else { //if file does not exist
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
@@ -106,6 +110,20 @@ if (request_errors.length == 0) {
           console.log('Email sent: ' + info.response);
         }
       })
+
+      //store request information in a JSON file
+      req.session.username = {
+        name: req.session.name,
+        email: req.session.email,
+        artist: req.session.artist_name,
+        date: req.session.date,
+        location: req.session.location,
+        time: req.session.time,
+        notes: req.session.request_notes 
+      };
+  
+      fs.writeFileSync(filename3, JSON.stringify(request_data));
+  
 
   res.send(pagestr);
 } 
@@ -538,8 +556,10 @@ app.get("/artist_single.html", function (req, res) {
 app.get("/request.html", function (req,res,next){
 req.session.email = req.query.email;
 req.session.name = req.query.name;
+req.session.username = req.query.username;
 email = req.session.email;
 console.log(req.session.artist_name);
+console.log(req.session.username);
 next();
 });
 
@@ -783,16 +803,12 @@ app.post("/submit_register", function (req, res) {
       email: req.body.email,
       phone: req.body.phone
     };
-/*    users_reg_data[reguser].name = req.body.name;
-    users_reg_data[reguser].password = req.body.password;
-    users_reg_data[reguser].email = req.body.email;
-    users_reg_data[reguser].phone = req.body.phone;
-    console.log(users_reg_data[reguser]);
-*/
+
     fs.writeFileSync(filename1, JSON.stringify(users_reg_data));
 
 
-    res.redirect('./request.html?' + querystring.stringify(req.query)); //redirect to the artist page
+    //redirect to the artist page
+    res.redirect('./request.html?' + querystring.stringify(req.query)); 
   }
   //add errors to querystring (for purpose of putting back into textbox)
   else { //if there is one or more errors
