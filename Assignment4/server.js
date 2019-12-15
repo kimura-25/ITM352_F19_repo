@@ -64,6 +64,7 @@ app.post("/submit_request", function (req, res,next) {
 
 
 if (request_errors.length == 0) {
+  res.clearCookie('name');
   pagestr = `
   <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +108,7 @@ if (request_errors.length == 0) {
       })
 
   res.send(pagestr);
-  } 
+} 
   else {
     req.query.date = req.body.date;
     req.query.request_notes = req.body.request_notes;
@@ -123,6 +124,7 @@ app.get("/search.html", function (req, res, next) {
 });
 
 app.get("/artist_all.html", function (req, res) {
+  add_array = req.session.add;
   console.log('artist all', req.query);
   pagestr = `
   <!DOCTYPE html>
@@ -222,8 +224,9 @@ app.get("/my_list.html", function (req, res) {
   /*fav_artist = req.session.fav_artist;
   console.log(fav_artist);
   */
-  console.log(add_array);
-  pagestr = `
+  if (add_array.length > 0){
+    console.log(add_array);
+    pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
 
@@ -280,6 +283,44 @@ app.get("/my_list.html", function (req, res) {
   </html>`;
   
   res.send(pagestr);
+}
+if (add_array.length = 0) {
+  pagestr = `
+  <!DOCTYPE html>
+  <html lang="en">`;
+
+  pagestr += `
+  <head>
+  <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Artist All</title>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+      <link rel="stylesheet" href="form-style.css">
+  </head>
+  <header>
+      <h1>Pasifika Artist Network</h1>
+  </header>
+  <ul>
+  <li> <img src="./images/logo.jpg"></li>
+  <li><a href="./search2.html">Back to Search</a></listyle="float:right">
+  <li><a href="./my_list.html">My List</a></li style="float:center">
+</ul>
+
+  <div><main>
+  <body>
+  <h2>You do not have any favorites yet!</h2>
+  </main></div>
+  </body>
+  <br>
+  <footer>
+   <h2>Pasifika Artists Network LLC</h2>
+  </footer>
+  </html>`;
+  
+  res.send(pagestr);
+}
+
 });
 
 app.get("/artist_single.html", function (req, res) {
@@ -344,7 +385,6 @@ next();
 
 app.post("/add_to_fav", function (req, res) {
   artist_index = req.body.artist_index;
-  add_array = req.session.add;
   console.log(req.body);
 if(req.body["add" + artist_index] != undefined){
   add = req.body["add" + artist_index];
