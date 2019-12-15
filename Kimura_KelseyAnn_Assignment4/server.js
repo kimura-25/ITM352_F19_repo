@@ -606,7 +606,21 @@ app.post("/login.html", function (req, res) {
 app.post("/search_artist", function (req, res) {
   req.query.genre = req.body.genre;
   console.log(req.query.genre);
+  if (req.query.genre == 'select_genre'){
+    res.redirect('./index.html');
+  } else{
   res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
+  }
+});
+
+app.post("/search_artist2", function (req, res) {
+  req.query.genre = req.body.genre;
+  console.log(req.query.genre);
+  if (req.query.genre == 'select_genre'){
+    res.redirect('./search2.html?');
+  } else{
+  res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
+  }
 });
 
 app.post("/submit_register", function (req, res) {
