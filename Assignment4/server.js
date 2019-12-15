@@ -335,6 +335,7 @@ app.get("/last_viewed.html", function (req, res) {
   last_viewed = req.session.last_viewed;  
   console.log(last_viewed);
 
+  if (last_viewed.length > 0){
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
@@ -392,7 +393,45 @@ app.get("/last_viewed.html", function (req, res) {
   </html>`;
   
   res.send(pagestr);
-
+  } else {
+    pagestr = `
+    <!DOCTYPE html>
+    <html lang="en">`;
+  
+    pagestr += `
+    <head>
+    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Artist All</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
+        <link rel="stylesheet" href="form-style.css">
+    </head>
+    <header>
+        <h1>Pasifika Artist Network</h1>
+    </header>
+    <ul>
+    <li> <img src="./images/logo.jpg"></li>
+    <li><a href="./search2.html">Back to Search</a></li>
+    <li><a href="./my_list.html">My List</a></li>
+    <li><a href="./last_viewed.html">Last Viewed</a></li>
+  </ul>
+  <br>
+    <div><main>
+    <body>
+    <h2>No view history yet</h2>
+    <br>
+    <p>Go back to the search to view more artists</p>
+    </main></div>
+    </body>
+    <br>
+    <footer>
+     <h2>Pasifika Artists Network LLC</h2>
+    </footer>
+    </html>`;
+    
+    res.send(pagestr);
+    }
 });
 
 
