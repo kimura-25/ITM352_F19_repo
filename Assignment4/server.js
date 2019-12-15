@@ -271,7 +271,7 @@ app.get("/my_list.html", function (req, res) {
                   <th>Genre</th>
               </tr>`;
 
-  for (i = 0; i < add_array.length; i++) {
+  for (i = add_array.length - 1; i >= 0; i--) {
     pagestr += ` 
     <form action="/artist_single.html" method="GET">
       <tr>
