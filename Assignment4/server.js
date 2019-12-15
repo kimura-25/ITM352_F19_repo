@@ -522,7 +522,7 @@ app.get("/request.html", function (req,res,next){
 req.session.email = req.query.email;
 req.session.name = req.query.name;
 email = req.session.email;
-console.log(email);
+console.log(req.session.artist_name);
 next();
 });
 
@@ -540,8 +540,10 @@ if(req.body["add" + artist_index] != undefined){
 });
 
 app.get("/request_artist", function (req, res){
-  artist_request = req.body.artist_request;
-  console.log(artist_request);
+  //req.query.artist_name = req.body.artist_name;
+  //artist_name = req.query.artist_name;
+  req.session.artist_name = req.query.artist_name;
+  console.log(req.session.artist_name);
   res.redirect('./login.html?' + querystring.stringify(req.query));
 });
 
@@ -740,6 +742,7 @@ app.post("/submit_register", function (req, res) {
     req.query.name = req.body.name; //put name into querystring
     req.query.genre = req.body.genre; //put genre into querystring
     req.query.email = req.body.email; //put email into querystring
+    req.query.artist_name = req.session.artist_name; //put artist name for form into querystring
     res.cookie('name', req.query.username);
 
     // store information into a JSON file
