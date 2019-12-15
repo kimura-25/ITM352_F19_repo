@@ -120,11 +120,11 @@ if (request_errors.length == 0) {
 app.get("/search.html", function (req, res, next) {
   req.session.fav_artist = [];
   req.session.add = [];
+  add_array = req.session.add;
   next();
 });
 
 app.get("/artist_all.html", function (req, res) {
-  add_array = req.session.add;
   console.log('artist all', req.query);
   pagestr = `
   <!DOCTYPE html>
@@ -390,9 +390,6 @@ if(req.body["add" + artist_index] != undefined){
   add = req.body["add" + artist_index];
   if (add == true){
     add_array.push(artist_index);
-    console.log(add_array);
-  } else {
-    add_array.pop(artist_index);
     console.log(add_array);
   }
 }
