@@ -77,7 +77,8 @@ if (request_errors.length == 0) {
   </head>  
 <body>
   <div>
-    <h2>Your request has been processed</h2>
+    <h2>Thank you for your interest in Pasifika Artists. Your request is being processed.</h2>
+    <h2> An email has been sent to your account for a confirmation.</h2>
     <button type="button" onclick="window.location.href = '/search2.html';">Return to search</button>
   </div>
 </body>
@@ -95,7 +96,7 @@ if (request_errors.length == 0) {
         from: 'itm352asst4test@gmail.com',
         to: req.session.email,
         subject:'Artist Booking Request Confirmation',
-        text:'Hello ' + req.session.name + ', Your request for artist booking has been submitted. Here are the details of your request: Date' + req.session.date + ' Time: ' + req.session.time + ' Location ' + req.session.location + ' Notes: ' + req.session.request_notes + '. We will contact you for any further details. Thank you, Pasifika Arists'
+        text:'Hello ' + req.session.name + ',' + ' Your request for artist booking has been submitted. Here are the details of your request: Date ' + req.session.date + ' Time: ' + req.session.time + ' Location ' + req.session.location + ' Notes: ' + req.session.request_notes + '. We will contact you for any further details. Thank you, Pasifika Arists'
       };
       transporter.sendMail(mailOptions, function(error,info){
         if(error){
@@ -157,10 +158,12 @@ app.get("/artist_all.html", function (req, res) {
       <h1>Pasifika Artist Network</h1>
   </header>
 </div>
-<div class="navbar">
-  <a href="./search2.html">Back to Search</a>
-  <a href="./my_list.html">My List</a>
-</div>
+<ul>
+<li> <img src="./images/logo.jpg"></li>
+<li><a href="./search2.html">Back to Search</a></listyle="float:right">
+<li><a href="./my_list.html">My List</a></li style="float:center">
+</ul>
+
 <p>You have _ Search Results</p>
 <br>
   <body>
@@ -236,10 +239,12 @@ app.get("/my_list.html", function (req, res) {
   <header>
       <h1>Pasifika Artist Network</h1>
   </header>
-  <div class="navbar">
-  <a href="./search2.html">Back to Search</a>
-  <a href="./my_list.html">My List</a>
-</div>
+  <ul>
+  <li> <img src="./images/logo.jpg"></li>
+  <li><a href="./search2.html">Back to Search</a></listyle="float:right">
+  <li><a href="./my_list.html">My List</a></li style="float:center">
+</ul>
+
   <div><main>
   <body>
           <table cellpadding="10" border="1" bgcolor="#FFA500">
@@ -299,11 +304,13 @@ app.get("/artist_single.html", function (req, res) {
         <link rel="stylesheet" href="form-style.css">
     </head>  
     <h1>Pasifika Artist Network</h1>
-    <div class="navbar">
-  <a href="./search2.html">Back to Search</a>
-  <a href="./my_list.html">My List</a>
-</div>
-<body>
+    <ul>
+        <li> <img src="./images/logo.jpg"></li>
+        <li><a href="./search2.html">Back to Search</a></listyle="float:right">
+        <li><a href="./my_list.html">My List</a></li style="float:center">
+      </ul>
+
+  <body>
 <form action = '/request_artist'>
 <div>
         <h1>${artist_data[index].name}</h1>
@@ -344,7 +351,7 @@ if(req.body["add" + artist_index] != undefined){
   if (add == true){
     add_array.push(artist_index);
     console.log(add_array);
-  } if (add == false) {
+  } else {
     add_array.pop(artist_index);
     console.log(add_array);
   }
