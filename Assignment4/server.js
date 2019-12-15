@@ -382,7 +382,6 @@ next();
 });
 
 
-
 app.post("/add_to_fav", function (req, res) {
   artist_index = req.body.artist_index;
   console.log(req.body);
