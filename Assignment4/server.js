@@ -4,13 +4,13 @@
 var fs = require('fs');
 var express = require('express'); // server requires Express to run
 const querystring = require('querystring'); // requiring a query string - string of whatever is written in textbox
-var product_data = require('./public/product_data.js'); //using data from artist_data.js
 var app = express(); //run the express function and start express
 var parser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 var nodemailer = require('nodemailer');
+
 
 app.use(session({ secret: "anything" }));
 app.use(parser.urlencoded({ extended: true })); // decode, now request.body will exist
@@ -595,8 +595,25 @@ app.post("/submit_register", function (req, res) {
     req.query.username = reguser; //put username in querystring
     req.query.name = req.body.name; //put name into querystring
     req.query.genre = req.body.genre; //put genre into querystring
-    req.query.email = req.body.email
+    req.query.email = req.body.email; //put email into querystring
     res.cookie('name', req.query.username);
+
+    // store information into a JSON file
+    users_reg_data[reguser] = {
+      name: req.body.name,
+      password: req.body.password,
+      email: req.body.email,
+      phone: req.body.phone
+    };
+/*    users_reg_data[reguser].name = req.body.name;
+    users_reg_data[reguser].password = req.body.password;
+    users_reg_data[reguser].email = req.body.email;
+    users_reg_data[reguser].phone = req.body.phone;
+    console.log(users_reg_data[reguser]);
+*/
+    fs.writeFileSync(filename1, JSON.stringify(users_reg_data));
+
+
     res.redirect('./request.html?' + querystring.stringify(req.query)); //redirect to the artist page
   }
   //add errors to querystring (for purpose of putting back into textbox)
