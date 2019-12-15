@@ -250,7 +250,7 @@ app.get("/my_list.html", function (req, res) {
   <li><a href="./my_list.html">My List</a></li>
   <li><a href="./last_viewed.html">Last Viewed</a></li>
 </ul>
-
+<br>
   <div><main>
   <body>
           <table cellpadding="10" border="1" bgcolor="#FFA500">
@@ -357,7 +357,7 @@ app.get("/last_viewed.html", function (req, res) {
   <li><a href="./my_list.html">My List</a></li>
   <li><a href="./last_viewed.html">Last Viewed</a></li>
 </ul>
-
+<br>
   <div><main>
   <body>
           <table cellpadding="10" border="1" bgcolor="#FFA500">
@@ -366,8 +366,7 @@ app.get("/last_viewed.html", function (req, res) {
                   <th>Description</th>
                   <th>Genre</th>
               </tr>`;
-
-  for (i = 0; i < last_viewed.length; i++) {
+  for (i = last_viewed.length - 1; i >= 0; i--) {
     pagestr += ` 
     <form action="/artist_single.html" method="GET">
       <tr>
