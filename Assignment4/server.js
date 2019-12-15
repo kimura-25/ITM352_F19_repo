@@ -118,6 +118,7 @@ if (request_errors.length == 0) {
 });
 
 app.get("/search.html", function (req, res, next) {
+  res.cookie('name', 'visitor');
   req.session.fav_artist = [];
   req.session.last_viewed = [];
   req.session.add = [];
@@ -126,6 +127,10 @@ app.get("/search.html", function (req, res, next) {
 });
 
 app.get("/artist_all.html", function (req, res) {
+  if (typeof req.cookies.name != 'undefined'){
+  }else{
+    res.redirect('/search.html');
+  }
   console.log('artist all', req.query);
   pagestr = `
   <!DOCTYPE html>
@@ -225,6 +230,13 @@ app.get("/my_list.html", function (req, res) {
   /*fav_artist = req.session.fav_artist;
   console.log(fav_artist);
   */
+
+  if (typeof req.cookies.name != 'undefined'){
+  }else{
+    res.redirect('/search.html');
+  }
+
+  if (typeof add_array !='undefined'){
   if (add_array.length > 0){
     console.log(add_array);
     pagestr = `
@@ -285,8 +297,7 @@ app.get("/my_list.html", function (req, res) {
   </html>`;
   
   res.send(pagestr);
-}
-if (add_array.length = 0) {
+} else {
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
@@ -323,14 +334,21 @@ if (add_array.length = 0) {
   
   res.send(pagestr);
 }
-
+  } else{
+    res.redirect('/search.html');
+  }
 });
 
 app.get("/last_viewed.html", function (req, res) {
   /*fav_artist = req.session.fav_artist;
   console.log(fav_artist);
   */
+ if (typeof req.cookies.name != 'undefined'){
+}else{
+  res.redirect('/search.html');
+}
 
+if (typeof req.session.last_viewed !='undefined'){
   last_viewed = req.session.last_viewed;  
   console.log(last_viewed);
 
@@ -404,7 +422,7 @@ app.get("/last_viewed.html", function (req, res) {
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Artist All</title>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
-        <link rel="stylesheet" href="form-style.css">
+        <link rel="stylesheet" href="history-style.css">
     </head>
     <header>
         <h1>Pasifika Artist Network</h1>
@@ -416,12 +434,12 @@ app.get("/last_viewed.html", function (req, res) {
     <li><a href="./last_viewed.html">Last Viewed</a></li>
   </ul>
   <br>
-    <div><main>
+  <br>
+  <br>
     <body>
     <h2>No view history yet</h2>
     <br>
-    <p>Go back to the search to view more artists</p>
-    </main></div>
+    <h2>Go back to the search to view more artists</h2>
     </body>
     <br>
     <footer>
@@ -431,10 +449,19 @@ app.get("/last_viewed.html", function (req, res) {
     
     res.send(pagestr);
     }
+  } else {
+    res.redirect('/search.html');
+  }
 });
 
 
 app.get("/artist_single.html", function (req, res) {
+
+  if (typeof req.cookies.name != 'undefined'){
+  }else{
+    res.redirect('/search.html');
+  }
+
   if (req.query.artist_index !== undefined) {
     console.log('single artist page', req.query);
     index = req.query.artist_index;

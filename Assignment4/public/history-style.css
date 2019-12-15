@@ -92,20 +92,13 @@ ul>li>img{
     width: 80px;
 }
 
-p { 
-    display:block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: -200px;
-    margin-inline-end: -200px;
-}
+/*Styling button element*/
 button {
     margin: 0 auto;
     display: block;
 }
 
 /*Styling the Search Form*/
-
 div > form{
     margin: 0 auto; 
     width:250px;    
@@ -130,9 +123,6 @@ table{
 }
 
 /*Styling the Text on the "No view history yet" page*/
-main > h2{
-  text-align: center;
-}
-main > p{
+p{
   text-align: center;
 }
