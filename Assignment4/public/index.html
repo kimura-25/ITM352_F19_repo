@@ -1,58 +1,54 @@
-<!-- Kelsey Ann Kimura: Index Page -->
-<!-- This is the home page. The user clicks the button and is take to the website -->
-
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home Page</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
-<style>
-        body {
-        text-align: center;
-        background-color: tan;
-        }       
-    </style>
+    <title>Artist Search</title>
+    <link rel="stylesheet" href="form-style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
-<style>
-img {
-/*css based on SmartphoneProducts2/SmartphoneProducts3*/
-    border: 1px solid #ddd;
-    /* Gray border */
-    border-radius: 4px;
-    /* Rounded border */
-    padding: 5px;
-    /* Some padding */
-    width: 200px;
-    /* Set a small width */
-}
-
-/*Setting css for the body*/
-body {
-    background: url(./images/background.jpg);
-    /*Set background image to background.jpg from ./public/images folder*/
-    color:ivory;
-    /*set text color to ivory*/
-}
-
-/* Add a hover effect (black shadow) */
-img:hover {
-    box-shadow: 0 0 5px 1px black;
-}
-
-/*Set font that is in <h1> and <h2> brackets to Open Sans*/
-h1, h2{
-    font-family:'Open Sans',sans-serif;
-}
-</style>
-
+<header>
+    <h1>Pasifika Artist Network</h1>
+</header>
 <body>
-    <h1>The Giraffe Factory</h1>
-    <a href="./product_page.html">
-        <img src="./images/giraffe_home.jpg" height="50%" width="50%"></a>
-    <h1>For all your long-necked friend needs!</h1>
+    <ul>
+        <li> <img src="./images/logo.jpg"></li>
+        <li><a href="./search2.html">Back to Search</a></li>
+        <li><a href="./my_list.html">My List</a></li>
+        <li><a href="./last_viewed.html">Last Viewed</a></li>
+      </ul>      
+    <div>
+        <!-- //Creating the login form*/
+/*Help from https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_password*/ -->
+        <!-- Help from https://www.w3schools.com/howto/howto_css_login_form.asp -->
+        <!-- Code for Maximum Length of Text: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text -->
+        <form name="search" method="POST" action="/search_artist">
+            <br> <br>
+            <h2>Welcome to the Pasifika Artist Network Booking Search!</h2>
+            <div class="container">
+                <label for="genre" required><b>What genre are you looking for?</b></label>
+                <br>
+                <br>
+                <!-- Code for Dropdown Menu: https://www.w3schools.com/html/html_form_elements.asp -->
+                <select name="genre" id="genre" size="1">
+                        <option name="select_genre" value="select_genre">Select Genre</option>
+                        <option name="pacificroots" value="pacificroots">Pacific Roots</option>
+                        <option name="guitar" value="guitar">Guitar & 'Ukulele Masters</option>
+                        <option name="contemporary" value="contemporary">Island Contemporary</option>
+                        <option name="vocal" value="vocal">Vocal & Island Harmonies</option>
+                        <option name="taiko" value="taiko">Taiko Master</option>
+                        <option name="dance" value="dance">Dance & Hula</option>
+                        <option name="spokenword" value="spokenword">Spoken Word</option>
+                </select>
+                <br>
+                <br>
+                <input type="submit" name="submit" value="search">
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>

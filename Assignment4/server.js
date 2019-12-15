@@ -117,7 +117,7 @@ if (request_errors.length == 0) {
 
 });
 
-app.get("/search.html", function (req, res, next) {
+app.get("/index.html", function (req, res, next) {
   res.cookie('name', 'visitor');
   req.session.fav_artist = [];
   req.session.last_viewed = [];
@@ -129,7 +129,7 @@ app.get("/search.html", function (req, res, next) {
 app.get("/artist_all.html", function (req, res) {
   if (typeof req.cookies.name != 'undefined'){
   }else{
-    res.redirect('/search.html');
+    res.redirect('/index.html');
   }
   console.log('artist all', req.query);
   pagestr = `
@@ -233,7 +233,7 @@ app.get("/my_list.html", function (req, res) {
 
   if (typeof req.cookies.name != 'undefined'){
   }else{
-    res.redirect('/search.html');
+    res.redirect('/index.html');
   }
 
   if (typeof add_array !='undefined'){
@@ -335,7 +335,7 @@ app.get("/my_list.html", function (req, res) {
   res.send(pagestr);
 }
   } else{
-    res.redirect('/search.html');
+    res.redirect('/index.html');
   }
 });
 
@@ -345,7 +345,7 @@ app.get("/last_viewed.html", function (req, res) {
   */
  if (typeof req.cookies.name != 'undefined'){
 }else{
-  res.redirect('/search.html');
+  res.redirect('/index.html');
 }
 
 if (typeof req.session.last_viewed !='undefined'){
@@ -450,7 +450,7 @@ if (typeof req.session.last_viewed !='undefined'){
     res.send(pagestr);
     }
   } else {
-    res.redirect('/search.html');
+    res.redirect('/index.html');
   }
 });
 
@@ -459,7 +459,7 @@ app.get("/artist_single.html", function (req, res) {
 
   if (typeof req.cookies.name != 'undefined'){
   }else{
-    res.redirect('/search.html');
+    res.redirect('/index.html');
   }
 
   if (req.query.artist_index !== undefined) {
