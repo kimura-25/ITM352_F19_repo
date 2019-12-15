@@ -21,6 +21,7 @@ main{
 /* Font from BrowserHistory2*/
 body{
     background-color: ivory; /*change color background*/
+    background: url(./images/background2.jpg); /*Background image is from the ./public/images folder*/
     font-family:'Open Sans',sans-serif; /*font is Open-Sans*/
 }
 
@@ -101,4 +102,26 @@ p {
 button {
     margin: 0 auto;
     display: block;
+}
+
+div > form{
+    margin: 0 auto; 
+    width:250px;    
+    text-align: center;
+    background-color: ivory;
+    border-style: solid;
+    border-width: 5px;
+    border-color: #dcdcdc;
+}
+
+
+
+div > p {
+    background-color:ivory;
+    padding: 10px;
+}
+
+table{
+    background-color: ivory;
+    border: 0px;
 }

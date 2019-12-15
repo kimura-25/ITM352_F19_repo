@@ -61,15 +61,15 @@ function checkdate() {
       </ul>      
 <br>
 <br>
-
 <script>
     email = GET[`email`];
     name = GET[`name`];
 
     document.write(`
-    <p> Hello ${name}. Your Hello ${name}. Your request will be sent to your email ${email}!</p>
+    <h2> Hello ${name}. Your request will be sent to your email: ${email}.</h2>
     `)
     </script>
+<br>
     <form name="request_form" method="POST" action="./submit_request">
         <label for="date">Date of Request</label>
         <label for="dateerror" id="dateerror" name="dateerror"></label>
@@ -79,7 +79,7 @@ function checkdate() {
         <br>
         <label for="time">Approximate Time of Day</label>
         <br>
-        <input type="time" id="time" name="time" min="0:00" max="24:00">
+        <input type="time" id="time" name="time" min="0:00" max="24:00" required>
         <br>
         <br>
         <label for="location">Location</label>
@@ -87,8 +87,7 @@ function checkdate() {
         <input type="text" id="location" name="location" required>
         <br>
         <br>
-        <br>
-        <label for="request_notes">Please describe the details of the event (location, time, specific requests,
+        <label for="request_notes">Please describe the details of the event (purpose of the event, specific requests,
             etc.)</label>
         <br>
         <input type="text" id="request_notes" name="request_notes" style="height:200px;width:400px;">

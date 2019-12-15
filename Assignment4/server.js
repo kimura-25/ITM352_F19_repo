@@ -168,11 +168,10 @@ app.get("/artist_all.html", function (req, res) {
 <li><a href="./last_viewed.html">Last Viewed</a></li>
 </ul>
 
-<p>You have _ Search Results</p>
 <br>
   <body>
   <div><main>
-          <table cellpadding="10" border="1" bgcolor="#FFA500">
+          <table cellpadding="10" border="1">
               <tr>
                   <th>Artist Name</th>
                   <th>Description</th>
@@ -253,7 +252,7 @@ app.get("/my_list.html", function (req, res) {
 <br>
   <div><main>
   <body>
-          <table cellpadding="10" border="1" bgcolor="#FFA500">
+          <table cellpadding="10" border="1" >
               <tr>
                   <th>Artist Name</th>
                   <th>Description</th>
@@ -361,7 +360,7 @@ app.get("/last_viewed.html", function (req, res) {
 <br>
   <div><main>
   <body>
-          <table cellpadding="10" border="1" bgcolor="#FFA500">
+          <table cellpadding="10" border="1">
               <tr>
                   <th>Artist Name</th>
                   <th>Description</th>
@@ -476,7 +475,7 @@ app.get("/artist_single.html", function (req, res) {
         <h1>${artist_data[index].name}</h1>
         <br><img src="${artist_data[index].image}">
         <br>
-        <p>${artist_data[index].bio}</p>
+        <div><p>${artist_data[index].bio}</p></div>
 <input type="hidden" name="artist_request" id="artist_request" value="${index}">
 <input type="hidden" name="artist_name" id="artist_name" value="${artist_data[index].name}">
 <input type="submit" value="Request artist">
@@ -509,13 +508,13 @@ if(req.body["add" + artist_index] != undefined){
   if (add == true){
     add_array.push(artist_index);
     console.log(add_array);
-  }
+  } 
 }
 });
 
 app.get("/request_artist", function (req, res){
-  artist_name = req.body.artist_name;
-  console.log(artist_name);
+  artist_request = req.body.artist_request;
+  console.log(artist_request);
   res.redirect('./login.html?' + querystring.stringify(req.query));
 });
 

@@ -1,11 +1,6 @@
 /*Kelsey Ann Kimura: Login CSS*/
 /*This is the css for the login page*/
 
-form {
-    display: inline-block;
-    background-color: ivory;
-
-}
 body{
     background-color: ivory; /*change color background*/
     font-family:'Open Sans',sans-serif; /*font is Open-Sans*/
@@ -57,7 +52,10 @@ body {
   form { 
     margin: 0 auto; 
     width:250px;
+    display: inline-block;
+    background-color: ivory;
     }
+
 
     .newuser{
         width: 40%;
