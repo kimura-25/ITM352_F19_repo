@@ -84,7 +84,7 @@ if (request_errors.length == 0) {
   </div>
 </body>
 </html>`;
-      //Sending mail to user
+      //Sending email to user
       //Code from https://www.w3schools.com/nodejs/nodejs_email.asp
       let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -97,7 +97,7 @@ if (request_errors.length == 0) {
         from: 'itm352asst4test@gmail.com',
         to: req.session.email,
         subject:'Artist Booking Request Confirmation',
-        text:'Hello ' + req.session.name + ',' + ' Your request for artist booking has been submitted. Here are the details of your request: Date ' + req.session.date + ' Time: ' + req.session.time + ' Location ' + req.session.location + ' Notes: ' + req.session.request_notes + '. We will contact you for any further details. Thank you, Pasifika Arists'
+        text:'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name +' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + '\nLocation ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
       };
       transporter.sendMail(mailOptions, function(error,info){
         if(error){
@@ -126,11 +126,28 @@ app.get("/index.html", function (req, res, next) {
   next();
 });
 
+app.get("/", function (req, res, next) {
+  res.cookie('name', 'visitor');
+  req.session.fav_artist = [];
+  req.session.last_viewed = [];
+  req.session.add = [];
+  add_array = req.session.add;
+  next();
+});
+
+
 app.get("/artist_all.html", function (req, res) {
   if (typeof req.cookies.name != 'undefined'){
   }else{
     res.redirect('/index.html');
   }
+
+/*This is the page with all of the search results
+User is able to check mark which artist they want to add to their favorites list using the fetch function:
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+*/
+
+
   console.log('artist all', req.query);
   pagestr = `
   <!DOCTYPE html>
