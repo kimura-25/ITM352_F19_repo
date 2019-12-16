@@ -11,15 +11,11 @@ params.forEach(function (value, key) { GET[key] = value }); // the value is equa
 window.onload = function(){
     if (params.has('request_errors')){
         request_form['date'].value = params.get('date');
-        console.log('hi');
+        request_form['time'].value = params.get('time');
+        request_form['location'].value = params.get('location');
+        request_form['request_notes'].value = params.get('request_notes');
     }
-/*    if (params.has('artist_request')){
 
-    }
-    else{
-        alert('Please select an artist');
-        window.location='/artist_all.html' + window.location.search;
-    }*/
 }
 
 
@@ -77,9 +73,14 @@ function checkdate() {
         <input type="date" id="date" name="date" onclick="checkdate()" required>
         <br>
         <br>
-        <label for="time">Approximate Time of Day</label>
+        <label for="time">Approximate Start time</label>
         <br>
         <input type="time" id="time" name="time" min="0:00" max="24:00" required>
+        <br>
+        <br>
+        <label for="end">About how many hours will the event be?</label>
+        <br>
+        <input type="number" id="hours" name="hours" min=1 required>
         <br>
         <br>
         <label for="location">Location</label>
@@ -92,6 +93,7 @@ function checkdate() {
         <br>
         <input type="text" id="request_notes" name="request_notes" style="height:200px;width:400px;">
         <br>
+
         <input type="submit" id="submit_request" name="submit_request">
     </form>
 </body>

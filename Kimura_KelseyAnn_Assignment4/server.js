@@ -19,7 +19,7 @@ app.use(parser.json());
 
 var filename1 = 'user_data.json' //loading the user_data.json file
 var filename2 = './public/artist_data.json'//loading artist_data.json file
-var filename3 ='request_data.json' //loading request_data.json file
+var filename3 = 'request_data.json' //loading request_data.json file
 
 if (fs.existsSync(filename1)) { //only open if file exists
   stats1 = fs.statSync(filename1); //used to printout size of filename
@@ -44,17 +44,18 @@ if (fs.existsSync(filename1)) { //only open if file exists
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
 }
 
-app.post("/submit_request", function (req, res,next) {
+app.post("/submit_request", function (req, res, next) {
   req.query.date = req.body.date;
   req.query.location = req.body.location;
   req.query.time = req.body.time;
   req.query.request_notes = req.body.request_notes;
+  req.query.hours = req.body.hours;
   req.session.location = req.query.location;
   req.session.request_notes = req.query.request_notes;
   req.session.time = req.query.time;
   console.log(req.session.date)
   req.query.request_notes = req.body.request_notes;
- // req.session.date = req.query.date;
+  // req.session.date = req.query.date;
   var request_errors = []; //to store all errors
 
   var d = new Date(req.query.date);
@@ -62,14 +63,14 @@ app.post("/submit_request", function (req, res,next) {
   req.session.date = d;
   console.log(t + d);
   if (d <= t) {
-    request_errors.push = ('Pick another date');
+    request_errors.push('Pick another date');
     console.log(request_errors);
   }
 
 
-if (request_errors.length == 0) {
-  res.clearCookie('user');
-  pagestr = `
+  if (request_errors.length == 0) {
+    res.clearCookie('user');
+    pagestr = `
   <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -88,48 +89,52 @@ if (request_errors.length == 0) {
   </div>
 </body>
 </html>`;
-      //Sending email to user
-      //Code from https://www.w3schools.com/nodejs/nodejs_email.asp
-      let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'itm352asst4test@gmail.com',
-          pass: 'helloworld!'
-        }
-      });
-      let mailOptions = {
-        from: 'itm352asst4test@gmail.com',
-        to: req.session.email,
-        subject:'Artist Booking Request Confirmation',
-        text:'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name +' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + '\nLocation ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
-      };
-      transporter.sendMail(mailOptions, function(error,info){
-        if(error){
-          console.log(error);
-        } else{
-          console.log('Email sent: ' + info.response);
-        }
-      })
+    //Sending email to user
+    //Code from https://www.w3schools.com/nodejs/nodejs_email.asp
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'itm352asst4test@gmail.com',
+        pass: 'helloworld!'
+      }
+    });
+    let mailOptions = {
+      from: 'itm352asst4test@gmail.com',
+      to: req.session.email,
+      subject: 'Artist Booking Request Confirmation',
+      text: 'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name + ' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + '\nLocation ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    })
 
-      //store request information in a JSON file
-      req.session.username = {
-        name: req.session.name,
-        email: req.session.email,
-        artist: req.session.artist_name,
-        date: req.session.date,
-        location: req.session.location,
-        time: req.session.time,
-        notes: req.session.request_notes 
-      };
-  
-      fs.writeFileSync(filename3, JSON.stringify(request_data));
-  
+    /*      //store request information in a JSON file
+          req.session.username = {
+            name: req.session.name,
+            email: req.session.email,
+            artist: req.session.artist_name,
+            date: req.session.date,
+            location: req.session.location,
+            time: req.session.time,
+            notes: req.session.request_notes 
+          };
+      
+          fs.writeFileSync(filename3, JSON.stringify(request_data));
+      */
 
-  res.send(pagestr);
-} 
-  else {
+    res.send(pagestr);
+  } else {
     req.query.date = req.body.date;
-    req.query.request_notes = req.body.request_notes;
+    req.query.location = req.body.location;
+    req.query.time = req.body.time;
+    req.query.request_notes = req.body.request_notes; req.query.name = req.session.name;
+    req.query.email = req.session.email;
+    req.query.artist_name = req.session.artist_name;
+    req.query.hours = req.body.hours;
     res.redirect('./request.html?' + querystring.stringify(req.query));
   }
 
@@ -155,15 +160,15 @@ app.get("/", function (req, res, next) {
 
 
 app.get("/artist_all.html", function (req, res) {
-  if (typeof req.cookies.name != 'undefined'){
-  }else{
+  if (typeof req.cookies.name != 'undefined') {
+  } else {
     res.redirect('/index.html');
   }
 
-/*This is the page with all of the search results
-User is able to check mark which artist they want to add to their favorites list using the fetch function:
-https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-*/
+  /*This is the page with all of the search results
+  User is able to check mark which artist they want to add to their favorites list using the fetch function:
+  https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+  */
 
 
   console.log('artist all', req.query);
@@ -266,19 +271,19 @@ app.get("/my_list.html", function (req, res) {
   console.log(fav_artist);
   */
 
-  if (typeof req.cookies.name != 'undefined'){
-  }else{
+  if (typeof req.cookies.name != 'undefined') {
+  } else {
     res.redirect('/index.html');
   }
 
-  if (typeof add_array !='undefined'){
-  if (add_array.length > 0){
-    console.log(add_array);
-    pagestr = `
+  if (typeof add_array != 'undefined') {
+    if (add_array.length > 0) {
+      console.log(add_array);
+      pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
 
-  pagestr += `
+      pagestr += `
   <head>
   <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -306,8 +311,8 @@ app.get("/my_list.html", function (req, res) {
                   <th>Genre</th>
               </tr>`;
 
-  for (i = add_array.length - 1; i >= 0; i--) {
-    pagestr += ` 
+      for (i = add_array.length - 1; i >= 0; i--) {
+        pagestr += ` 
     <form action="/artist_single.html" method="GET">
       <tr>
           <td><img src="${artist_data[add_array[i]].image}"><br>${artist_data[add_array[i]].name}
@@ -319,9 +324,9 @@ app.get("/my_list.html", function (req, res) {
           <td>${artist_data[add_array[i]].genre}</td>
       </tr>
       </form>`;
-    }
+      }
 
-    pagestr += ` 
+      pagestr += ` 
           </table>
   </main></div>
   </body>
@@ -330,14 +335,14 @@ app.get("/my_list.html", function (req, res) {
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
-  
-  res.send(pagestr);
-} else {
-  pagestr = `
+
+      res.send(pagestr);
+    } else {
+      pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
 
-  pagestr += `
+      pagestr += `
   <head>
   <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -366,10 +371,10 @@ app.get("/my_list.html", function (req, res) {
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
-  
-  res.send(pagestr);
-}
-  } else{
+
+      res.send(pagestr);
+    }
+  } else {
     res.redirect('/index.html');
   }
 });
@@ -378,21 +383,21 @@ app.get("/last_viewed.html", function (req, res) {
   /*fav_artist = req.session.fav_artist;
   console.log(fav_artist);
   */
- if (typeof req.cookies.name != 'undefined'){
-}else{
-  res.redirect('/index.html');
-}
+  if (typeof req.cookies.name != 'undefined') {
+  } else {
+    res.redirect('/index.html');
+  }
 
-if (typeof req.session.last_viewed !='undefined'){
-  last_viewed = req.session.last_viewed;  
-  console.log(last_viewed);
+  if (typeof req.session.last_viewed != 'undefined') {
+    last_viewed = req.session.last_viewed;
+    console.log(last_viewed);
 
-  if (last_viewed.length > 0){
-  pagestr = `
+    if (last_viewed.length > 0) {
+      pagestr = `
   <!DOCTYPE html>
   <html lang="en">`;
 
-  pagestr += `
+      pagestr += `
   <head>
   <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -419,8 +424,8 @@ if (typeof req.session.last_viewed !='undefined'){
                   <th>Description</th>
                   <th>Genre</th>
               </tr>`;
-  for (i = last_viewed.length - 1; i >= 0; i--) {
-    pagestr += ` 
+      for (i = last_viewed.length - 1; i >= 0; i--) {
+        pagestr += ` 
     <form action="/artist_single.html" method="GET">
       <tr>
           <td><img src="${artist_data[last_viewed[i]].image}"><br>${artist_data[last_viewed[i]].name}
@@ -432,9 +437,9 @@ if (typeof req.session.last_viewed !='undefined'){
           <td>${artist_data[last_viewed[i]].genre}</td>
       </tr>
       </form>`;
-    }
+      }
 
-    pagestr += ` 
+      pagestr += ` 
           </table>
   </main></div>
   </body>
@@ -443,14 +448,14 @@ if (typeof req.session.last_viewed !='undefined'){
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
-  
-  res.send(pagestr);
-  } else {
-    pagestr = `
+
+      res.send(pagestr);
+    } else {
+      pagestr = `
     <!DOCTYPE html>
     <html lang="en">`;
-  
-    pagestr += `
+
+      pagestr += `
     <head>
     <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -481,8 +486,8 @@ if (typeof req.session.last_viewed !='undefined'){
      <h2>Pasifika Artists Network LLC</h2>
     </footer>
     </html>`;
-    
-    res.send(pagestr);
+
+      res.send(pagestr);
     }
   } else {
     res.redirect('/index.html');
@@ -492,8 +497,8 @@ if (typeof req.session.last_viewed !='undefined'){
 
 app.get("/artist_single.html", function (req, res) {
 
-  if (typeof req.cookies.name != 'undefined'){
-  }else{
+  if (typeof req.cookies.name != 'undefined') {
+  } else {
     res.redirect('/index.html');
   }
 
@@ -553,9 +558,9 @@ app.get("/artist_single.html", function (req, res) {
   }
 });
 
-app.get("/request.html", function (req,res,next){
-//If user cookie is detected and user has logged in/registered, put registration info into a session
-  if (typeof req.cookies.user != 'undefined'){
+app.get("/request.html", function (req, res, next) {
+  //If user cookie is detected and user has logged in/registered, put registration info into a session
+  if (typeof req.cookies.user != 'undefined') {
     req.session.email = req.query.email;
     req.session.name = req.query.name;
     req.session.username = req.query.username;
@@ -564,8 +569,8 @@ app.get("/request.html", function (req,res,next){
     console.log(req.session.username);
     next();
 
-//If the user has not logged in/registered, redirect user to the search page
-  } else{
+    //If the user has not logged in/registered, redirect user to the search page
+  } else {
     res.redirect('/search2.html');
   }
 
@@ -575,21 +580,21 @@ app.get("/request.html", function (req,res,next){
 app.post("/add_to_fav", function (req, res) {
   artist_index = req.body.artist_index;
   console.log(req.body);
-if(req.body["add" + artist_index] != undefined){
-  add = req.body["add" + artist_index];
-  if (add == true){
-    add_array.push(artist_index);
-    console.log(add_array);
-  } else {
-    add_array.pop(artist_index);
-    console.log(add_array);
+  if (req.body["add" + artist_index] != undefined) {
+    add = req.body["add" + artist_index];
+    if (add == true) {
+      add_array.push(artist_index);
+      console.log(add_array);
+    } else {
+      add_array.pop(artist_index);
+      console.log(add_array);
+    }
   }
-}
 });
 
 
 //Artist's name is put into a session when he/she is requested
-app.get("/request_artist", function (req, res){
+app.get("/request_artist", function (req, res) {
   req.session.artist_name = req.query.artist_name;
   console.log(req.session.artist_name);
   res.redirect('./login.html?' + querystring.stringify(req.query));
@@ -639,24 +644,24 @@ app.post("/search_artist", function (req, res) {
   //When the user searches for an artist genre, the genre is put into the querystring
   req.query.genre = req.body.genre;
   console.log(req.query.genre);
-  
+
   //If the genre still says "Select Genre," will redirect user to the search page
-  if (req.query.genre == 'select_genre'){
+  if (req.query.genre == 'select_genre') {
     res.redirect('./search2.html');
 
-  //For all else (if user selects any genre in the dropdown), user is redirected to artist_all.html with search results
-  } else{
-  res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
+    //For all else (if user selects any genre in the dropdown), user is redirected to artist_all.html with search results
+  } else {
+    res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
   }
 });
 
 app.post("/search_artist2", function (req, res) {
   req.query.genre = req.body.genre;
   console.log(req.query.genre);
-  if (req.query.genre == 'select_genre'){
+  if (req.query.genre == 'select_genre') {
     res.redirect('./search2.html?');
-  } else{
-  res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
+  } else {
+    res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
   }
 });
 
@@ -825,7 +830,7 @@ app.post("/submit_register", function (req, res) {
 
 
     //redirect to the artist page
-    res.redirect('./request.html?' + querystring.stringify(req.query)); 
+    res.redirect('./request.html?' + querystring.stringify(req.query));
   }
   //add errors to querystring (for purpose of putting back into textbox)
   else { //if there is one or more errors
