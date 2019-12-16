@@ -53,7 +53,7 @@ app.post("/submit_request", function (req, res, next) {
   req.session.location = req.query.location;
   req.session.request_notes = req.query.request_notes;
   req.session.time = req.query.time;
-  console.log(req.session.date)
+  console.log(req.query)
   req.query.request_notes = req.body.request_notes;
   // req.session.date = req.query.date;
   var request_errors = []; //to store all errors
@@ -69,6 +69,21 @@ app.post("/submit_request", function (req, res, next) {
 
 
   if (request_errors.length == 0) {
+        //store request information in a JSON file
+        request_data[req.session.username] = {
+          name: req.query.name,
+          email: req.query.email,
+          artist: req.query.artist_name,
+          date: req.query.date,
+          location: req.query.location,
+          time: req.query.time,
+          hours: req.query.hours,
+          notes: req.query.request_notes 
+        };
+    
+        fs.writeFileSync(filename3, JSON.stringify(request_data));
+
+        // Clear cookie after user made a request
     res.clearCookie('user');
     pagestr = `
   <!DOCTYPE html>
@@ -91,6 +106,7 @@ app.post("/submit_request", function (req, res, next) {
 </html>`;
     //Sending email to user
     //Code from https://www.w3schools.com/nodejs/nodejs_email.asp
+    //https://www.youtube.com/watch?v=Va9UKGs1bwI
     let transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -101,6 +117,7 @@ app.post("/submit_request", function (req, res, next) {
     let mailOptions = {
       from: 'itm352asst4test@gmail.com',
       to: req.session.email,
+      cc: 'itm352asst4test@gmail.com',
       subject: 'Artist Booking Request Confirmation',
       text: 'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name + ' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + '\nLocation ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
     };
@@ -112,19 +129,6 @@ app.post("/submit_request", function (req, res, next) {
       }
     })
 
-    /*      //store request information in a JSON file
-          req.session.username = {
-            name: req.session.name,
-            email: req.session.email,
-            artist: req.session.artist_name,
-            date: req.session.date,
-            location: req.session.location,
-            time: req.session.time,
-            notes: req.session.request_notes 
-          };
-      
-          fs.writeFileSync(filename3, JSON.stringify(request_data));
-      */
 
     res.send(pagestr);
   } else {
