@@ -107,7 +107,7 @@ app.post("/submit_request", function (req, res, next) {
       to: req.session.email,
       cc: 'itm352asst4test@gmail.com',
       subject: 'Artist Booking Request Confirmation',
-      text: 'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name + ' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + ' \nHours: ' + req.session.hours + '\nLocation ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
+      text: 'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name + ' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + ' \nHours: ' + req.session.hours + '\nLocation: ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
     };
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -139,7 +139,8 @@ app.post("/submit_request", function (req, res, next) {
     req.query.date = req.body.date;
     req.query.location = req.body.location;
     req.query.time = req.body.time;
-    req.query.request_notes = req.body.request_notes; req.query.name = req.session.name;
+    req.query.request_notes = req.body.request_notes; 
+    req.query.name = req.session.name;
     req.query.email = req.session.email;
     req.query.artist_name = req.session.artist_name;
     req.query.hours = req.body.hours;
@@ -573,6 +574,7 @@ app.get("/request.html", function (req, res, next) {
   if (typeof req.cookies.user != 'undefined') {
     req.session.email = req.query.email;
     req.session.name = req.query.name;
+    req.session.artist_name = req.query.artist_name;
     req.session.username = req.query.username;
     email = req.session.email;
     console.log(req.session.artist_name);

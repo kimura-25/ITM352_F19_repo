@@ -30,7 +30,7 @@
 
             /*To make sure login page has an artist name
             If not, will redirect to the search page*/
-            if (params.has('artist_request')) {
+      /*      if (params.has('artist_request')) {
                 var artist_request = params.get(artist_request);
                 console.log(artist_request);
             }
@@ -38,7 +38,7 @@
                 alert('Please select an artist');
                 window.location = '/search2.html' + window.location.search;
             }
-
+        */
 
         }
 
@@ -65,7 +65,7 @@
 /*Help from https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_password*/ -->
 <!-- Help from https://www.w3schools.com/howto/howto_css_login_form.asp -->
     <form name="login" method="POST">
-        Login Page <br> <br>
+        Please Log In Here: <br> <br>
         <div class="container">
                 <label for="username"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" id="username" name="username" required><br>
@@ -78,7 +78,9 @@
     <script>
    login.action="./login.html" + document.location.search; //keep querystring on login page
     </script>
-
+<br><br>
+New user? Create an account here:
+<br>
     <br>
         <input type="button" name="newuser" value="New User" onclick="window.location='./register.html' + document.location.search;">
          
