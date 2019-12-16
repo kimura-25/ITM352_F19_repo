@@ -68,7 +68,7 @@ app.post("/submit_request", function (req, res,next) {
 
 
 if (request_errors.length == 0) {
-  res.clearCookie('name');
+  res.clearCookie('user');
   pagestr = `
   <!DOCTYPE html>
 <html lang="en">
@@ -554,13 +554,21 @@ app.get("/artist_single.html", function (req, res) {
 });
 
 app.get("/request.html", function (req,res,next){
-req.session.email = req.query.email;
-req.session.name = req.query.name;
-req.session.username = req.query.username;
-email = req.session.email;
-console.log(req.session.artist_name);
-console.log(req.session.username);
-next();
+//If user cookie is detected and user has logged in/registered, put registration info into a session
+  if (typeof req.cookies.user != 'undefined'){
+    req.session.email = req.query.email;
+    req.session.name = req.query.name;
+    req.session.username = req.query.username;
+    email = req.session.email;
+    console.log(req.session.artist_name);
+    console.log(req.session.username);
+    next();
+
+//If the user has not logged in/registered, redirect user to the search page
+  } else{
+    res.redirect('/search2.html');
+  }
+
 });
 
 
@@ -576,12 +584,13 @@ if(req.body["add" + artist_index] != undefined){
 }
 });
 
+
+//Artist's name is put into a session when he/she is requested
 app.get("/request_artist", function (req, res){
-  //req.query.artist_name = req.body.artist_name;
-  //artist_name = req.query.artist_name;
   req.session.artist_name = req.query.artist_name;
   console.log(req.session.artist_name);
   res.redirect('./login.html?' + querystring.stringify(req.query));
+
 });
 
 
@@ -600,7 +609,7 @@ app.post("/login.html", function (req, res) {
       console.log(users_reg_data[req.query.username].name); //logging the name to ensure if statement is working
       req.query.name = users_reg_data[req.query.username].name //adding the name for the registered user to the querystring
       req.query.email = users_reg_data[the_username].email; //add email to querystring
-      res.cookie('name', req.query.username);
+      res.cookie('user', req.query.username);
       res.redirect('/request.html?' + querystring.stringify(req.query)); //keeping the querystring when redirecting to the invoice
       return; //ending the if statement
     } else { // if the password does not match what is in the registration data for the given username
@@ -624,10 +633,15 @@ app.post("/login.html", function (req, res) {
 );
 
 app.post("/search_artist", function (req, res) {
+  //When the user searches for an artist genre, the genre is put into the querystring
   req.query.genre = req.body.genre;
   console.log(req.query.genre);
+  
+  //If the genre still says "Select Genre," will redirect user to the search page
   if (req.query.genre == 'select_genre'){
-    res.redirect('./index.html');
+    res.redirect('./search2.html');
+
+  //For all else (if user selects any genre in the dropdown), user is redirected to artist_all.html with search results
   } else{
   res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
   }
@@ -794,7 +808,7 @@ app.post("/submit_register", function (req, res) {
     req.query.genre = req.body.genre; //put genre into querystring
     req.query.email = req.body.email; //put email into querystring
     req.query.artist_name = req.session.artist_name; //put artist name for form into querystring
-    res.cookie('name', req.query.username);
+    res.cookie('user', req.query.username);
 
     // store information into a JSON file
     users_reg_data[reguser] = {
