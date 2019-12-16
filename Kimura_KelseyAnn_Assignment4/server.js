@@ -580,7 +580,10 @@ if(req.body["add" + artist_index] != undefined){
   if (add == true){
     add_array.push(artist_index);
     console.log(add_array);
-  } 
+  } else {
+    add_array.pop(artist_index);
+    console.log(add_array);
+  }
 }
 });
 
