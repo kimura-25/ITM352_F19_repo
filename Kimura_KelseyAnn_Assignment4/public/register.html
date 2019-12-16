@@ -53,15 +53,19 @@
                 var phoneerrors = params.get('phoneerrors'); //make variable phone errors
                 document.getElementById("phonelabel").innerHTML = phoneerrors; //write email errors where occur
             }
-/*            if (params.has('artist_request')) {
-                var artist_request = params.get('artist_request');
-                console.log(artist_request)
-                artist_request2.value = artist_request;
+
+            /*To make sure register page has an artist name
+            If not, will redirect to the search page*/
+            if (params.has('artist_request')) {
+                var artist_request = params.get(artist_request);
+                console.log(artist_request);
             }
             else {
                 alert('Please select an artist');
-                window.location = '/artist_all.html' + window.location.search;
-            } */
+                window.location = '/search2.html' + window.location.search;
+            }
+
+
         }
 
     </script>

@@ -27,6 +27,19 @@
                 //if there is a login error, put up an alert
                 alert('Invalid Username or Password');
             }
+
+            /*To make sure login page has an artist name
+            If not, will redirect to the search page*/
+            if (params.has('artist_request')) {
+                var artist_request = params.get(artist_request);
+                console.log(artist_request);
+            }
+            else {
+                alert('Please select an artist');
+                window.location = '/search2.html' + window.location.search;
+            }
+
+
         }
 
 </script>

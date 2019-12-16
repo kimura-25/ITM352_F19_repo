@@ -53,6 +53,8 @@ app.post("/submit_request", function (req, res, next) {
   req.session.location = req.query.location;
   req.session.request_notes = req.query.request_notes;
   req.session.time = req.query.time;
+  req.session.date = req.query.date;
+  req.session.hours = req.query.hours;
   console.log(req.query)
   req.query.request_notes = req.body.request_notes;
   // req.session.date = req.query.date;
@@ -60,7 +62,6 @@ app.post("/submit_request", function (req, res, next) {
 
   var d = new Date(req.query.date);
   var t = new Date()
-  req.session.date = d;
   console.log(t + d);
   if (d <= t) {
     request_errors.push('Pick another date');
@@ -69,19 +70,6 @@ app.post("/submit_request", function (req, res, next) {
 
 
   if (request_errors.length == 0) {
-        //store request information in a JSON file
-        request_data[req.session.username] = {
-          name: req.query.name,
-          email: req.query.email,
-          artist: req.query.artist_name,
-          date: req.query.date,
-          location: req.query.location,
-          time: req.query.time,
-          hours: req.query.hours,
-          notes: req.query.request_notes 
-        };
-    
-        fs.writeFileSync(filename3, JSON.stringify(request_data));
 
         // Clear cookie after user made a request
     res.clearCookie('user');
@@ -119,7 +107,7 @@ app.post("/submit_request", function (req, res, next) {
       to: req.session.email,
       cc: 'itm352asst4test@gmail.com',
       subject: 'Artist Booking Request Confirmation',
-      text: 'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name + ' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + '\nLocation ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
+      text: 'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name + ' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + ' \nHours: ' + req.session.hours + '\nLocation ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
     };
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -130,7 +118,23 @@ app.post("/submit_request", function (req, res, next) {
     })
 
 
+
     res.send(pagestr);
+
+              //store request information in a JSON file
+/*              request_data[req.session.username] = {
+                name: req.query.name,
+                email: req.query.email,
+                artist: req.query.artist_name,
+                date: req.query.date,
+                location: req.query.location,
+                time: req.query.time,
+                hours: req.query.hours,
+                notes: req.query.request_notes 
+              };
+          
+              fs.writeFileSync(filename3, JSON.stringify(request_data));  
+*/
   } else {
     req.query.date = req.body.date;
     req.query.location = req.body.location;
@@ -139,6 +143,7 @@ app.post("/submit_request", function (req, res, next) {
     req.query.email = req.session.email;
     req.query.artist_name = req.session.artist_name;
     req.query.hours = req.body.hours;
+    req.query.request_errors = request_errors.join(';'); //join all errors together into querystring
     res.redirect('./request.html?' + querystring.stringify(req.query));
   }
 
@@ -174,6 +179,7 @@ app.get("/artist_all.html", function (req, res) {
   https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   */
 
+//  add_array = req.session.add;
 
   console.log('artist all', req.query);
   pagestr = `
@@ -600,6 +606,7 @@ app.post("/add_to_fav", function (req, res) {
 //Artist's name is put into a session when he/she is requested
 app.get("/request_artist", function (req, res) {
   req.session.artist_name = req.query.artist_name;
+  artist_request = req.session.artist_name;
   console.log(req.session.artist_name);
   res.redirect('./login.html?' + querystring.stringify(req.query));
 
@@ -684,6 +691,7 @@ app.post("/submit_register", function (req, res) {
   var confirmerrors = []; //to store confirm password errors
   var emailerrors = []; //to store email errors
   var phoneerrors = []; //to store phone number errors
+  var success = [];
 
   //make sure name is valid
   if (req.body.name == "") { //if nothing is written for the name
@@ -814,12 +822,13 @@ app.post("/submit_register", function (req, res) {
   }
 
   if (errors.length == 0) { //if there are no errors
-    console.log(req.body.genre); //to double check if statement working
+    success.push('Successful registration');
+    console.log(success);
     req.query.username = reguser; //put username in querystring
     req.query.name = req.body.name; //put name into querystring
-    req.query.genre = req.body.genre; //put genre into querystring
     req.query.email = req.body.email; //put email into querystring
     req.query.artist_name = req.session.artist_name; //put artist name for form into querystring
+    req.query.success = success.join(';'); //put success into querystring
     res.cookie('user', req.query.username);
 
     // store information into a JSON file
@@ -834,7 +843,7 @@ app.post("/submit_register", function (req, res) {
 
 
     //redirect to the artist page
-    res.redirect('./request.html?' + querystring.stringify(req.query));
+    res.redirect('./login.html?' + querystring.stringify(req.query));
   }
   //add errors to querystring (for purpose of putting back into textbox)
   else { //if there is one or more errors
