@@ -43,6 +43,35 @@
         "bio": "Kalani Pe’a took home his 2nd Grammy Award in 2019 for his second CD No ‘Ane’i [We Belong Here], a release that hit #1 on iTunes World Music Charts and #11 on Billboard’s World Music Charts. <br><br> Kalani Pe’a’s debut album E Walea gave him his first Grammy® Award for “Best Regional Roots Music Album” in 2017, followed by the 2017 Na Hoku Hanohano Award (Hawai‘i’s “Grammy) for Best Hawaiian Contemporary Album, making Hawaiian music history as the only album to win both a Grammy and Na Hoku. E Walea also hit #1 on the iTunes World Music Charts and #12 on the Billboard World Albums Charts. He was honored by the Hawai‘i State House of Representatives with an official proclamation in 2017: “It is vital that Native Hawaiian culture and the arts be perpetuated for future generations: Kalani Pe’a is a tourchbearer.” <br><br> Self-described as “Hawaiian contemporary soul”, Kalani Pe‘a was awarded a prestigious Native Arts & Cultures Foundation Fellowship in 2018. He was most recently named an Artist in Business Leadership Fellow 2019 by the First Peoples Fund. With his passion for perpetuating Hawaiian language and culture, his music features his original Hawaiian songs alongside his affectionate bilingual (Hawaiian/English) arrangements of his R&B favorites – a nod to the western music he grew up with. <br><br> “Peʻa totally commits himself to every song and is able to deliver with much passion using his wide vocal range”, noted Kalani’s award-winning record producer Dave Tucciarone. <br><br> TOURS with 2-pc band (guitar & bass)" ,
         "genre": "Pacific Roots",
         "keyword": "pacificroots"
+    },
+
+    {
+        "artist_id": "5",
+        "name": "Nathan Aweau", 
+        "image": "./images/aweau.jpg", 
+        "description": "“on electric bass and acoustic guitar,… advanced understanding of harmony and orchestration …his singing style is effortless” –NY Times",
+        "bio": "Winner of 9 Na Hoku (Hawai‘i’s “Grammy”), Nathan Aweau won Male Vocalist of the Year an unprecented 3 times, the only artist to have achieved this. Nathan Aweau is not only known for his beautiful vocals, but also for his musical prowess, particularly on the bass guitar, his favorite instrument (his Bass Etude album won Jazz Album of the Year honors in 2005). Often described as a musician’s musician with an in-depth understanding of orchestration, Aweau is proficient on piano, guitar, ‘ukulele, saxophone, percussion, and bass. He also writes, records, engineers, and produces all his own material. Much sought-after, he has performed with numerous musicians, was a member of the award-winning groups Ka’eo, the Ali’i’s, and HAPA, and played with the legendary Don Ho for 16 years. <br> <br> His exquisite vocals earned him his first Na Hoku “Male Vocalist” award for his debut CD and helped propel Hapa’s CD “Maui” to the Top 10 on Billboard’s World Music chart and three Na Hoku Hanohano Awards (Hawai‘i’s “Grammy”). Traditional Hawaiian music features “leo ki’eki’e” (male falsetto singing), “where the men kinda go up and sound like women,” says Nathan, giving him a multi-octave range. For his 6 solo CDs to date, Aweau wrote and arranged every song, sang all vocals (including background), played every instrument, and recorded, engineered, mixed, and mastered it at his In My Bathroom Studios. <br> <br>Aweau, who was classically trained, has run the gamut of styles, playing in jazz, funk, country and even metal bands, as well as Hawaiian ensembles. “So long as it was good music, I was always there,” he says." ,
+        "genre": "Guitar & 'Ukulele Masters",
+        "keyword": "guitar"
+    },
+    {
+        "artist_id": "6",
+        "name": "Owana Salazar", 
+        "image": "./images/owana.jpg", 
+        "description": "“an acknowledged Hawaiian favorite…a delightful, lilting journey” <br><br>Gorgeous vocals, among few female slack key guitar & steel players in Hawai‘i",
+        "bio": "“Owana Salazar is an acknowledged Hawaiian favorite….Here, she embarks on a delightful, lilting journey, marrying her love for Hawaiian music with her appreciation for jazz.”  –Honolulu Advertiser <br> <br>“Owana, crowned in fragrant plumeria, then took the stage with her steel guitar artistry, added some smiling talk story about the instrument’s origins and her own background, then switched to slack key, her voice as rich as her smile….The evening’s program described slack key as being played from the heart and soul through the fingers and the entertainers reached out to the audience, warming their hearts as well.” —The Maui News <br> <br>Descended from Hawaiian royalty, singer Owana Mahelalani-Rose Salazar is currently the only known female steel player in Hawai`i and is among the few wahine (female) slack key players around. As a respected vocalist, kīhō‘alu (slack key) and steel guitarist, Owana Salazar possesses the ability to reach out in song to intimately embrace her audience. Her profound interpretations of Hawaiian classics, traditional and contemporary music, and jazz standards truly reflect her royal Hawaiian ancestry and upbringing in Hawaiian culture.<br> <br>A multiple Na Hoku Hanohano (Hawai‘i’s “Grammy”) winner as well as appearing on 2 Grammy-winning CDs, she was the first Hawaiian musician invited to perform at the renowned New Orleans Jazz & Heritage Festival. Owana’s multiple talents allow her to create fusion between styles of traditional and contemporary Hawaiian and jazz performance without compromising the character and integrity of any style. Her graciousness and generosity the warmth as a performer and radiant voice makes each person in the audience feel the warmth of her “aloha.”" ,
+        "genre": "Vocals & Island Harmonies",
+        "keyword": "vocal"
+    },
+
+    {
+        "artist_id": "7",
+        "name": "Kulaiwi", 
+        "image": "./images/kulaiwi.jpg", 
+        "description": "Three of Hawai’is leading performers have joined forces!",
+        "bio": "Three of Hawai‘i’s leading award-winning performers —  Lehua Kalima (of Na Leo), Shawn Pimental, and Kawika Kahiapo — have joined forces! Hawaiian musicians, singers, songwriters, entertainers, they have formed Kulaiwi to create music that springs from their Native Hawaiian roots, performed with soaring vocals, island harmonies and a folk vibe, along with an easy-going charisma and witty banter, and featuring original songs inspired by diverse musical styles. Kulaiwi means “land of my ancestors”; their Hawaiian and folk-inflected songs pair Lehua’s soaring vocals with Shawn’s harmonies and guitar riffs, and Kawika’s soulful voice and slack key guitar stylings, as they share their prodigious talents as lyricists and composers.  <br> <br>Accompanied by award-winning hula dancer Pono Fernandez, they create an evening that represents Hawai‘I today, while remaining mindful of their deep emotional connection to their roots.",
+        "genre": "Island Contemporary",
+        "keyword": "contemporary"
     }
 
 ]

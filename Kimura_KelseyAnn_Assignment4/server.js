@@ -17,6 +17,7 @@ app.use(parser.urlencoded({ extended: true })); // decode, now request.body will
 app.use(parser.json());
 //Login Server code from Lab 14
 
+//Loading the files
 var filename1 = 'user_data.json' //loading the user_data.json file
 var filename2 = './public/artist_data.json'//loading artist_data.json file
 var filename3 = 'request_data.json' //loading request_data.json file
@@ -44,7 +45,11 @@ if (fs.existsSync(filename1)) { //only open if file exists
   console.log(filename1 + ' does not exist!'); //saying filename doesn't exist in console
 }
 
+
+//Callback function for when the request is submitted
 app.post("/submit_request", function (req, res, next) {
+
+//Putting the request information into the querystring then into the session
   req.query.date = req.body.date;
   req.query.location = req.body.location;
   req.query.time = req.body.time;
@@ -60,6 +65,7 @@ app.post("/submit_request", function (req, res, next) {
   // req.session.date = req.query.date;
   var request_errors = []; //to store all errors
 
+  //Creating request errors if the date is anything today or before today
   var d = new Date(req.query.date);
   var t = new Date()
   console.log(t + d);
@@ -69,10 +75,11 @@ app.post("/submit_request", function (req, res, next) {
   }
 
 
+//If no request errors
   if (request_errors.length == 0) {
-
         // Clear cookie after user made a request
     res.clearCookie('user');
+    res.clearCookie('artist');
     pagestr = `
   <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +99,7 @@ app.post("/submit_request", function (req, res, next) {
   </div>
 </body>
 </html>`;
-    //Sending email to user
+    //Sending email to user with the request information
     //Code from https://www.w3schools.com/nodejs/nodejs_email.asp
     //https://www.youtube.com/watch?v=Va9UKGs1bwI
     let transporter = nodemailer.createTransport({
@@ -107,7 +114,7 @@ app.post("/submit_request", function (req, res, next) {
       to: req.session.email,
       cc: 'itm352asst4test@gmail.com',
       subject: 'Artist Booking Request Confirmation',
-      text: 'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name + ' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + ' \nHours: ' + req.session.hours + '\nLocation: ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \n Thank you,\n Pasifika Arists'
+      text: 'Hello ' + req.session.name + ', \n\nYour request for artist booking for ' + req.session.artist_name + ' has been submitted. Here are the details of your request: \n\nDate ' + req.session.date + ' \nTime: ' + req.session.time + ' \nHours: ' + req.session.hours + '\nLocation: ' + req.session.location + '\nNotes: ' + req.session.request_notes + '\n\nWe will contact you for any further details. \nThank you,\nPasifika Arists'
     };
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -116,8 +123,6 @@ app.post("/submit_request", function (req, res, next) {
         console.log('Email sent: ' + info.response);
       }
     })
-
-
 
     res.send(pagestr);
 
@@ -135,6 +140,8 @@ app.post("/submit_request", function (req, res, next) {
           
               fs.writeFileSync(filename3, JSON.stringify(request_data));  
 */
+
+//If there are errors, put request information back into querystring and reload the page
   } else {
     req.query.date = req.body.date;
     req.query.location = req.body.location;
@@ -150,8 +157,11 @@ app.post("/submit_request", function (req, res, next) {
 
 });
 
+//Create Callback Function for the index.html page
 app.get("/index.html", function (req, res, next) {
+  //Creating cookie when a visitor comes to the page
   res.cookie('name', 'visitor');
+  //Initializing the session variables
   req.session.fav_artist = [];
   req.session.last_viewed = [];
   req.session.add = [];
@@ -159,8 +169,11 @@ app.get("/index.html", function (req, res, next) {
   next();
 });
 
+//Create Callback Function if index.html not put on url
 app.get("/", function (req, res, next) {
+   //Creating cookie when a visitor comes to the pagg
   res.cookie('name', 'visitor');
+  //Initializing the session variables
   req.session.fav_artist = [];
   req.session.last_viewed = [];
   req.session.add = [];
@@ -168,21 +181,23 @@ app.get("/", function (req, res, next) {
   next();
 });
 
-
+//Callback function for artist search page artist_all.html
 app.get("/artist_all.html", function (req, res) {
-  if (typeof req.cookies.name != 'undefined') {
-  } else {
-    res.redirect('/index.html');
-  }
 
   /*This is the page with all of the search results
   User is able to check mark which artist they want to add to their favorites list using the fetch function:
   https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   */
 
-//  add_array = req.session.add;
+    //Add cookie to ensure no one can go to page unless went to index.html
+  if (typeof req.cookies.name != 'undefined') {
+  } else {
+    res.redirect('/index.html');
+  }
 
   console.log('artist all', req.query);
+
+  //Page string for the artist_all.html webpage
   pagestr = `
   <!DOCTYPE html>
   <html lang="en">
@@ -214,7 +229,7 @@ app.get("/artist_all.html", function (req, res) {
       <link rel="stylesheet" href="form-style.css">
   </head>
   <header>
-      <h1>Pasifika Artist Network</h1>
+  <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
   </header>
 </div>
 <ul>
@@ -277,17 +292,21 @@ app.get("/artist_all.html", function (req, res) {
 
 });
 
+//Callback function for favorites list
 app.get("/my_list.html", function (req, res) {
   /*fav_artist = req.session.fav_artist;
   console.log(fav_artist);
   */
 
+  //To ensure user cannot go straight to the favorites list without first going to the homepage
   if (typeof req.cookies.name != 'undefined') {
   } else {
     res.redirect('/index.html');
   }
 
+  //Ensuring that add_array is defined
   if (typeof add_array != 'undefined') {
+    //Load page with favorites if added to the favorites array (add_array)
     if (add_array.length > 0) {
       console.log(add_array);
       pagestr = `
@@ -304,7 +323,7 @@ app.get("/my_list.html", function (req, res) {
       <link rel="stylesheet" href="form-style.css">
   </head>
   <header>
-      <h1>Pasifika Artist Network</h1>
+  <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
   </header>
   <ul>
   <li> <img src="./images/logo.jpg"></li>
@@ -322,6 +341,7 @@ app.get("/my_list.html", function (req, res) {
                   <th>Genre</th>
               </tr>`;
 
+      //Generate the page based on artist added to favorites (added to add_array)
       for (i = add_array.length - 1; i >= 0; i--) {
         pagestr += ` 
     <form action="/artist_single.html" method="GET">
@@ -346,8 +366,10 @@ app.get("/my_list.html", function (req, res) {
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
-
+//loading the favorites list
       res.send(pagestr);
+
+  //Loading page that says "no favorites yet" if no artists added to favorites list
     } else {
       pagestr = `
   <!DOCTYPE html>
@@ -363,7 +385,7 @@ app.get("/my_list.html", function (req, res) {
       <link rel="stylesheet" href="form-style.css">
   </head>
   <header>
-      <h1>Pasifika Artist Network</h1>
+  <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
   </header>
   <ul>
   <li> <img src="./images/logo.jpg"></li>
@@ -371,11 +393,15 @@ app.get("/my_list.html", function (req, res) {
   <li><a href="./my_list.html">My List</a></li>
   <li><a href="./last_viewed.html">Last Viewed</a></li>
 </ul>
-
-  <div><main>
+<br>
+<br>
+<br>
   <body>
+  <br>
   <h2>You do not have any favorites yet!</h2>
-  </main></div>
+  <br>
+  <br>
+  <a href="./search2.html"><h2>Click here to search to start finding favorites.</h2></a>
   </body>
   <br>
   <footer>
@@ -383,26 +409,34 @@ app.get("/my_list.html", function (req, res) {
   </footer>
   </html>`;
 
+  //loading the no favorites page
       res.send(pagestr);
     }
+  //If add_array is not defined, redirect to the homepage to initialize variable
   } else {
     res.redirect('/index.html');
   }
 });
 
+
+//Callback function for last viewed artists
 app.get("/last_viewed.html", function (req, res) {
   /*fav_artist = req.session.fav_artist;
   console.log(fav_artist);
   */
+
+    //Add cookie to ensure no one can go to page unless went to index.html
   if (typeof req.cookies.name != 'undefined') {
   } else {
     res.redirect('/index.html');
   }
 
+  //Making sure that req.session.last_viewed is initialized and adding it to array called last_viewed
   if (typeof req.session.last_viewed != 'undefined') {
     last_viewed = req.session.last_viewed;
     console.log(last_viewed);
 
+//If there is something in the last_viewed array, load page with last viewed artists
     if (last_viewed.length > 0) {
       pagestr = `
   <!DOCTYPE html>
@@ -418,7 +452,7 @@ app.get("/last_viewed.html", function (req, res) {
       <link rel="stylesheet" href="form-style.css">
   </head>
   <header>
-      <h1>Pasifika Artist Network</h1>
+  <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
   </header>
   <ul>
   <li> <img src="./images/logo.jpg"></li>
@@ -435,6 +469,7 @@ app.get("/last_viewed.html", function (req, res) {
                   <th>Description</th>
                   <th>Genre</th>
               </tr>`;
+      //For artists last viewed in the array, generate table
       for (i = last_viewed.length - 1; i >= 0; i--) {
         pagestr += ` 
     <form action="/artist_single.html" method="GET">
@@ -459,8 +494,10 @@ app.get("/last_viewed.html", function (req, res) {
    <h2>Pasifika Artists Network LLC</h2>
   </footer>
   </html>`;
-
+//Loading the search page
       res.send(pagestr);
+
+//If there are no last viewed artists (nothing in the last_viewed array), load page saying no view history yet
     } else {
       pagestr = `
     <!DOCTYPE html>
@@ -476,7 +513,7 @@ app.get("/last_viewed.html", function (req, res) {
         <link rel="stylesheet" href="history-style.css">
     </head>
     <header>
-        <h1>Pasifika Artist Network</h1>
+    <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
     </header>
     <ul>
     <li> <img src="./images/logo.jpg"></li>
@@ -488,9 +525,11 @@ app.get("/last_viewed.html", function (req, res) {
   <br>
   <br>
     <body>
+    <br>
     <h2>No view history yet</h2>
     <br>
-    <h2>Go back to the search to view more artists</h2>
+    <br>
+    <a href="./search2.html"><h2>Click here to search to view more artists.</h2></a>
     </body>
     <br>
     <footer>
@@ -498,37 +537,46 @@ app.get("/last_viewed.html", function (req, res) {
     </footer>
     </html>`;
 
+    //Loading page
       res.send(pagestr);
     }
+
+  //If req.session.last_viewed is not initialized, redirect to index.html to initialize variable
   } else {
     res.redirect('/index.html');
   }
 });
 
-
+//Callback get function for artist_single.html
+//(Page with detailed information about artist with biography and ability to request them)
 app.get("/artist_single.html", function (req, res) {
 
+  //Check for cookie "name" to ensure no one can go to page unless went to index.html
   if (typeof req.cookies.name != 'undefined') {
   } else {
     res.redirect('/index.html');
   }
 
-  if (req.query.artist_index !== undefined) {
+  //To make sure artist_index is defined
+  if (typeof req.query.artist_index != 'undefined') {
     console.log('single artist page', req.query);
+    //getting the index array number of the artist from the hidden variable in the querystring
     index = req.query.artist_index;
+    //defining last_viewed as array for req.session.last_viewed and pushing index number to the array
     last_viewed = req.session.last_viewed;
-
     last_viewed.push(index);
     console.log(last_viewed);
 
+/*
     fav_artist = req.session.fav_artist;
     if (req.query["fav_artist" + index] != undefined) {
       fav_artist.push(index);
       req.session.fav_artist = fav_artist;
       console.log(req.session.fav_artist);
     }
-
-    pagestr = `
+*/
+  //Generating page for artist_single.html - display the artist that was clicked on
+  pagestr = `
     <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -539,7 +587,7 @@ app.get("/artist_single.html", function (req, res) {
         <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"rel="stylesheet"> 
         <link rel="stylesheet" href="form-style.css">
     </head>  
-    <h1>Pasifika Artist Network</h1>
+    <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
     <ul>
     <li> <img src="./images/logo.jpg"></li>
     <li><a href="./search2.html">Back to Search</a></li>
@@ -553,23 +601,30 @@ app.get("/artist_single.html", function (req, res) {
         <h1>${artist_data[index].name}</h1>
         <br><img src="${artist_data[index].image}">
         <br>
+        <input type="submit" value="Request artist">
+        <br>
         <div><p>${artist_data[index].bio}</p></div>
 <input type="hidden" name="artist_request" id="artist_request" value="${index}">
 <input type="hidden" name="artist_name" id="artist_name" value="${artist_data[index].name}">
-<input type="submit" value="Request artist">
   </form> 
   <br>
         </div>
 </body>
 </html>`;
+
+//Displaying the page
     res.send(pagestr);
-  }
-  else {
-    res.redirect('artist_all.html')
+
+//If the artist_index number is not defined, redirect to the index.html page
+  } else {
+    res.redirect('/index.html');
   }
 });
 
+
+//Get callback function for the Request Page
 app.get("/request.html", function (req, res, next) {
+
   //If user cookie is detected and user has logged in/registered, put registration info into a session
   if (typeof req.cookies.user != 'undefined') {
     req.session.email = req.query.email;
@@ -588,15 +643,19 @@ app.get("/request.html", function (req, res, next) {
 
 });
 
-
+//Callback function for when the add to favorites checkbox is checked
 app.post("/add_to_fav", function (req, res) {
   artist_index = req.body.artist_index;
   console.log(req.body);
+
+//Verify if the checkbox is checked
   if (req.body["add" + artist_index] != undefined) {
     add = req.body["add" + artist_index];
+    //If checkbox is checked (true), add artist index number to add_array
     if (add == true) {
       add_array.push(artist_index);
       console.log(add_array);
+    //If else (checkbox becomes unchecked or is false), take artist index number out of the array
     } else {
       add_array.pop(artist_index);
       console.log(add_array);
@@ -610,6 +669,8 @@ app.get("/request_artist", function (req, res) {
   req.session.artist_name = req.query.artist_name;
   artist_request = req.session.artist_name;
   console.log(req.session.artist_name);
+  res.cookie('artist', req.query.artist_name)
+  //Send user to the login page to sign in
   res.redirect('./login.html?' + querystring.stringify(req.query));
 
 });
@@ -617,6 +678,7 @@ app.get("/request_artist", function (req, res) {
 
 //Validation for the Login Information when Login Page is loaded
 app.post("/login.html", function (req, res) {
+
   // Process login form POST and redirect to request page if ok, back to login page if not
   //Code from Lab 14
   console.log(req.body);
@@ -650,6 +712,7 @@ app.post("/login.html", function (req, res) {
   }
   res.redirect('/login.html?' + querystring.stringify(req.query)); //redirecting user to the login page with the querystring
 
+
 }
 );
 
@@ -669,15 +732,20 @@ app.post("/search_artist", function (req, res) {
 });
 
 app.post("/search_artist2", function (req, res) {
+  //Put the genre in the querystring when user searches for artist
   req.query.genre = req.body.genre;
   console.log(req.query.genre);
+  //Reload search page if just leave dropdown on "select_genre"
   if (req.query.genre == 'select_genre') {
     res.redirect('./search2.html?');
+  //For all other in dropdown menu (the genres listed), go to artist search page with querystring
   } else {
     res.redirect('./artist_all.html?' + querystring.stringify(req.query)); //redirect to the artist page
   }
 });
 
+
+//Post callback function when the user hits the register button
 app.post("/submit_register", function (req, res) {
   // Process registration form POST and redirect to artist search page if ok, back to registration page if not
   //validate registration data

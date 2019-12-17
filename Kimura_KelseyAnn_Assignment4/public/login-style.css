@@ -7,6 +7,11 @@ body{
     font-family:'Open Sans',sans-serif; /*font is Open-Sans*/
 }
 
+h1,h2{ /*For text in the <h1> and <h2> headers*/
+  color: black; /*text color is ivory*/
+  text-align: center /*align text to center*/
+}
+
 /*Navigation Bar CSS*/
 /*https://www.w3schools.com/css/css_navbar.asp*/
 /*https://www.w3schools.com/css/tryit.asp?filename=trycss_navbar_sticky*/

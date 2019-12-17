@@ -17,7 +17,14 @@ window.onload = function(){
         request_form['time'].value = params.get('time');
         request_form['location'].value = params.get('location');
         request_form['request_notes'].value = params.get('request_notes');
+        request_form['hours'].value = params.get('hours');
     }
+
+    if (params.has('request_errors')) { //if detect name errors
+                var date_error = params.get('request_errors'); //make variable nameerrors
+                alert('Fix the following errors: \n' + params.get('request_errors'));
+                document.getElementById("dateerror").innerHTML = date_error; //write name errors where occur
+            }
 
 }
 
@@ -50,7 +57,9 @@ function checkdate() {
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="login-style.css">
 </head>
-
+<header>
+    <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
+</header>
 <body>
     <ul>
         <li> <img src="./images/logo.jpg"></li>
