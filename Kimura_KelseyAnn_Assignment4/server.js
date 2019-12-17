@@ -17,7 +17,7 @@ app.use(parser.urlencoded({ extended: true })); // decode, now request.body will
 app.use(parser.json());
 //Login Server code from Lab 14
 
-//Loading the files
+//Loading JSON files for use
 var filename1 = 'user_data.json' //loading the user_data.json file
 var filename2 = './public/artist_data.json'//loading artist_data.json file
 var filename3 = 'request_data.json' //loading request_data.json file
@@ -126,7 +126,9 @@ app.post("/submit_request", function (req, res, next) {
 
     res.send(pagestr);
 
-              //store request information in a JSON file
+              /*Attempt to store request information in a JSON file
+              However, when it saved request information to request_data.json, it would not send email,
+              so that would be something to look into*/
 /*              request_data[req.session.username] = {
                 name: req.query.name,
                 email: req.query.email,
@@ -902,6 +904,8 @@ app.post("/submit_register", function (req, res) {
     res.cookie('user', req.query.username);
 
     // store information into a JSON file
+    
+    //info to be stored
     users_reg_data[reguser] = {
       name: req.body.name,
       password: req.body.password,
@@ -909,6 +913,7 @@ app.post("/submit_register", function (req, res) {
       phone: req.body.phone
     };
 
+    //storing the information to user_data.json
     fs.writeFileSync(filename1, JSON.stringify(users_reg_data));
 
 
@@ -931,7 +936,8 @@ app.post("/submit_register", function (req, res) {
 }
 );
 
-app.use(express.static('./public')); // create a static server using express from the public folder
+// create a static server using express from the public folder
+app.use(express.static('./public')); 
 
 // Having the server listen on port 8080
 // From Assignment1_Design_Examples > Asssignment1_2file > store_server.js
