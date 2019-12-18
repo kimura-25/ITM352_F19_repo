@@ -12,7 +12,7 @@ h1,h2{ /*For text in the <h1> and <h2> headers*/
   text-align: center /*align text to center*/
 }
 
-/*Navigation Bar CSS*/
+/*Sticky Navigation Bar CSS*/
 /*https://www.w3schools.com/css/css_navbar.asp*/
 /*https://www.w3schools.com/css/tryit.asp?filename=trycss_navbar_sticky*/
 body {
@@ -35,11 +35,6 @@ body {
     float: left;
   }
   
-  /* Add a gray right border to all list items, except the last item (last-child) */
-    li {
-    border-right: 1px solid #bbb;
-  }
-  
   li a {
     display: block;
     color: white;
@@ -56,6 +51,13 @@ body {
     background-color: #4CAF50;
   }
 
+
+  /* Add a gray right border to all list items, except the last item (last-child) */
+    li {
+    border-right: 1px solid #bbb;
+  }
+  
+  
   /*CSS for the Forms*/
   /*Help with centering from: https://stackoverflow.com/questions/9737394/html-how-to-center-align-a-form*/
 

@@ -53,12 +53,7 @@ body {
   li {
     float: left;
   }
-  
-  /* Add a gray right border to all list items, except the last item (last-child) */
-    li {
-    border-right: 1px solid #bbb;
-  }
-  
+    
   li a {
     display: block;
     color: white;
@@ -74,7 +69,14 @@ body {
   .active {
     background-color: #4CAF50;
   }
+
+  /* Add a gray right border to all list items, except the last item (last-child) */
+    li {
+    border-right: 1px solid #bbb;
+  }
+
   /*Align Form to Center*/
+  /*https://stackoverflow.com/questions/9737394/html-how-to-center-align-a-form*/
   form { 
     margin: 0 auto; 
     width:250px;

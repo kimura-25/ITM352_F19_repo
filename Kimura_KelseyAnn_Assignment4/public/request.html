@@ -22,28 +22,30 @@ window.onload = function(){
         request_form['request_notes'].value = params.get('request_notes');
         request_form['hours'].value = params.get('hours');
     }
-
-    if (params.has('request_errors')) { //if detect name errors
-                var date_error = params.get('request_errors'); //make variable nameerrors
-                alert('Fix the following errors: \n' + params.get('request_errors'));
+    //If there are request errors (only date errors for now), display the date error and show it where it occurs
+    if (params.has('request_errors')) { //if detect request errors
+                var date_error = params.get('request_errors'); //make variable 
+                alert('Fix the following errors: \n' + params.get('request_errors')); //Send alert to fix errors
                 document.getElementById("dateerror").innerHTML = date_error; //write name errors where occur
             }
 
 }
 
 
-/*Validating Date is after today*/
+/*Validating Date is after today onclick*/
 //Source: https://www.codexworld.com/how-to/check-given-date-is-greater-than-today-javascript/
 
 function checkdate() {
-    var d = new Date(date.value);
+    var d = new Date(date.value); //taking value of date from the form
     console.log(date);
     var t = new Date()
     console.log(t + d);
-    if(d <= t){
+    //if date selected is today or before that, show error message
+    if(d <= t){ 
         console.log('nogoodday');
         document.getElementById("dateerror").innerHTML =  '<font color="red">Date has already passed. Please select a future date.</font>'
     }
+    //if date selected is after today, do not display anything
     else{
         document.getElementById("dateerror").innerHTML = " "
 
@@ -60,6 +62,7 @@ function checkdate() {
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="login-style.css">
 </head>
+<!-- Creating header with link to actual website -->
 <header>
     <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
 </header>
@@ -73,6 +76,7 @@ function checkdate() {
 <br>
 <br>
 <script>
+    //Getting email, name, and artist name values and putting it into the request page for personalization
     email = GET[`email`];
     name = GET[`name`];
     artist_name = GET[`artist_name`]

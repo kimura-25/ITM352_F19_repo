@@ -55,20 +55,6 @@
                 document.getElementById("phonelabel").innerHTML = phoneerrors; //write email errors where occur
             }
 
-            /*To make sure register page has an artist name
-            If not, will redirect to the search page*/
-
-            /*
-            if (params.has('artist_request')) {
-                var artist_request = params.get(artist_request);
-                console.log(artist_request);
-            }
-            else {
-                alert('Please select an artist');
-                window.location = '/search2.html' + window.location.search;
-            }
-            */
-
         }
 
     </script>
@@ -79,10 +65,12 @@
     <link rel="stylesheet" href="login-style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
+<!-- Creating header with link to actual website -->
 <header>
     <a href="https://pasifika-artists.com/"> <h1>Pasifika Artists Network</h1></a>
 </header>
 <body>
+    <!-- Navigation Bar with links to different areas of website -->
     <ul>
         <li> <img src="./images/logo.jpg"></li>
         <li><a href="./search2.html">Back to Search</a></li>

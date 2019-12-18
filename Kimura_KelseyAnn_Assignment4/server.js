@@ -296,9 +296,6 @@ app.get("/artist_all.html", function (req, res) {
 
 //Callback function for favorites list
 app.get("/my_list.html", function (req, res) {
-  /*fav_artist = req.session.fav_artist;
-  console.log(fav_artist);
-  */
 
   //To ensure user cannot go straight to the favorites list without first going to the homepage
   if (typeof req.cookies.name != 'undefined') {
@@ -307,6 +304,7 @@ app.get("/my_list.html", function (req, res) {
   }
 
   //Ensuring that add_array is defined
+  //Code with Help from Prof. Kazman
   if (typeof add_array != 'undefined') {
     //Load page with favorites if added to the favorites array (add_array)
     if (add_array.length > 0) {
@@ -423,9 +421,6 @@ app.get("/my_list.html", function (req, res) {
 
 //Callback function for last viewed artists
 app.get("/last_viewed.html", function (req, res) {
-  /*fav_artist = req.session.fav_artist;
-  console.log(fav_artist);
-  */
 
     //Add cookie to ensure no one can go to page unless went to index.html
   if (typeof req.cookies.name != 'undefined') {
@@ -569,14 +564,6 @@ app.get("/artist_single.html", function (req, res) {
     last_viewed.push(index);
     console.log(last_viewed);
 
-/*
-    fav_artist = req.session.fav_artist;
-    if (req.query["fav_artist" + index] != undefined) {
-      fav_artist.push(index);
-      req.session.fav_artist = fav_artist;
-      console.log(req.session.fav_artist);
-    }
-*/
   //Generating page for artist_single.html - display the artist that was clicked on
   pagestr = `
     <!DOCTYPE html>
@@ -682,7 +669,7 @@ app.get("/request_artist", function (req, res) {
 app.post("/login.html", function (req, res) {
 
   // Process login form POST and redirect to request page if ok, back to login page if not
-  //Code from Lab 14
+  //Code from Lab 14 and Assignment2
   console.log(req.body);
   var LogError = [];
   //To make username case insensitive
@@ -751,6 +738,7 @@ app.post("/search_artist2", function (req, res) {
 app.post("/submit_register", function (req, res) {
   // Process registration form POST and redirect to artist search page if ok, back to registration page if not
   //validate registration data
+  //Registration Code from Assignment2
 
   //to log what was entered in the textboxes
   console.log(req.body);
