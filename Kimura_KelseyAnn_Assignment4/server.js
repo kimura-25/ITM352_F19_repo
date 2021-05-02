@@ -559,6 +559,7 @@ app.get("/artist_single.html", function (req, res) {
     console.log('single artist page', req.query);
     //getting the index array number of the artist from the hidden variable in the querystring
     index = req.query.artist_index;
+    console.log(index);
     //defining last_viewed as array for req.session.last_viewed and pushing index number to the array
     last_viewed = req.session.last_viewed;
     last_viewed.push(index);
